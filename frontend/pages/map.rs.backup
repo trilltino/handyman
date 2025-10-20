@@ -1,0 +1,537 @@
+use yew::prelude::*;
+use stylist::css;
+use wasm_bindgen::prelude::*;
+use web_sys::HtmlElement;
+use gloo::timers::callback::Timeout;
+
+#[wasm_bindgen]
+extern "C" {
+    #[wasm_bindgen(js_namespace = console)]
+    fn log(s: &str);
+}
+
+#[function_component]
+pub fn MapPage() -> Html {
+    let map_container_ref = use_node_ref();
+
+    {
+        let map_container_ref = map_container_ref.clone();
+
+        use_effect_with((), move |_| {
+            let timeout = Timeout::new(300, move || {
+                if let Some(_container) = map_container_ref.cast::<HtmlElement>() {
+                    let script = web_sys::window()
+                        .and_then(|w| w.document())
+                        .and_then(|doc| doc.create_element("script").ok())
+                        .and_then(|s| s.dyn_into::<web_sys::HtmlScriptElement>().ok());
+
+                    if let Some(script_elem) = script {
+                        script_elem.set_text_content(Some(r#"
+(function() {
+    // Wait for mapboxgl to be loaded
+    function initMap() {
+        if (typeof mapboxgl === 'undefined') {
+            console.log('Waiting for Mapbox GL JS to load...');
+            setTimeout(initMap, 100);
+            return;
+        }
+
+        console.log('Mapbox GL JS loaded successfully!');
+
+        // Mapbox Access Token
+        mapboxgl.accessToken = 'pk.eyJ1IjoidGlub2giLCJhIjoiY21neHIxMTJ1MDVzcjJzc2lxeGYzbmczMCJ9.wGUMUjReusvTovmqGTjgnQ';
+
+    // Create Mapbox GL JS map with PREMIUM satellite imagery and 3D terrain
+    const map = new mapboxgl.Map({
+        container: 'map-container',
+        // Mapbox Satellite Streets style with ultra-high quality Maxar imagery
+        style: 'mapbox://styles/mapbox/satellite-streets-v12',
+        center: [-7.8869, 37.1526],
+        zoom: 15,
+        pitch: 70,
+        bearing: -20,
+        maxPitch: 85,
+        antialias: true,
+        projection: 'globe'
+    });
+
+    // Add navigation controls
+    map.addControl(new mapboxgl.NavigationControl({
+        visualizePitch: true,
+        showZoom: true,
+        showCompass: true
+    }), 'top-left');
+
+    // Add scale bar
+    map.addControl(new mapboxgl.ScaleControl({
+        maxWidth: 200,
+        unit: 'metric'
+    }), 'bottom-left');
+
+    // Add fullscreen control
+    map.addControl(new mapboxgl.FullscreenControl(), 'top-left');
+
+    // Add geolocate control
+    map.addControl(new mapboxgl.GeolocateControl({
+        positionOptions: {
+            enableHighAccuracy: true
+        },
+        trackUserLocation: true,
+        showUserHeading: true
+    }), 'top-left');
+
+    map.on('load', function() {
+        // Add Mapbox's premium 3D terrain
+        map.setTerrain({ source: 'mapbox-dem', exaggeration: 2.0 });
+
+        // Add 10km coverage zone
+        map.addSource('coverage-zone', {
+            type: 'geojson',
+            data: {
+                type: 'Feature',
+                geometry: {
+                    type: 'Polygon',
+                    coordinates: [createCircle([-7.8869, 37.1526], 10, 64)]
+                }
+            }
+        });
+
+        map.addLayer({
+            id: 'coverage-fill',
+            type: 'fill',
+            source: 'coverage-zone',
+            paint: {
+                'fill-color': '#0066ff',
+                'fill-opacity': 0.2
+            }
+        });
+
+        map.addLayer({
+            id: 'coverage-outline',
+            type: 'line',
+            source: 'coverage-zone',
+            paint: {
+                'line-color': '#0066ff',
+                'line-width': 3,
+                'line-opacity': 0.9
+            }
+        });
+
+        // Add HQ marker
+        map.addSource('hq-marker', {
+            type: 'geojson',
+            data: {
+                type: 'Feature',
+                geometry: {
+                    type: 'Point',
+                    coordinates: [-7.8869, 37.1526]
+                },
+                properties: {
+                    title: 'São Brás de Alportel HQ'
+                }
+            }
+        });
+
+        map.addLayer({
+            id: 'hq-circle',
+            type: 'circle',
+            source: 'hq-marker',
+            paint: {
+                'circle-radius': 12,
+                'circle-color': '#ff0000',
+                'circle-stroke-width': 3,
+                'circle-stroke-color': '#ffffff'
+            }
+        });
+
+        map.addLayer({
+            id: 'hq-label',
+            type: 'symbol',
+            source: 'hq-marker',
+            layout: {
+                'text-field': ['get', 'title'],
+                'text-size': 14,
+                'text-offset': [0, -1.5],
+                'text-anchor': 'top'
+            },
+            paint: {
+                'text-color': '#ffffff',
+                'text-halo-color': '#000000',
+                'text-halo-width': 2
+            }
+        });
+    });
+
+    function createCircle(center, radiusInKm, points) {
+        const coords = { latitude: center[1], longitude: center[0] };
+        const km = radiusInKm;
+        const ret = [];
+        const distanceX = km / (111.320 * Math.cos(coords.latitude * Math.PI / 180));
+        const distanceY = km / 110.574;
+
+        for (let i = 0; i < points; i++) {
+            const theta = (i / points) * (2 * Math.PI);
+            const x = distanceX * Math.cos(theta);
+            const y = distanceY * Math.sin(theta);
+            ret.push([coords.longitude + x, coords.latitude + y]);
+        }
+        ret.push(ret[0]);
+        return ret;
+    }
+
+    window.handymanMap = map;
+
+    window.flyToLocation = function(lng, lat, height, pitch) {
+        map.flyTo({
+            center: [lng, lat],
+            zoom: height ? 18 - Math.log2(height / 100) : 14,
+            pitch: pitch || 60,
+            duration: 2000
+        });
+    };
+
+    window.setPitch = function(degrees) {
+        map.setPitch(degrees);
+    };
+
+    window.rotateCamera = function() {
+        if (window.rotationInterval) {
+            clearInterval(window.rotationInterval);
+            window.rotationInterval = null;
+        } else {
+            window.rotationInterval = setInterval(function() {
+                map.rotateTo(map.getBearing() + 1, { duration: 0 });
+            }, 50);
+        }
+    };
+
+    // Create comprehensive control panel
+    const controlPanel = document.createElement('div');
+    controlPanel.style.cssText = 'position: absolute; top: 10px; right: 10px; background: rgba(20, 20, 20, 0.95); padding: 20px; border-radius: 10px; z-index: 1000; font-family: sans-serif; color: white; min-width: 280px; max-height: 90vh; overflow-y: auto; box-shadow: 0 4px 20px rgba(0,0,0,0.5);';
+
+    const title = document.createElement('h3');
+    title.textContent = 'Advanced 3D Map Controls';
+    title.style.cssText = 'margin: 0 0 15px 0; font-size: 18px; border-bottom: 3px solid #4CAF50; padding-bottom: 8px; font-weight: bold;';
+    controlPanel.appendChild(title);
+
+    // Map Style Selector Section
+    const styleSection = document.createElement('div');
+    styleSection.style.cssText = 'margin-bottom: 20px; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 5px;';
+
+    const styleTitle = document.createElement('h4');
+    styleTitle.textContent = 'Map Style (Premium Mapbox)';
+    styleTitle.style.cssText = 'margin: 0 0 10px 0; font-size: 14px; color: #4CAF50;';
+    styleSection.appendChild(styleTitle);
+
+    const styles = [
+        {id: 'satellite-streets-v12', name: 'Satellite + Streets (Best)', active: true},
+        {id: 'satellite-v9', name: 'Pure Satellite (Maxar)'},
+        {id: 'outdoors-v12', name: 'Outdoors + Terrain'},
+        {id: 'streets-v12', name: 'Streets'},
+        {id: 'dark-v11', name: 'Dark Mode'},
+        {id: 'light-v11', name: 'Light Mode'}
+    ];
+
+    styles.forEach(function(style) {
+        const styleBtn = document.createElement('button');
+        styleBtn.textContent = style.name;
+        styleBtn.style.cssText = 'width: 100%; padding: 8px; margin: 4px 0; background: ' + (style.active ? '#4CAF50' : 'rgba(255,255,255,0.1)') + '; color: white; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; cursor: pointer; font-size: 12px; text-align: left;';
+        styleBtn.onclick = function() {
+            map.setStyle('mapbox://styles/mapbox/' + style.id);
+            // Re-add terrain after style change
+            map.once('style.load', function() {
+                map.setTerrain({ source: 'mapbox-dem', exaggeration: parseFloat(exagSlider.value) });
+            });
+            // Update button styles
+            styleSection.querySelectorAll('button').forEach(function(btn) {
+                btn.style.background = 'rgba(255,255,255,0.1)';
+            });
+            this.style.background = '#4CAF50';
+        };
+        styleSection.appendChild(styleBtn);
+    });
+
+    controlPanel.appendChild(styleSection);
+
+    // Terrain Controls Section
+    const terrainSection = document.createElement('div');
+    terrainSection.style.cssText = 'margin-bottom: 20px; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 5px;';
+
+    const terrainTitle = document.createElement('h4');
+    terrainTitle.textContent = 'Terrain Settings';
+    terrainTitle.style.cssText = 'margin: 0 0 10px 0; font-size: 14px; color: #2196F3;';
+    terrainSection.appendChild(terrainTitle);
+
+    // Terrain Exaggeration Slider
+    const exagLabel = document.createElement('label');
+    exagLabel.textContent = 'Terrain Height: 2.0x';
+    exagLabel.style.cssText = 'display: block; margin-bottom: 5px; font-size: 12px;';
+    terrainSection.appendChild(exagLabel);
+
+    const exagSlider = document.createElement('input');
+    exagSlider.type = 'range';
+    exagSlider.min = '0';
+    exagSlider.max = '5';
+    exagSlider.step = '0.1';
+    exagSlider.value = '2.0';
+    exagSlider.style.cssText = 'width: 100%; margin-bottom: 15px; cursor: pointer;';
+    exagSlider.oninput = function() {
+        const val = parseFloat(this.value);
+        exagLabel.textContent = 'Terrain Height: ' + val.toFixed(1) + 'x';
+        map.setTerrain({ source: 'mapbox-dem', exaggeration: val });
+    };
+    terrainSection.appendChild(exagSlider);
+
+    // Pitch Slider
+    const pitchLabel = document.createElement('label');
+    pitchLabel.textContent = 'Camera Tilt: 65°';
+    pitchLabel.style.cssText = 'display: block; margin-bottom: 5px; font-size: 12px;';
+    terrainSection.appendChild(pitchLabel);
+
+    const pitchSlider = document.createElement('input');
+    pitchSlider.type = 'range';
+    pitchSlider.min = '0';
+    pitchSlider.max = '85';
+    pitchSlider.step = '1';
+    pitchSlider.value = '65';
+    pitchSlider.style.cssText = 'width: 100%; margin-bottom: 10px; cursor: pointer;';
+    pitchSlider.oninput = function() {
+        const val = parseInt(this.value);
+        pitchLabel.textContent = 'Camera Tilt: ' + val + '°';
+        map.setPitch(val);
+    };
+    terrainSection.appendChild(pitchSlider);
+
+    controlPanel.appendChild(terrainSection);
+
+    // Camera Controls Section
+    const cameraSection = document.createElement('div');
+    cameraSection.style.cssText = 'margin-bottom: 20px; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 5px;';
+
+    const cameraTitle = document.createElement('h4');
+    cameraTitle.textContent = 'Camera Controls';
+    cameraTitle.style.cssText = 'margin: 0 0 10px 0; font-size: 14px; color: #FF9800;';
+    cameraSection.appendChild(cameraTitle);
+
+    // Zoom buttons
+    const zoomIn = document.createElement('button');
+    zoomIn.textContent = '+ Zoom In';
+    zoomIn.style.cssText = 'width: 48%; padding: 10px; margin: 5px 1%; background: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 13px; font-weight: bold;';
+    zoomIn.onclick = function() { map.zoomIn(); };
+    cameraSection.appendChild(zoomIn);
+
+    const zoomOut = document.createElement('button');
+    zoomOut.textContent = '- Zoom Out';
+    zoomOut.style.cssText = 'width: 48%; padding: 10px; margin: 5px 1%; background: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 13px; font-weight: bold;';
+    zoomOut.onclick = function() { map.zoomOut(); };
+    cameraSection.appendChild(zoomOut);
+
+    // Rotate button
+    const rotate = document.createElement('button');
+    rotate.textContent = 'Auto Rotate';
+    rotate.style.cssText = 'width: 100%; padding: 10px; margin: 5px 0; background: #FF9800; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 13px; font-weight: bold;';
+    rotate.onclick = function() {
+        window.rotateCamera();
+        this.textContent = window.rotationInterval ? 'Stop Rotation' : 'Auto Rotate';
+        this.style.background = window.rotationInterval ? '#f44336' : '#FF9800';
+    };
+    cameraSection.appendChild(rotate);
+
+    // Reset view button
+    const reset = document.createElement('button');
+    reset.textContent = 'Reset View';
+    reset.style.cssText = 'width: 100%; padding: 10px; margin: 5px 0; background: #9C27B0; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 13px; font-weight: bold;';
+    reset.onclick = function() {
+        map.flyTo({
+            center: [-7.8869, 37.1526],
+            zoom: 14,
+            pitch: 65,
+            bearing: -20,
+            duration: 2000
+        });
+    };
+    cameraSection.appendChild(reset);
+
+    controlPanel.appendChild(cameraSection);
+
+    document.body.appendChild(controlPanel);
+
+    console.log('Mapbox GL 3D map initialized - Premium Maxar satellite imagery with 3D terrain');
+    }
+
+    // Start initialization
+    initMap();
+})();
+                        "#));
+
+                        if let Some(doc) = web_sys::window().and_then(|w| w.document()) {
+                            if let Some(body) = doc.body() {
+                                let _ = body.append_child(&script_elem);
+                            }
+                        }
+                    }
+
+                    log("Mapbox GL 3D map initialized - Premium satellite imagery");
+                }
+            });
+
+            timeout.forget();
+            || {}
+        });
+    }
+
+    let css = css!(r#"
+        .map-page {
+            width: 100%;
+            height: calc(100vh - 60px);
+            position: relative;
+            background: #f0f0f0;
+        }
+
+        .map-container {
+            width: 100%;
+            height: 100%;
+            border-radius: 0;
+        }
+
+        .map-info {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.98);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            z-index: 1000;
+            max-width: 380px;
+            backdrop-filter: blur(10px);
+        }
+
+        .map-info h2 {
+            margin: 0 0 15px 0;
+            color: #2c3e50;
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
+
+        .map-info p {
+            margin: 8px 0;
+            color: #555;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .map-info strong {
+            color: #2c3e50;
+            display: block;
+            margin-top: 12px;
+        }
+
+        .map-info ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+
+        .map-info li {
+            margin: 8px 0;
+            color: #666;
+            line-height: 1.5;
+            font-size: 0.9rem;
+        }
+
+        .map-info code {
+            background: #f0f0f0;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            color: #e74c3c;
+        }
+
+        .map-controls {
+            position: absolute;
+            bottom: 50px;
+            left: 20px;
+            background: rgba(46, 204, 113, 0.95);
+            color: white;
+            padding: 18px 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .map-controls p {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .map-controls p::before {
+            content: "🗺️";
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 768px) {
+            .map-info {
+                max-width: calc(100% - 40px);
+                padding: 20px;
+            }
+
+            .map-info h2 {
+                font-size: 1.3rem;
+            }
+
+            .map-controls {
+                bottom: 20px;
+                left: 20px;
+                right: 20px;
+                text-align: center;
+            }
+        }
+    "#);
+
+    html! {
+        <div class={css}>
+            <div class="map-page">
+                <div class="map-info">
+                    <h2>{ "Portugal Interactive Map" }</h2>
+                    <p>{ "CesiumJS 3D Globe - Real terrain!" }</p>
+
+                    <strong>{ "Map Features:" }</strong>
+                    <ul>
+                        <li>{ "🗺️ Real 3D terrain with Cesium Ion" }</li>
+                        <li>{ "🖱️ Rotate, tilt, and zoom 3D globe" }</li>
+                        <li>{ "🔍 Mouse controls for 3D navigation" }</li>
+                        <li>{ "📍 Faro 100km coverage zone in 3D" }</li>
+                        <li>{ "🎨 Terrain, satellite, and lighting" }</li>
+                    </ul>
+
+                    <strong>{ "Programming Functions:" }</strong>
+                    <ul>
+                        <li><code>{ "changeMapStyle('satellite')" }</code></li>
+                        <li><code>{ "addServiceMarker(lat, lng)" }</code></li>
+                        <li><code>{ "flyToLocation(lat, lng)" }</code></li>
+                        <li><code>{ "clearAllMarkers()" }</code></li>
+                    </ul>
+                    <p style="margin-top: 12px; font-size: 0.85rem; color: #7f8c8d;">
+                        { "Open console (F12) to program the map!" }
+                    </p>
+                </div>
+
+                <div
+                    ref={map_container_ref}
+                    id="map-container"
+                    class="map-container"
+                />
+
+                <div class="map-controls">
+                    <p>{ "Portugal - OpenStreetMap" }</p>
+                </div>
+            </div>
+        </div>
+    }
+}

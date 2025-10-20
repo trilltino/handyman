@@ -1,0 +1,186 @@
+//! # Booking Model
+//!
+//! ## Purpose
+//! Represents service booking requests in the handyman marketplace.
+//! Links customers to service requests with pricing, status tracking, and payment integration.
+//!
+//! ## Database Table: `bookings`
+//! - Primary key: `id` (serial)
+//! - Foreign keys: `customer_id` → customers.id
+//! - Enums: `work_type`, `status`, `payment_status`
+//! - Stripe: `payment_intent_id`, `payment_method_id`
+//!
+//! ## Relation to Entire Program
+//! - **Created By**: BookingRepository::create() via booking form submission
+//! - **Used By**: Payment processing (Stripe), handyman job queue, customer notifications
+//! - **Relations**: Booking belongs to Customer, has payment intent
+//! - **Future**: Will link to assigned handyman, include job completion photos
+
+use chrono::{DateTime, Utc};         // Timestamps
+use serde::{Deserialize, Serialize}; // JSON serialization
+
+/// Types of handyman work that can be booked
+/// Maps to: Booking form dropdown, base pricing
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[serde(rename_all = "snake_case")]
+pub enum WorkType {
+    Plumbing,       // €150 base price
+    Electrical,     // €180 base price
+    Carpentry,      // €120 base price
+    Painting,       // €100 base price
+    GeneralRepair,  // €80 base price
+    Other,          // €100 base price
+}
+
+impl WorkType {
+    /// Convert WorkType enum to display string
+    /// Used for: Database storage, UI display
+    pub fn as_str(&self) -> &str {
+        match self {
+            WorkType::Plumbing => "Plumbing",
+            WorkType::Electrical => "Electrical",
+            WorkType::Carpentry => "Carpentry",
+            WorkType::Painting => "Painting",
+            WorkType::GeneralRepair => "General Repair",
+            WorkType::Other => "Other",
+        }
+    }
+
+    /// Parse WorkType from string (database or form input)
+    /// Handles both display names and snake_case variants
+    pub fn from_str(s: &str) -> Option<Self> {
+        match s {
+            "Plumbing" => Some(WorkType::Plumbing),
+            "Electrical" => Some(WorkType::Electrical),
+            "Carpentry" => Some(WorkType::Carpentry),
+            "Painting" => Some(WorkType::Painting),
+            "General Repair" | "GeneralRepair" => Some(WorkType::GeneralRepair),
+            "Other" => Some(WorkType::Other),
+            _ => None,
+        }
+    }
+
+    /// Get base price in cents for this work type
+    /// Called by: NewBooking::price_cents() to calculate booking price
+    /// Prices in cents (€150 = 15000 cents) to avoid floating point issues
+    pub fn base_price_cents(&self) -> i32 {
+        match self {
+            WorkType::Plumbing => 15000,       // €150.00
+            WorkType::Electrical => 18000,     // €180.00
+            WorkType::Carpentry => 12000,      // €120.00
+            WorkType::Painting => 10000,       // €100.00
+            WorkType::GeneralRepair => 8000,   // €80.00
+            WorkType::Other => 10000,          // €100.00
+        }
+    }
+}
+
+/// Booking lifecycle status
+/// Workflow: Pending → Confirmed → InProgress → Completed (or Cancelled)
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[serde(rename_all = "snake_case")]
+pub enum BookingStatus {
+    Pending,     // Just created, awaiting handyman assignment
+    Confirmed,   // Handyman assigned, customer notified
+    InProgress,  // Work has started
+    Completed,   // Work finished, payment processed
+    Cancelled,   // Cancelled by customer or handyman
+}
+
+impl BookingStatus {
+    /// Convert to database string representation
+    pub fn as_str(&self) -> &str {
+        match self {
+            BookingStatus::Pending => "pending",
+            BookingStatus::Confirmed => "confirmed",
+            BookingStatus::InProgress => "in_progress",
+            BookingStatus::Completed => "completed",
+            BookingStatus::Cancelled => "cancelled",
+        }
+    }
+}
+
+/// Payment status for Stripe integration
+/// Tracks payment lifecycle separately from booking status
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[serde(rename_all = "snake_case")]
+pub enum PaymentStatus {
+    Pending,   // Payment intent created, awaiting payment
+    Paid,      // Payment successful
+    Refunded,  // Payment refunded (e.g., job cancelled)
+    Failed,    // Payment failed (card declined, etc.)
+}
+
+impl PaymentStatus {
+    /// Convert to database string representation
+    pub fn as_str(&self) -> &str {
+        match self {
+            PaymentStatus::Pending => "pending",
+            PaymentStatus::Paid => "paid",
+            PaymentStatus::Refunded => "refunded",
+            PaymentStatus::Failed => "failed",
+        }
+    }
+}
+
+/// Booking entity - matches `bookings` table in database
+/// Represents a service request from a customer
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct Booking {
+    /// Unique booking ID (auto-generated by database)
+    pub id: i32,
+    /// Foreign key to customers table
+    pub customer_id: i32,
+    /// Service location (address)
+    pub location: String,
+    /// Type of work (Plumbing, Electrical, etc.)
+    pub work_type: String,
+    /// Customer's description of the work needed
+    pub description: String,
+    /// Price in cents (€150.00 = 15000)
+    pub price_cents: i32,
+    /// Current booking status (pending, confirmed, etc.)
+    pub status: String,
+    /// Payment status (pending, paid, etc.)
+    pub payment_status: String,
+    /// Stripe payment intent ID (pi_xxx)
+    pub payment_intent_id: Option<String>,
+    /// Stripe payment method ID (pm_xxx)
+    pub payment_method_id: Option<String>,
+    /// Optional scheduled date/time for the work
+    pub scheduled_date: Option<DateTime<Utc>>,
+    /// Booking creation timestamp
+    pub created_at: DateTime<Utc>,
+    /// Last update timestamp
+    pub updated_at: DateTime<Utc>,
+}
+
+/// DTO for creating a new booking
+/// Received from: POST /api/bookings request (booking form)
+/// Contains both booking details and customer info
+#[derive(Debug, Clone, Deserialize)]
+pub struct NewBooking {
+    /// Service location from form
+    pub location: String,
+    /// Work type selected from dropdown
+    pub work_type: String,
+    /// Work description from textarea
+    pub description: String,
+    /// Customer name (used to create/find Customer)
+    pub name: String,
+    /// Customer email (used to create/find Customer)
+    pub email: String,
+    /// Optional customer phone
+    pub phone: Option<String>,
+}
+
+impl NewBooking {
+    /// Calculate price in cents based on work type
+    /// Called by: Booking handler to set price and create Stripe payment intent
+    /// Returns: Base price for work type, or €100 (10000 cents) if invalid type
+    pub fn price_cents(&self) -> i32 {
+        WorkType::from_str(&self.work_type)
+            .map(|wt| wt.base_price_cents())
+            .unwrap_or(10000)  // Default to €100 if work type is invalid
+    }
+}

@@ -1,0 +1,1627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Handyman Marketplace - Business & Monetization Plan</title>
+    <style>
+        :root {
+            --primary-red: #DC143C;
+            --dark-red: #B91130;
+            --pure-white: #FFFFFF;
+            --off-white: #FAFAFA;
+            --light-gray: #F5F5F5;
+            --medium-gray: #E0E0E0;
+            --text-dark: #2C2C2C;
+            --text-medium: #555555;
+            --shadow-light: rgba(220, 20, 60, 0.1);
+            --shadow-medium: rgba(220, 20, 60, 0.2);
+            --shadow-dark: rgba(0, 0, 0, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: linear-gradient(135deg, var(--pure-white) 0%, var(--off-white) 100%);
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-red) 0%, var(--dark-red) 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            box-shadow: 0 4px 12px var(--shadow-dark);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.95;
+        }
+
+        .nav {
+            background: var(--pure-white);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 8px var(--shadow-light);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            border-bottom: 3px solid var(--primary-red);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background: var(--primary-red);
+            color: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 4px 16px var(--shadow-light);
+            border-left: 6px solid var(--primary-red);
+        }
+
+        .section h2 {
+            font-size: 2rem;
+            color: var(--primary-red);
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid var(--light-gray);
+        }
+
+        .section h3 {
+            font-size: 1.5rem;
+            color: var(--text-dark);
+            margin: 2rem 0 1rem 0;
+        }
+
+        .section h4 {
+            font-size: 1.2rem;
+            color: var(--primary-red);
+            margin: 1.5rem 0 0.75rem 0;
+        }
+
+        .executive-summary {
+            background: linear-gradient(135deg, var(--primary-red) 0%, var(--dark-red) 100%);
+            color: white;
+            border-left: none;
+        }
+
+        .executive-summary h2 {
+            color: white;
+            border-bottom-color: rgba(255,255,255,0.3);
+        }
+
+        .highlight-box {
+            background: var(--off-white);
+            border-left: 4px solid var(--primary-red);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 8px;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .pricing-card {
+            background: white;
+            border: 3px solid var(--light-gray);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pricing-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary-red) 0%, var(--dark-red) 100%);
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px var(--shadow-medium);
+            border-color: var(--primary-red);
+        }
+
+        .pricing-card.featured {
+            border-color: var(--primary-red);
+            background: linear-gradient(135deg, var(--pure-white) 0%, var(--off-white) 100%);
+        }
+
+        .pricing-card h3 {
+            color: var(--primary-red);
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .pricing-card .price {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin: 1rem 0;
+        }
+
+        .pricing-card .price span {
+            font-size: 1.2rem;
+            font-weight: 400;
+            color: var(--text-medium);
+        }
+
+        .pricing-card ul {
+            list-style: none;
+            text-align: left;
+            margin: 1.5rem 0;
+        }
+
+        .pricing-card ul li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .pricing-card ul li:before {
+            content: '✓';
+            color: var(--primary-red);
+            font-weight: bold;
+            margin-right: 0.75rem;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            box-shadow: 0 4px 12px var(--shadow-light);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .comparison-table thead {
+            background: linear-gradient(135deg, var(--primary-red) 0%, var(--dark-red) 100%);
+            color: white;
+        }
+
+        .comparison-table th {
+            padding: 1.25rem;
+            text-align: left;
+            font-weight: 700;
+        }
+
+        .comparison-table td {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .comparison-table tbody tr:hover {
+            background: var(--off-white);
+        }
+
+        .comparison-table tbody tr:nth-child(even) {
+            background: var(--light-gray);
+        }
+
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, var(--pure-white) 0%, var(--off-white) 100%);
+            border: 2px solid var(--light-gray);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .metric-card:hover {
+            transform: scale(1.05);
+            border-color: var(--primary-red);
+            box-shadow: 0 8px 20px var(--shadow-medium);
+        }
+
+        .metric-card .value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-red);
+            margin: 0.5rem 0;
+        }
+
+        .metric-card .label {
+            color: var(--text-medium);
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 3rem;
+            margin: 2rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(180deg, var(--primary-red) 0%, var(--dark-red) 100%);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+            padding-left: 2rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -3.5rem;
+            top: 0.5rem;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary-red);
+            border: 4px solid white;
+            box-shadow: 0 0 0 4px var(--primary-red);
+        }
+
+        .timeline-item h4 {
+            margin: 0 0 0.5rem 0;
+        }
+
+        code {
+            background: var(--text-dark);
+            color: #00FF00;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        pre {
+            background: var(--text-dark);
+            color: #00FF00;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            box-shadow: 0 4px 12px var(--shadow-dark);
+        }
+
+        .revenue-breakdown {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .revenue-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--off-white);
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-red);
+        }
+
+        .revenue-item .icon {
+            font-size: 2rem;
+            min-width: 50px;
+            text-align: center;
+        }
+
+        .revenue-item .details {
+            flex: 1;
+        }
+
+        .revenue-item .amount {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-red);
+        }
+
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .feature-item {
+            background: var(--off-white);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-red);
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            transform: translateX(8px);
+            box-shadow: 0 4px 12px var(--shadow-light);
+        }
+
+        .feature-item h5 {
+            color: var(--primary-red);
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+        }
+
+        .badge {
+            display: inline-block;
+            background: var(--primary-red);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin: 0.25rem;
+        }
+
+        .badge.success {
+            background: #27AE60;
+        }
+
+        .badge.warning {
+            background: #F39C12;
+        }
+
+        .badge.info {
+            background: #3498DB;
+        }
+
+        @media print {
+            .nav { display: none; }
+            .section { break-inside: avoid; page-break-inside: avoid; }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.8rem; }
+            .section { padding: 1.5rem; }
+            .pricing-grid { grid-template-columns: 1fr; }
+            .nav-links { flex-direction: column; gap: 0.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🛠️ Handyman Marketplace Platform</h1>
+        <p>Comprehensive Business & Monetization Strategy</p>
+    </div>
+
+    <nav class="nav">
+        <ul class="nav-links">
+            <li><a href="#executive-summary">Executive Summary</a></li>
+            <li><a href="#revenue-model">Revenue Model</a></li>
+            <li><a href="#pricing">Pricing Tiers</a></li>
+            <li><a href="#technical">Technical Plan</a></li>
+            <li><a href="#projections">Projections</a></li>
+            <li><a href="#roadmap">Roadmap</a></li>
+            <li><a href="#competitive">Competitive Edge</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <!-- Executive Summary -->
+        <section id="executive-summary" class="section executive-summary">
+            <h2>📊 Executive Summary</h2>
+            <p style="font-size: 1.2rem; line-height: 1.8;">
+                Transform your handyman service into a <strong>two-sided marketplace platform</strong> connecting professional handymen with customers across São Brás de Alportel and surrounding 10km radius. Generate revenue through <strong>multiple streams</strong> while providing exceptional value to both service providers and customers.
+            </p>
+            <div class="metric-grid" style="margin-top: 2rem;">
+                <div class="metric-card">
+                    <div class="label">Year 1 Target Revenue</div>
+                    <div class="value">€1.75M</div>
+                </div>
+                <div class="metric-card">
+                    <div class="label">Target Profit Margin</div>
+                    <div class="value">82%</div>
+                </div>
+                <div class="metric-card">
+                    <div class="label">Target Handymen (Y1)</div>
+                    <div class="value">1,000</div>
+                </div>
+                <div class="metric-card">
+                    <div class="label">Target Customers (Y1)</div>
+                    <div class="value">10,000</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Revenue Model -->
+        <section id="revenue-model" class="section">
+            <h2>💰 Revenue Model - Multi-Stream Approach</h2>
+
+            <h3>Primary Revenue Streams</h3>
+
+            <div class="revenue-breakdown">
+                <div class="revenue-item">
+                    <div class="icon">💳</div>
+                    <div class="details">
+                        <h4>1. Commission-Based (Transaction Fee)</h4>
+                        <p>Standard commission on completed jobs</p>
+                        <div class="amount">15% per job</div>
+                    </div>
+                </div>
+
+                <div class="revenue-item">
+                    <div class="icon">⭐</div>
+                    <div class="details">
+                        <h4>2. Subscription Tiers (Handymen)</h4>
+                        <p>Monthly recurring revenue from professional accounts</p>
+                        <div class="amount">€29 - €79/month</div>
+                    </div>
+                </div>
+
+                <div class="revenue-item">
+                    <div class="icon">🎯</div>
+                    <div class="details">
+                        <h4>3. Lead Generation Fees</h4>
+                        <p>Pay-per-lead when customers express interest</p>
+                        <div class="amount">€3 - €15 per lead</div>
+                    </div>
+                </div>
+
+                <div class="revenue-item">
+                    <div class="icon">🚀</div>
+                    <div class="details">
+                        <h4>4. Premium Features (À la Carte)</h4>
+                        <p>Featured listings, verification badges, instant booking</p>
+                        <div class="amount">€15 - €500/month</div>
+                    </div>
+                </div>
+
+                <div class="revenue-item">
+                    <div class="icon">🏠</div>
+                    <div class="details">
+                        <h4>5. Customer Subscriptions</h4>
+                        <p>Premium homeowner accounts with discounts and perks</p>
+                        <div class="amount">€9/month</div>
+                    </div>
+                </div>
+
+                <div class="revenue-item">
+                    <div class="icon">💡</div>
+                    <div class="details">
+                        <h4>6. Additional Revenue</h4>
+                        <p>SMS/Email notifications, data analytics, advertising</p>
+                        <div class="amount">Variable</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h4>Why This Model Works:</h4>
+                <ul style="margin-top: 1rem;">
+                    <li><strong>Diversified Income:</strong> Not dependent on single revenue source</li>
+                    <li><strong>Scalable:</strong> Revenue grows with platform adoption</li>
+                    <li><strong>Competitive:</strong> Lower commissions than TaskRabbit (15% vs 20-25%)</li>
+                    <li><strong>Value-Aligned:</strong> Handymen pay more as they earn more</li>
+                    <li><strong>Flexible:</strong> Multiple entry points for different user types</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Pricing Tiers -->
+        <section id="pricing" class="section">
+            <h2>💎 Subscription Pricing Tiers for Handymen</h2>
+
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <h3>Starter</h3>
+                    <div class="price">€0<span>/month</span></div>
+                    <ul>
+                        <li>5 job applications/month</li>
+                        <li>20% commission rate</li>
+                        <li>Basic profile</li>
+                        <li>Standard search ranking</li>
+                        <li>Email support (48h)</li>
+                        <li>Basic analytics</li>
+                    </ul>
+                    <span class="badge">Perfect for Starting Out</span>
+                </div>
+
+                <div class="pricing-card featured">
+                    <h3>Professional</h3>
+                    <div class="price">€29<span>/month</span></div>
+                    <ul>
+                        <li>50 job applications/month</li>
+                        <li>15% commission rate (5% savings)</li>
+                        <li>"Pro" profile badge</li>
+                        <li>Priority in search results</li>
+                        <li>Email + Chat support (24h)</li>
+                        <li>Advanced analytics dashboard</li>
+                        <li>Calendar integration</li>
+                        <li>Monthly featured listing</li>
+                    </ul>
+                    <span class="badge success">Most Popular</span>
+                </div>
+
+                <div class="pricing-card">
+                    <h3>Expert</h3>
+                    <div class="price">€79<span>/month</span></div>
+                    <ul>
+                        <li>Unlimited job applications</li>
+                        <li>12% commission rate (8% savings)</li>
+                        <li>"Expert" premium badge</li>
+                        <li>Top search placement</li>
+                        <li>24/7 priority support (4h SLA)</li>
+                        <li>Full analytics + market insights</li>
+                        <li>API access for integrations</li>
+                        <li>White-label invoicing</li>
+                        <li>Weekly featured listings</li>
+                        <li>Dedicated account manager</li>
+                        <li>Marketing materials & tools</li>
+                    </ul>
+                    <span class="badge warning">Best Value for Pros</span>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 3rem;">📊 Feature Comparison Table</h3>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Free Tier</th>
+                        <th>Pro (€29/mo)</th>
+                        <th>Premium (€79/mo)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Commission Rate</strong></td>
+                        <td>20%</td>
+                        <td>15% (5% discount)</td>
+                        <td>12% (8% discount)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Monthly Job Applications</strong></td>
+                        <td>5</td>
+                        <td>50</td>
+                        <td>Unlimited</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Search Ranking</strong></td>
+                        <td>Standard</td>
+                        <td>Priority</td>
+                        <td>Top Placement</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Profile Badge</strong></td>
+                        <td>None</td>
+                        <td>"Pro"</td>
+                        <td>"Expert"</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Analytics Dashboard</strong></td>
+                        <td>Basic</td>
+                        <td>Advanced</td>
+                        <td>Full + Insights</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Customer Support</strong></td>
+                        <td>Email (48h)</td>
+                        <td>Email + Chat (24h)</td>
+                        <td>24/7 Priority (4h)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>API Access</strong></td>
+                        <td>❌</td>
+                        <td>❌</td>
+                        <td>✅</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Custom Invoicing</strong></td>
+                        <td>❌</td>
+                        <td>❌</td>
+                        <td>✅ White-label</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Featured Listings</strong></td>
+                        <td>❌</td>
+                        <td>Monthly</td>
+                        <td>Weekly</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Calendar Integration</strong></td>
+                        <td>❌</td>
+                        <td>✅</td>
+                        <td>✅</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="highlight-box">
+                <h4>💡 Break-Even Analysis (Premium Tier):</h4>
+                <p><strong>Monthly cost:</strong> €79</p>
+                <p><strong>Commission savings:</strong> 8% (20% → 12%)</p>
+                <p><strong>Break-even job value:</strong> €79 ÷ 0.08 = <strong>€987.50/month</strong></p>
+                <p><strong>Average job value:</strong> €150</p>
+                <p><strong>Jobs needed:</strong> 6-7 jobs/month to break even</p>
+                <p style="margin-top: 1rem;"><strong>Value Proposition:</strong> Clear ROI for handymen earning >€1,000/month on the platform!</p>
+            </div>
+        </section>
+
+        <!-- Technical Implementation -->
+        <section id="technical" class="section">
+            <h2>🛠️ Technical Implementation Plan</h2>
+
+            <h3>Phase 1: Core Marketplace Foundation (Months 1-2)</h3>
+
+            <h4>Database Schema Extensions</h4>
+            <p>Building on your existing PostgreSQL schema, we'll add 12 new tables to support the marketplace:</p>
+
+            <div class="feature-list">
+                <div class="feature-item">
+                    <h5>handyman_profiles</h5>
+                    <p>Extended profiles with business info, service radius, hourly rates, ratings, and verification status</p>
+                </div>
+                <div class="feature-item">
+                    <h5>service_categories</h5>
+                    <p>Dynamic service types with custom pricing and commission rates per category</p>
+                </div>
+                <div class="feature-item">
+                    <h5>subscription_plans</h5>
+                    <p>Flexible plan definitions with feature flags and Stripe integration</p>
+                </div>
+                <div class="feature-item">
+                    <h5>user_subscriptions</h5>
+                    <p>Track active subscriptions, billing cycles, and cancellation states</p>
+                </div>
+                <div class="feature-item">
+                    <h5>jobs</h5>
+                    <p>Customer job postings with location, budget, urgency, and featured status</p>
+                </div>
+                <div class="feature-item">
+                    <h5>job_applications</h5>
+                    <p>Handyman bids with proposed pricing, timeline, and lead fee tracking</p>
+                </div>
+                <div class="feature-item">
+                    <h5>reviews</h5>
+                    <p>Bidirectional ratings and reviews with response capability</p>
+                </div>
+                <div class="feature-item">
+                    <h5>notifications</h5>
+                    <p>Real-time notification queue for job matches and updates</p>
+                </div>
+                <div class="feature-item">
+                    <h5>earnings</h5>
+                    <p>Commission tracking and payout preparation</p>
+                </div>
+                <div class="feature-item">
+                    <h5>payouts</h5>
+                    <p>Stripe Connect payout management and status tracking</p>
+                </div>
+                <div class="feature-item">
+                    <h5>platform_metrics</h5>
+                    <p>Daily aggregated analytics for business intelligence</p>
+                </div>
+            </div>
+
+            <h4>Sample Schema: Handyman Profiles Table</h4>
+            <pre>CREATE TABLE handyman_profiles (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id) UNIQUE,
+    business_name VARCHAR(255),
+    bio TEXT,
+    service_radius_km INTEGER DEFAULT 10,
+    hourly_rate_cents INTEGER,
+    years_experience INTEGER,
+    profile_photo_url TEXT,
+    is_verified BOOLEAN DEFAULT FALSE,
+    verification_date TIMESTAMP,
+    average_rating DECIMAL(3,2) DEFAULT 0.00,
+    total_jobs_completed INTEGER DEFAULT 0,
+    response_time_hours INTEGER,
+    acceptance_rate DECIMAL(5,2),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);</pre>
+
+            <h3>Backend API Endpoints (Rust/Axum)</h3>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <h5>POST /api/handyman/register</h5>
+                    <p>Onboard new handymen with profile creation and verification</p>
+                </div>
+                <div class="feature-item">
+                    <h5>GET/PUT /api/handyman/profile</h5>
+                    <p>Retrieve and update handyman profile information</p>
+                </div>
+                <div class="feature-item">
+                    <h5>POST /api/handyman/subscription</h5>
+                    <p>Create and manage Stripe subscription plans</p>
+                </div>
+                <div class="feature-item">
+                    <h5>GET/POST /api/jobs</h5>
+                    <p>List available jobs and create new job postings</p>
+                </div>
+                <div class="feature-item">
+                    <h5>POST /api/jobs/:id/apply</h5>
+                    <p>Submit job application with pricing and timeline</p>
+                </div>
+                <div class="feature-item">
+                    <h5>POST /api/jobs/:id/assign</h5>
+                    <p>Customer accepts handyman and creates booking</p>
+                </div>
+                <div class="feature-item">
+                    <h5>POST /api/bookings/:id/complete</h5>
+                    <p>Mark job complete, trigger payment, and calculate commission</p>
+                </div>
+                <div class="feature-item">
+                    <h5>POST /api/bookings/:id/review</h5>
+                    <p>Submit rating and review after job completion</p>
+                </div>
+                <div class="feature-item">
+                    <h5>GET /api/earnings</h5>
+                    <p>Handyman earnings dashboard with payout history</p>
+                </div>
+                <div class="feature-item">
+                    <h5>GET /api/search/handymen</h5>
+                    <p>Search and filter handymen by service, location, rating</p>
+                </div>
+                <div class="feature-item">
+                    <h5>GET /api/notifications</h5>
+                    <p>Real-time notification feed for users</p>
+                </div>
+                <div class="feature-item">
+                    <h5>GET /api/admin/metrics</h5>
+                    <p>Platform analytics and business intelligence</p>
+                </div>
+            </div>
+
+            <h3>Phase 2: Frontend Features (Months 2-3)</h3>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <h5>Handyman Onboarding</h5>
+                    <p>Multi-step registration: Profile → Services → Verification → Subscription selection</p>
+                </div>
+                <div class="feature-item">
+                    <h5>Handyman Dashboard</h5>
+                    <p>Earnings charts, job matches feed, application tracking, calendar</p>
+                </div>
+                <div class="feature-item">
+                    <h5>Job Marketplace</h5>
+                    <p>Browse jobs with filters, map view, real-time updates, apply functionality</p>
+                </div>
+                <div class="feature-item">
+                    <h5>Customer Job Posting</h5>
+                    <p>Guided form with budget estimator, photo upload, handyman recommendations</p>
+                </div>
+                <div class="feature-item">
+                    <h5>Bidding Interface</h5>
+                    <p>View applications, compare handymen, direct messaging, accept/decline</p>
+                </div>
+                <div class="feature-item">
+                    <h5>Review System</h5>
+                    <p>5-star ratings with categories, photo upload, public/private feedback</p>
+                </div>
+                <div class="feature-item">
+                    <h5>Subscription Management</h5>
+                    <p>Plan comparison, upgrade/downgrade, billing history, usage metrics</p>
+                </div>
+                <div class="feature-item">
+                    <h5>Admin Analytics</h5>
+                    <p>Revenue charts, user growth, top performers, geographic heatmaps</p>
+                </div>
+            </div>
+
+            <h3>Phase 3: Advanced Features (Months 4-6)</h3>
+            <ul style="margin-top: 1rem; padding-left: 2rem;">
+                <li><strong>Intelligent Matching Algorithm:</strong> ML-based job-to-handyman matching based on location, skills, ratings, availability</li>
+                <li><strong>Real-Time Chat System:</strong> WebSocket-based messaging between customers and handymen</li>
+                <li><strong>Calendar Integration:</strong> Google Calendar sync for availability and scheduling</li>
+                <li><strong>Payment Escrow:</strong> Hold funds until job completion with dispute resolution</li>
+                <li><strong>Background Job Processing:</strong> Tokio-based workers for notifications, payouts, analytics</li>
+                <li><strong>Mobile PWA:</strong> Progressive Web App with offline support and push notifications</li>
+            </ul>
+        </section>
+
+        <!-- Revenue Projections -->
+        <section id="projections" class="section">
+            <h2>📈 Revenue Projections & Financial Model</h2>
+
+            <h3>Year 1 Quarterly Targets</h3>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Q1 (Launch)</th>
+                        <th>Q2</th>
+                        <th>Q3</th>
+                        <th>Q4</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Handymen Onboarded</strong></td>
+                        <td>50</td>
+                        <td>200</td>
+                        <td>500</td>
+                        <td>1,000</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Customer Registrations</strong></td>
+                        <td>200</td>
+                        <td>1,000</td>
+                        <td>3,000</td>
+                        <td>10,000</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Jobs Completed/Month</strong></td>
+                        <td>100</td>
+                        <td>500</td>
+                        <td>1,500</td>
+                        <td>3,000</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Monthly Revenue</strong></td>
+                        <td>€2,000</td>
+                        <td>€12,000</td>
+                        <td>€35,000</td>
+                        <td>€80,000</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Detailed Revenue Breakdown (Q4 - Month 12)</h3>
+
+            <div class="highlight-box">
+                <h4>Assumptions:</h4>
+                <ul>
+                    <li>Average job value: €200</li>
+                    <li>Blended commission rate: 15%</li>
+                    <li>30% of handymen on paid subscriptions (Pro/Premium mix)</li>
+                    <li>Average subscription: €40/month</li>
+                    <li>Lead fee: €5 per application</li>
+                    <li>2.7 applications per job on average</li>
+                </ul>
+            </div>
+
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Revenue Stream</th>
+                        <th>Calculation</th>
+                        <th>Monthly Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Transaction Commissions</strong></td>
+                        <td>3,000 jobs × €200 × 15%</td>
+                        <td><strong>€90,000</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Subscription Revenue</strong></td>
+                        <td>300 handymen × €40 avg</td>
+                        <td><strong>€12,000</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Lead Generation Fees</strong></td>
+                        <td>8,000 applications × €5</td>
+                        <td><strong>€40,000</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Featured Listings</strong></td>
+                        <td>50 slots × €80 avg</td>
+                        <td><strong>€4,000</strong></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><strong>Total Monthly Revenue</strong></td>
+                        <td><strong>€146,000</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Operating Cost Analysis (Q4)</h3>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Cost Category</th>
+                        <th>Details</th>
+                        <th>Monthly Cost</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Payment Processing</strong></td>
+                        <td>Stripe fees (2.9% + €0.30)</td>
+                        <td>€4,232</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Infrastructure</strong></td>
+                        <td>Server, hosting, database</td>
+                        <td>€500</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Communication</strong></td>
+                        <td>SMS/Email notifications</td>
+                        <td>€1,000</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Support Staff</strong></td>
+                        <td>2 customer support agents</td>
+                        <td>€6,000</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Marketing</strong></td>
+                        <td>Google Ads, social media, partnerships</td>
+                        <td>€15,000</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><strong>Total Operating Costs</strong></td>
+                        <td><strong>€26,732</strong></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><strong>Net Profit</strong></td>
+                        <td><strong>€119,268</strong></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><strong>Profit Margin</strong></td>
+                        <td><strong>82%</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="metric-grid" style="margin-top: 2rem;">
+                <div class="metric-card">
+                    <div class="label">Annual Revenue (Year 1)</div>
+                    <div class="value">€1.75M</div>
+                </div>
+                <div class="metric-card">
+                    <div class="label">Annual Net Profit</div>
+                    <div class="value">€1.43M</div>
+                </div>
+                <div class="metric-card">
+                    <div class="label">Break-Even Month</div>
+                    <div class="value">Month 2</div>
+                </div>
+                <div class="metric-card">
+                    <div class="label">ROI (12 months)</div>
+                    <div class="value">1,430%</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Implementation Roadmap -->
+        <section id="roadmap" class="section">
+            <h2>🗺️ Implementation Roadmap (16-Week Plan)</h2>
+
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h4>Week 1-2: Database & Backend Foundation</h4>
+                    <ul>
+                        <li>Create new database schema (12 tables)</li>
+                        <li>Implement handyman registration endpoint</li>
+                        <li>Build subscription management with Stripe</li>
+                        <li>Job listing CRUD operations</li>
+                    </ul>
+                    <span class="badge info">Backend Development</span>
+                </div>
+
+                <div class="timeline-item">
+                    <h4>Week 3-4: Handyman Features</h4>
+                    <ul>
+                        <li>Handyman dashboard (Yew components)</li>
+                        <li>Profile management UI</li>
+                        <li>Service selection interface</li>
+                        <li>Subscription upgrade flow with Stripe Checkout</li>
+                    </ul>
+                    <span class="badge warning">Frontend Development</span>
+                </div>
+
+                <div class="timeline-item">
+                    <h4>Week 5-6: Job Marketplace</h4>
+                    <ul>
+                        <li>Job posting form for customers</li>
+                        <li>Job listing page with advanced filters</li>
+                        <li>Application/bidding system</li>
+                        <li>Handyman search with 3D map integration</li>
+                    </ul>
+                    <span class="badge warning">Frontend Development</span>
+                </div>
+
+                <div class="timeline-item">
+                    <h4>Week 7-8: Matching & Notifications</h4>
+                    <ul>
+                        <li>Intelligent job matching algorithm</li>
+                        <li>Email/SMS notification system (Tokio workers)</li>
+                        <li>Real-time notification feed</li>
+                        <li>Push notification support (PWA)</li>
+                    </ul>
+                    <span class="badge info">Backend Development</span>
+                </div>
+
+                <div class="timeline-item">
+                    <h4>Week 9-10: Payments & Commissions</h4>
+                    <ul>
+                        <li>Stripe Connect onboarding for handymen</li>
+                        <li>Escrow payment flow</li>
+                        <li>Automatic commission calculation</li>
+                        <li>Payout processing and tracking</li>
+                    </ul>
+                    <span class="badge info">Backend Development</span>
+                </div>
+
+                <div class="timeline-item">
+                    <h4>Week 11-12: Reviews & Trust</h4>
+                    <ul>
+                        <li>Rating and review system (bidirectional)</li>
+                        <li>Verification badge flow (ID, insurance, licenses)</li>
+                        <li>Dispute resolution interface</li>
+                        <li>Trust & safety features</li>
+                    </ul>
+                    <span class="badge warning">Frontend Development</span>
+                </div>
+
+                <div class="timeline-item">
+                    <h4>Week 13-14: Analytics & Admin</h4>
+                    <ul>
+                        <li>Admin dashboard with comprehensive metrics</li>
+                        <li>Revenue analytics and reporting</li>
+                        <li>User growth and retention metrics</li>
+                        <li>Platform health monitoring</li>
+                    </ul>
+                    <span class="badge warning">Frontend Development</span>
+                </div>
+
+                <div class="timeline-item">
+                    <h4>Week 15-16: Testing & Launch</h4>
+                    <ul>
+                        <li>End-to-end integration testing</li>
+                        <li>Beta launch with 20 handymen</li>
+                        <li>Collect user feedback and iterate</li>
+                        <li>Public launch and marketing campaign</li>
+                    </ul>
+                    <span class="badge success">Launch Phase</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Competitive Advantages -->
+        <section id="competitive" class="section">
+            <h2>🚀 Competitive Advantages</h2>
+
+            <div class="feature-list">
+                <div class="feature-item">
+                    <h5>🎯 Geographic Focus</h5>
+                    <p>Hyper-local focus on São Brás de Alportel + 10km radius creates local monopoly and community trust</p>
+                </div>
+
+                <div class="feature-item">
+                    <h5>🗺️ 3D Map Integration</h5>
+                    <p>Unique Cesium 3D map for visual job discovery - no competitor has this immersive experience</p>
+                </div>
+
+                <div class="feature-item">
+                    <h5>⚡ Rust Performance</h5>
+                    <p>Built with Rust/Axum - 5-10x faster than Django/Node.js competitors, sub-50ms response times</p>
+                </div>
+
+                <div class="feature-item">
+                    <h5>💰 Lower Commissions</h5>
+                    <p>12-15% commission vs TaskRabbit's 20-25% - more earnings for handymen means better quality</p>
+                </div>
+
+                <div class="feature-item">
+                    <h5>🔍 Transparent Pricing</h5>
+                    <p>No hidden fees, clear subscription benefits, upfront cost estimates</p>
+                </div>
+
+                <div class="feature-item">
+                    <h5>⚡ Real-Time Matching</h5>
+                    <p>Instant push notifications for perfect job matches based on location, skills, and availability</p>
+                </div>
+
+                <div class="feature-item">
+                    <h5>🌍 Multi-Language</h5>
+                    <p>Portuguese + English from day 1, expandable to Spanish for Iberian market</p>
+                </div>
+
+                <div class="feature-item">
+                    <h5>🔐 Trust & Safety</h5>
+                    <p>Comprehensive verification: ID, insurance, licenses, background checks, escrow payments</p>
+                </div>
+
+                <div class="feature-item">
+                    <h5>📱 Mobile-First PWA</h5>
+                    <p>Progressive Web App with offline support, native app experience without app store friction</p>
+                </div>
+
+                <div class="feature-item">
+                    <h5>🤖 AI-Powered Matching</h5>
+                    <p>Machine learning algorithm learns from successful matches to improve recommendations over time</p>
+                </div>
+
+                <div class="feature-item">
+                    <h5>💳 Flexible Monetization</h5>
+                    <p>6 revenue streams provide stability and multiple growth levers</p>
+                </div>
+
+                <div class="feature-item">
+                    <h5>📊 Data-Driven Insights</h5>
+                    <p>Rich analytics for handymen to optimize pricing, response times, and service offerings</p>
+                </div>
+            </div>
+
+            <h3>Competitor Comparison</h3>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Our Platform</th>
+                        <th>TaskRabbit</th>
+                        <th>Thumbtack</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Commission Rate</strong></td>
+                        <td>12-15%</td>
+                        <td>20-25%</td>
+                        <td>10% + lead fees</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Business Model</strong></td>
+                        <td>Hybrid (commission + subscription + leads)</td>
+                        <td>Transaction-based</td>
+                        <td>Lead-based</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Geographic Focus</strong></td>
+                        <td>Hyper-local (10km radius)</td>
+                        <td>Major cities only</td>
+                        <td>Nationwide (US)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Technology Stack</strong></td>
+                        <td>Rust/Axum (ultra-fast)</td>
+                        <td>Ruby/Rails</td>
+                        <td>PHP/JavaScript</td>
+                    </tr>
+                    <tr>
+                        <td><strong>3D Map Integration</strong></td>
+                        <td>✅ Cesium 3D</td>
+                        <td>❌</td>
+                        <td>❌</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Subscription Plans</strong></td>
+                        <td>✅ 3 tiers</td>
+                        <td>❌</td>
+                        <td>✅ Limited</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Real-Time Matching</strong></td>
+                        <td>✅ AI-powered</td>
+                        <td>Basic</td>
+                        <td>Manual</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Payment Escrow</strong></td>
+                        <td>✅</td>
+                        <td>✅</td>
+                        <td>❌</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Multi-Language</strong></td>
+                        <td>✅ PT/EN/ES</td>
+                        <td>EN only</td>
+                        <td>EN only</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Key Metrics -->
+        <section class="section">
+            <h2>📊 Key Performance Metrics to Track</h2>
+
+            <h3>North Star Metric</h3>
+            <div class="highlight-box">
+                <h4>Gross Merchandise Volume (GMV)</h4>
+                <p>Total value of all transactions on the platform. This single metric captures platform health, growth, and revenue potential.</p>
+                <p><strong>Target Year 1:</strong> €7.2M GMV (€600k/month average)</p>
+            </div>
+
+            <h3>Operational Metrics</h3>
+            <div class="metric-grid">
+                <div class="metric-card">
+                    <div class="label">Active Handymen</div>
+                    <div class="value">Weekly</div>
+                    <p style="margin-top: 0.5rem;">Completed ≥1 job in 7 days</p>
+                </div>
+                <div class="metric-card">
+                    <div class="label">Active Customers</div>
+                    <div class="value">Monthly</div>
+                    <p style="margin-top: 0.5rem;">Posted ≥1 job in 30 days</p>
+                </div>
+                <div class="metric-card">
+                    <div class="label">Jobs Posted</div>
+                    <div class="value">Daily</div>
+                    <p style="margin-top: 0.5rem;">New job listings per day</p>
+                </div>
+                <div class="metric-card">
+                    <div class="label">Application Rate</div>
+                    <div class="value">Ratio</div>
+                    <p style="margin-top: 0.5rem;">Applications per job posted</p>
+                </div>
+                <div class="metric-card">
+                    <div class="label">Hire Rate</div>
+                    <div class="value">%</div>
+                    <p style="margin-top: 0.5rem;">Jobs filled vs posted</p>
+                </div>
+                <div class="metric-card">
+                    <div class="label">Average Job Value</div>
+                    <div class="value">€200</div>
+                    <p style="margin-top: 0.5rem;">Median transaction size</p>
+                </div>
+                <div class="metric-card">
+                    <div class="label">Repeat Rate</div>
+                    <div class="value">%</div>
+                    <p style="margin-top: 0.5rem;">Customers who book 2+ times</p>
+                </div>
+                <div class="metric-card">
+                    <div class="label">Handyman Retention</div>
+                    <div class="value">90-day</div>
+                    <p style="margin-top: 0.5rem;">Still active after 90 days</p>
+                </div>
+            </div>
+
+            <h3>Revenue Metrics</h3>
+            <ul style="margin-top: 1rem; padding-left: 2rem;">
+                <li><strong>Monthly Recurring Revenue (MRR):</strong> Predictable subscription income</li>
+                <li><strong>Commission Revenue:</strong> Transaction-based earnings</li>
+                <li><strong>Lead Generation Revenue:</strong> Pay-per-lead income</li>
+                <li><strong>Average Revenue Per User (ARPU):</strong> Total revenue ÷ active users</li>
+                <li><strong>Customer Acquisition Cost (CAC):</strong> Marketing spend ÷ new customers</li>
+                <li><strong>Lifetime Value (LTV):</strong> Average customer value over lifetime</li>
+                <li><strong>LTV:CAC Ratio:</strong> Target 3:1 or higher for healthy growth</li>
+            </ul>
+
+            <h3>Quality Metrics</h3>
+            <ul style="margin-top: 1rem; padding-left: 2rem;">
+                <li><strong>Average Rating:</strong> Handyman quality score (target: 4.5+)</li>
+                <li><strong>Job Completion Rate:</strong> % of accepted jobs finished successfully</li>
+                <li><strong>Dispute Rate:</strong> % of jobs with customer complaints (target: <2%)</li>
+                <li><strong>Response Time:</strong> Median handyman response to job posts (target: <4h)</li>
+                <li><strong>Time-to-Hire:</strong> Days from job post to handyman assignment (target: <1 day)</li>
+                <li><strong>Customer Satisfaction (NPS):</strong> Net Promoter Score (target: 50+)</li>
+            </ul>
+        </section>
+
+        <!-- Future Expansion -->
+        <section class="section">
+            <h2>🌟 Future Expansion Opportunities</h2>
+
+            <h3>Phase 2: Year 2 (€5M Revenue Target)</h3>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <h5>📱 Native Mobile Apps</h5>
+                    <p>iOS and Android apps using React Native or Tauri for deeper OS integration and better UX</p>
+                </div>
+                <div class="feature-item">
+                    <h5>🏢 Agency Accounts</h5>
+                    <p>Multi-handyman management for companies with fleet management, scheduling, and dispatch</p>
+                </div>
+                <div class="feature-item">
+                    <h5>🔄 Subscription for Customers</h5>
+                    <p>Premium homeowner plans with discounts, priority booking, and maintenance packages</p>
+                </div>
+                <div class="feature-item">
+                    <h5>🛡️ Insurance Partnerships</h5>
+                    <p>Integrated job insurance and liability coverage for peace of mind</p>
+                </div>
+                <div class="feature-item">
+                    <h5>🛠️ Equipment Rental</h5>
+                    <p>Marketplace for tool and equipment rentals between handymen</p>
+                </div>
+                <div class="feature-item">
+                    <h5>🎓 Training Programs</h5>
+                    <p>Certification courses for handymen to improve skills and earn premium badges</p>
+                </div>
+            </div>
+
+            <h3>Phase 3: Year 3+ (€15M+ Revenue Target)</h3>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <h5>🌍 International Expansion</h5>
+                    <p>Expand to Spain, UK, France - replicate local monopoly model in new markets</p>
+                </div>
+                <div class="feature-item">
+                    <h5>🧹 Vertical Expansion</h5>
+                    <p>Add new service categories: cleaning, moving, gardening, pet care, tutoring</p>
+                </div>
+                <div class="feature-item">
+                    <h5>🏠 B2B Services</h5>
+                    <p>Property management companies, real estate agencies, Airbnb hosts</p>
+                </div>
+                <div class="feature-item">
+                    <h5>⚪ White-Label Licensing</h5>
+                    <p>Sell platform technology to other service marketplace operators</p>
+                </div>
+                <div class="feature-item">
+                    <h5>🤖 AI Pricing Optimization</h5>
+                    <p>Dynamic pricing based on demand, urgency, handyman reputation, and market conditions</p>
+                </div>
+                <div class="feature-item">
+                    <h5>📅 Predictive Scheduling</h5>
+                    <p>ML-powered calendar optimization to maximize handyman utilization and earnings</p>
+                </div>
+                <div class="feature-item">
+                    <h5>💼 Enterprise Solutions</h5>
+                    <p>Custom integrations for large commercial clients (hotels, offices, retail chains)</p>
+                </div>
+                <div class="feature-item">
+                    <h5>🏆 Franchise Model</h5>
+                    <p>License regional operations to local entrepreneurs with turnkey platform and support</p>
+                </div>
+            </div>
+
+            <h3>Total Addressable Market (TAM)</h3>
+            <div class="highlight-box">
+                <p><strong>Local Market (Year 1-2):</strong> São Brás de Alportel region - €3-5M annual potential</p>
+                <p><strong>Regional Market (Year 3-4):</strong> Algarve + Southern Portugal - €50M annual potential</p>
+                <p><strong>National Market (Year 5+):</strong> All of Portugal - €500M annual potential</p>
+                <p><strong>Iberian Market (Year 6+):</strong> Portugal + Spain - €3B annual potential</p>
+                <p style="margin-top: 1rem;"><strong>Global Home Services Market:</strong> $300B+ and growing at 15% CAGR</p>
+            </div>
+        </section>
+
+        <!-- Reference Analysis -->
+        <section class="section">
+            <h2>📚 Reference SaaS Analysis Summary</h2>
+
+            <p>Based on comprehensive analysis of 12+ SaaS boilerplates and marketplace platforms in your reference folder:</p>
+
+            <h3>Key Learnings from Reference Projects</h3>
+
+            <h4>From open-saas (Wasp):</h4>
+            <ul style="margin-left: 2rem;">
+                <li>Full-stack authentication with email + social OAuth (Google, GitHub)</li>
+                <li>Built-in background job system for async tasks</li>
+                <li>Rapid development with integrated backend/frontend</li>
+                <li>One-command deployment to production</li>
+            </ul>
+
+            <h4>From saas-boilerplate (Apptension):</h4>
+            <ul style="margin-left: 2rem;">
+                <li>Multi-tenancy with Organizations/Teams model</li>
+                <li>Celery workers for background processing (emails, notifications)</li>
+                <li>Comprehensive user roles: Owner, Admin, Member</li>
+                <li>AWS-based scalable architecture</li>
+            </ul>
+
+            <h4>From saas-starter-kit (BoxyHQ):</h4>
+            <ul style="margin-left: 2rem;">
+                <li>Enterprise SSO with SAML Jackson</li>
+                <li>Directory sync (SCIM) for large organizations</li>
+                <li>Team-based billing with Stripe integration</li>
+                <li>API key management for team-scoped access</li>
+            </ul>
+
+            <h4>From rust-yew-realworld-example-app:</h4>
+            <ul style="margin-left: 2rem;">
+                <li>Production-grade Rust + Yew patterns</li>
+                <li>WebAssembly performance optimizations</li>
+                <li>Modern React-like hooks and function components</li>
+                <li>Real-world CRUD, auth, routing patterns</li>
+            </ul>
+
+            <h4>From axum-postgres-boilerplate:</h4>
+            <ul style="margin-left: 2rem;">
+                <li>Clean architecture with controllers, services, DTOs</li>
+                <li>JWT authentication with role-based guards</li>
+                <li>REST + GraphQL dual API support</li>
+                <li>Swagger/OpenAPI documentation</li>
+            </ul>
+
+            <h4>From realworld-axum-sqlx (Launchbadge):</h4>
+            <ul style="margin-left: 2rem;">
+                <li>Industry best practices from SQLx creators</li>
+                <li>Type-safe database queries with compile-time checking</li>
+                <li>Repository pattern for data access</li>
+                <li>Comprehensive error handling</li>
+            </ul>
+
+            <h3>Applied Patterns in Our Architecture</h3>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <h5>Multi-Tenancy</h5>
+                    <p>Handyman profiles as "workspaces" - each handyman operates independently with their own dashboard</p>
+                </div>
+                <div class="feature-item">
+                    <h5>Subscription Management</h5>
+                    <p>Stripe integration with plan-based feature gating (Free, Pro, Premium tiers)</p>
+                </div>
+                <div class="feature-item">
+                    <h5>Background Jobs</h5>
+                    <p>Tokio-based workers for notifications, payouts, analytics - inspired by Celery patterns</p>
+                </div>
+                <div class="feature-item">
+                    <h5>Role-Based Access</h5>
+                    <p>Customer, Handyman, Admin roles with granular permissions</p>
+                </div>
+                <div class="feature-item">
+                    <h5>Type-Safe Database</h5>
+                    <p>SQLx for compile-time verified queries - zero runtime SQL errors</p>
+                </div>
+                <div class="feature-item">
+                    <h5>API-First Design</h5>
+                    <p>RESTful architecture with OpenAPI docs for future mobile apps</p>
+                </div>
+            </div>
+
+            <h3>Technology Stack Rationale</h3>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Component</th>
+                        <th>Technology</th>
+                        <th>Why This Choice</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Backend Framework</strong></td>
+                        <td>Rust + Axum</td>
+                        <td>5-10x faster than Node.js/Django, memory-safe, excellent for concurrent workloads</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Frontend Framework</strong></td>
+                        <td>Yew (Rust/WASM)</td>
+                        <td>Near-native performance, type safety across full stack, shared models with backend</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Database</strong></td>
+                        <td>PostgreSQL</td>
+                        <td>ACID compliance, excellent geospatial support (PostGIS), proven scalability</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Database Client</strong></td>
+                        <td>SQLx</td>
+                        <td>Compile-time query verification, async/await support, zero-cost abstractions</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Payment Processing</strong></td>
+                        <td>Stripe + Stripe Connect</td>
+                        <td>Industry standard, supports marketplace payments, excellent API, built-in compliance</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Authentication</strong></td>
+                        <td>JWT + bcrypt</td>
+                        <td>Stateless, scalable, secure password hashing, standard industry approach</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Background Jobs</strong></td>
+                        <td>Tokio async tasks</td>
+                        <td>Native Rust concurrency, no external dependencies, excellent performance</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Deployment</strong></td>
+                        <td>Docker + DigitalOcean/AWS</td>
+                        <td>Containerized for consistency, easy scaling, infrastructure-as-code</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Call to Action -->
+        <section class="section" style="background: linear-gradient(135deg, var(--primary-red) 0%, var(--dark-red) 100%); color: white; border-left: none; text-align: center;">
+            <h2 style="color: white; border-bottom-color: rgba(255,255,255,0.3);">🚀 Ready to Build the Future of Home Services?</h2>
+            <p style="font-size: 1.3rem; margin: 2rem 0; line-height: 1.8;">
+                This comprehensive plan provides everything needed to transform your handyman service into a thriving marketplace platform. With proven SaaS patterns, competitive pricing, and a clear 16-week roadmap, success is within reach.
+            </p>
+            <div class="metric-grid" style="margin-top: 2rem;">
+                <div class="metric-card" style="background: white; color: var(--text-dark);">
+                    <div class="label">Time to Market</div>
+                    <div class="value">16 weeks</div>
+                </div>
+                <div class="metric-card" style="background: white; color: var(--text-dark);">
+                    <div class="label">Expected ROI (Year 1)</div>
+                    <div class="value">1,430%</div>
+                </div>
+                <div class="metric-card" style="background: white; color: var(--text-dark);">
+                    <div class="label">Market Opportunity</div>
+                    <div class="value">€3B+</div>
+                </div>
+            </div>
+            <p style="margin-top: 3rem; font-size: 1.1rem;">
+                <strong>Next Steps:</strong> Begin with Phase 1 database implementation, onboard 20 beta handymen, and iterate based on real user feedback. The marketplace revolution starts now! 🛠️
+            </p>
+        </section>
+
+        <!-- Footer -->
+        <footer style="text-align: center; padding: 2rem; color: var(--text-medium); border-top: 3px solid var(--primary-red); margin-top: 3rem;">
+            <p><strong>Handyman Marketplace Platform</strong></p>
+            <p>Business Plan v1.0 - Generated October 2025</p>
+            <p style="margin-top: 1rem;">Built with ❤️ using Rust, Yew, Axum & PostgreSQL</p>
+        </footer>
+    </div>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('.nav-links a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Print button
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
+                e.preventDefault();
+                window.print();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+# Shared Crate - Common Types for Backend and Frontend
+#
+# This crate contains data types shared between the backend and frontend.
+# It compiles TWICE:
+# 1. As a native library for the backend (x86_64-unknown-linux-gnu)
+# 2. As a WASM library for the frontend (wasm32-unknown-unknown)
+#
+# Why shared types?
+# - Ensures type safety between frontend and backend
+# - Single source of truth for API request/response formats
+# - Automatic serialization/deserialization with serde
+#
+# Shared types include:
+# - BookingForm: Booking form data
+# - ContactForm: Contact form data
+# - ApiResponse<T>: Generic API response wrapper
+# - RegisterForm, LoginForm: Authentication forms
+
+[package]
+name = "shared"
+version.workspace = true   # Inherits version from workspace root
+edition.workspace = true   # Rust 2021 edition
+authors.workspace = true
+license.workspace = true
+
+[lib]
+path = "lib.rs"  # Library entry point (contains shared types)
+
+[dependencies]
+# --- Workspace Dependencies (versions defined in root Cargo.toml) ---
+serde.workspace = true       # JSON serialization with #[derive(Serialize, Deserialize)]
+serde_json.workspace = true  # JSON parsing and generation

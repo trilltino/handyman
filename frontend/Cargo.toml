@@ -1,0 +1,58 @@
+# Frontend Crate - Handyman Marketplace WebAssembly UI
+#
+# This is the frontend single-page application built with Yew.
+# It compiles to WebAssembly and runs in the browser.
+#
+# Architecture:
+# - Yew 0.21 for component-based UI (like React)
+# - Yew Router for client-side routing
+# - WASM compilation target (wasm32-unknown-unknown)
+# - Trunk for building and serving (like webpack for WASM)
+# - Gloo for browser API access
+#
+# Build commands:
+# - Development: trunk serve (auto-reload on changes)
+# - Production: trunk build --release
+
+[package]
+name = "frontend"
+version.workspace = true   # Inherits version from workspace root
+edition.workspace = true   # Rust 2021 edition
+authors.workspace = true
+license.workspace = true
+
+[lib]
+crate-type = ["cdylib", "rlib"]  # cdylib for WASM output, rlib for dependencies
+path = "lib.rs"  # Library entry point (module organization)
+
+[[bin]]
+name = "handyman-app"
+path = "main.rs"  # Binary entry point (renders App component)
+required-features = ["yew/csr"]  # Requires client-side rendering feature
+
+[dependencies]
+# --- Workspace Dependencies (versions defined in root Cargo.toml) ---
+serde.workspace = true               # JSON serialization
+serde_json.workspace = true          # JSON parsing
+yew.workspace = true                 # React-like UI framework for WASM
+yew-router.workspace = true          # Client-side routing
+wasm-bindgen.workspace = true        # Rust ↔ JavaScript bridge
+wasm-bindgen-futures.workspace = true  # Convert JS Promises to Rust Futures
+web-sys = { workspace = true, features = ["Document", "Element", "Window", "HtmlElement"] }  # Browser DOM APIs
+js-sys.workspace = true              # JavaScript standard library (Array, Object, etc.)
+gloo.workspace = true                # High-level WASM utilities
+gloo-net.workspace = true            # HTTP client for API calls
+
+# --- Styling ---
+stylist = { version = "0.13", features = ["yew"] }  # CSS-in-Rust styling with Yew integration
+
+# --- Timers & Async ---
+gloo-timers = { version = "0.3", features = ["futures"] }  # Browser timers (setTimeout, setInterval)
+
+# --- Logging & Debugging ---
+wasm-logger = "0.2"  # Logger implementation for browser console
+log = "0.4"  # Logging facade (log!, debug!, error!, etc.)
+console_error_panic_hook = "0.1"  # Better panic messages in browser console
+
+# --- Local Workspace Crates ---
+shared = { path = "../shared" }  # Shared types (BookingForm, ContactForm, etc.)
