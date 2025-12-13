@@ -45,12 +45,12 @@ pub fn Button(
     #[prop(into)]
     label: String,
 ) -> impl IntoView {
-    let class = variant.class().to_string();
+    let variant_class = variant.class();
     let rel = if external { "noopener noreferrer" } else { "" };
     let target = if external { "_blank" } else { "" };
 
     view! {
-        <a href=href class=class rel=rel target=target>
+        <a href=href class=format!("btn {}", variant_class) rel=rel target=target>
             {label}
         </a>
     }
