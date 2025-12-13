@@ -2,16 +2,6 @@
 
 use leptos::prelude::*;
 
-/// Site navigation links.
-const NAV_LINKS: &[(&str, &str)] = &[
-    ("Services", "/pricing"),
-    ("Electrician", "/electrician-coventry"),
-    ("Plumber", "/plumber-coventry"),
-    ("About", "/about"),
-    ("Blog", "/blog"),
-    ("Contact", "/contact"),
-];
-
 /// Fixed navigation bar with blur effect.
 #[component]
 pub fn Navbar() -> impl IntoView {
@@ -26,18 +16,42 @@ pub fn Navbar() -> impl IntoView {
                 
                 // Desktop Navigation
                 <div class="hidden md:flex navbar-nav">
-                    {NAV_LINKS.iter().map(|(label, href)| {
-                        view! {
-                            <a href=*href class="navbar-link">{*label}</a>
-                        }
-                    }).collect::<Vec<_>>()}
+                    <a href="/pricing" class="navbar-link">"Services"</a>
+                    
+                    // Example Sites Dropdown
+                    <div class="dropdown">
+                        <button class="navbar-link dropdown-trigger">
+                            "Example Sites"
+                            <svg class="w-4 h-4 ml-1 dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="/electrician-coventry" class="dropdown-item">
+                                <svg class="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                </svg>
+                                "Electrician"
+                            </a>
+                            <a href="/plumber-coventry" class="dropdown-item">
+                                <svg class="w-5 h-5 text-cyan-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
+                                </svg>
+                                "Plumber"
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <a href="/about" class="navbar-link">"About"</a>
+                    <a href="/blog" class="navbar-link">"Blog"</a>
+                    <a href="/contact" class="navbar-link">"Contact"</a>
                     
                     <a href="/contact" class="btn btn-primary btn-sm">
                         "Get Quote"
                     </a>
                 </div>
                 
-                // Mobile Menu Button (basic - could be enhanced with JS)
+                // Mobile Menu Button
                 <button class="md:hidden btn-ghost" aria-label="Menu">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>

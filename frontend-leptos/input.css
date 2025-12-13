@@ -626,6 +626,70 @@ b {
 }
 
 /* ----------------------------------------
+   DROPDOWN MENU
+   ---------------------------------------- */
+
+.dropdown {
+    position: relative;
+}
+
+.dropdown-trigger {
+    display: inline-flex;
+    align-items: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.dropdown-arrow {
+    transition: transform var(--transition-base);
+}
+
+.dropdown:hover .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    min-width: 200px;
+    padding: 0.5rem;
+    background-color: var(--color-void-surface);
+    border: 1px solid var(--color-void-highlight);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transition-slow);
+    z-index: 100;
+}
+
+.dropdown:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    color: var(--color-gray-300);
+    text-decoration: none;
+    border-radius: var(--radius-md);
+    transition: all var(--transition-base);
+}
+
+.dropdown-item:hover {
+    color: white;
+    background-color: var(--color-void-highlight);
+}
+
+/* ----------------------------------------
    UTILITY CLASSES
    ---------------------------------------- */
 
