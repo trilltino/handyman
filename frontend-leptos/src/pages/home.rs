@@ -4,13 +4,14 @@
 
 use leptos::prelude::*;
 use crate::components::ui::{FeatureList, Button, ButtonVariant};
-use crate::components::seo::SeoHead;
+use crate::components::seo::{SeoHead, LocalBusinessSchema};
 use shared::PageMetadata;
 
 #[component]
 pub fn Home() -> impl IntoView {
     view! {
         <SeoHead metadata=PageMetadata::for_homepage() />
+        <LocalBusinessSchema />
         
         <div class="space-y-0 overflow-x-hidden">
             // HERO SECTION

@@ -4,7 +4,7 @@
 //! Uses `PageMetadata` from shared crate for consistency.
 
 use leptos::prelude::*;
-use leptos_meta::{Meta, Title};
+use leptos_meta::{Meta, Title, Script};
 use shared::PageMetadata;
 
 /// Returns the canonical base URL for the site.
@@ -59,5 +59,73 @@ pub fn SeoHead(
         <Meta name="twitter:title" content=title/>
         <Meta name="twitter:description" content=description/>
         <Meta name="twitter:image" content=image/>
+    }
+}
+
+/// LocalBusiness Schema.org structured data.
+/// 
+/// Adds JSON-LD markup for local business SEO rich snippets.
+#[component]
+pub fn LocalBusinessSchema() -> impl IntoView {
+    view! {
+        <Script type_="application/ld+json">
+            {r#"{
+                "@context": "https://schema.org",
+                "@type": "LocalBusiness",
+                "name": "Handyman Marketplace",
+                "description": "Professional handyman website solutions for tradespeople. SEO-optimized websites for electricians, plumbers, and general contractors.",
+                "url": "https://handymanmarketplace.com",
+                "telephone": "+44-123-456-7890",
+                "email": "info@handymanmarketplace.com",
+                "address": {
+                    "@type": "PostalAddress",
+                    "addressLocality": "Coventry",
+                    "addressRegion": "West Midlands",
+                    "addressCountry": "UK"
+                },
+                "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": "52.4081",
+                    "longitude": "-1.5106"
+                },
+                "openingHoursSpecification": [
+                    {
+                        "@type": "OpeningHoursSpecification",
+                        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+                        "opens": "09:00",
+                        "closes": "17:00"
+                    }
+                ],
+                "priceRange": "$$",
+                "sameAs": [
+                    "https://www.facebook.com/handymanmarketplace",
+                    "https://www.twitter.com/handymanmarket"
+                ]
+            }"#}
+        </Script>
+    }
+}
+
+/// Organization Schema.org structured data.
+/// 
+/// Adds JSON-LD markup for organization SEO.
+#[component]
+pub fn OrganizationSchema() -> impl IntoView {
+    view! {
+        <Script type_="application/ld+json">
+            {r#"{
+                "@context": "https://schema.org",
+                "@type": "Organization",
+                "name": "Handyman Marketplace",
+                "url": "https://handymanmarketplace.com",
+                "logo": "https://handymanmarketplace.com/logo.png",
+                "contactPoint": {
+                    "@type": "ContactPoint",
+                    "telephone": "+44-123-456-7890",
+                    "contactType": "customer service",
+                    "availableLanguage": "English"
+                }
+            }"#}
+        </Script>
     }
 }
