@@ -40,8 +40,17 @@ pub fn App() -> impl IntoView {
         <Stylesheet id="leptos" href="/pkg/handyman.css"/>
         <Title text="Handyman Marketplace"/>
         
+        // Import Google Fonts
+        <Link rel="preconnect" href="https://fonts.googleapis.com"/>
+        <Link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/>
+        <Link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+        
         <Router>
-            <main>
+            // Fixed Navigation
+            <crate::components::layout::Navbar />
+            
+            // Main Content (with top padding for fixed nav)
+            <main class="pt-16">
                 <Routes fallback=|| "Page not found.">
                     <Route path=path!("/") view=Home/>
                     <Route path=path!("/pricing") view=Pricing/>
@@ -54,6 +63,9 @@ pub fn App() -> impl IntoView {
                     <Route path=path!("/blog/:slug") view=BlogArticle/>
                 </Routes>
             </main>
+            
+            // Footer
+            <crate::components::layout::Footer />
         </Router>
     }
 }
