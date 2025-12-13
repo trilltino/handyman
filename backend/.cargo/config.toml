@@ -1,0 +1,18 @@
+[build]
+jobs = 1
+
+[profile.dev]
+debug = false
+incremental = true
+opt-level = 1
+lto = false
+split-debuginfo = "unpacked"
+
+[profile.release]
+debug = false
+lto = false
+opt-level = 3
+codegen-units = 1
+
+[target.x86_64-pc-windows-msvc]
+rustflags = ["-C", "debuginfo=line-tables-only"]

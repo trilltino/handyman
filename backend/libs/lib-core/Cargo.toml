@@ -1,0 +1,56 @@
+[package]
+name = "lib-core"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+# Workspace dependencies
+lib-utils = { workspace = true }
+shared = { workspace = true }
+
+# Database
+sqlx = { workspace = true }
+bb8 = { workspace = true }
+bb8-postgres = { workspace = true }
+
+# Async
+tokio = { workspace = true }
+
+# Serialization
+serde = { workspace = true }
+serde_json = { workspace = true }
+
+# Time
+time = { workspace = true }
+
+# UUID
+uuid = { workspace = true }
+
+# Decimal
+rust_decimal = { workspace = true }
+
+# Error handling
+thiserror = { workspace = true }
+anyhow = { workspace = true }
+derive_more = { workspace = true }
+serde_with = { workspace = true }
+
+# Async traits
+async-trait = { workspace = true }
+
+# Logging
+tracing = { workspace = true }
+log = { workspace = true }
+
+# Environment
+dotenvy = { workspace = true }
+env_logger = { workspace = true }
+
+# OpenAPI
+utoipa = { version = "4.2", features = ["uuid"] }
+
+# Email
+lettre = { workspace = true }
+
+[lints]
+workspace = true

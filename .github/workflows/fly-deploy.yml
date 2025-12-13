@@ -1,0 +1,71 @@
+# GitHub Actions Workflow for Deploying to Fly.io
+#
+# This workflow automatically deploys the Handyman Marketplace application
+# to Fly.io whenever changes are pushed to the main branch.
+#
+# Prerequisites:
+# 1. Create a Fly.io account and install flyctl
+# 2. Create a Fly.io API token: flyctl auth token
+# 3. Add the token as a GitHub secret named FLY_API_TOKEN
+#    Settings -> Secrets and variables -> Actions -> New repository secret
+
+name: Deploy to Fly.io
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:  # Allow manual deployment
+
+# Only run one deployment at a time
+concurrency:
+  group: fly-deployment
+  cancel-in-progress: false
+
+env:
+  FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+jobs:
+  deploy:
+    name: Deploy Application
+    runs-on: ubuntu-latest
+    timeout-minutes: 45  # Rust builds can take time
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flyctl
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Deploy to Fly.io
+        run: |
+          echo "[DEPLOY] Deploying to Fly.io..."
+          flyctl deploy --remote-only --ha=false
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+      - name: Verify Deployment
+        run: |
+          echo "[WAIT] Waiting for deployment to stabilize..."
+          sleep 15
+          echo "[CHECK] Checking health endpoint..."
+          curl -f https://handyman-marketplace.fly.dev/health || exit 1
+          echo "[OK] Deployment successful!"
+
+  notify:
+    name: Deployment Notification
+    needs: deploy
+    runs-on: ubuntu-latest
+    if: always()
+
+    steps:
+      - name: Deployment Status
+        run: |
+          if [ "${{ needs.deploy.result }}" == "success" ]; then
+            echo "[OK] Deployment succeeded"
+            echo "[WEB] Application URL: https://handyman-marketplace.fly.dev"
+          else
+            echo "[FAIL] Deployment failed"
+            exit 1
+          fi

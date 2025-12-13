@@ -1,0 +1,13 @@
+{
+    "name": "handyman-frontend",
+    "version": "1.0.0",
+    "description": "Handyman Marketplace Frontend",
+    "scripts": {
+        "build:css": "npx @tailwindcss/cli -i ./frontend-leptos/input.css -o ./target/site/pkg/handyman.css",
+        "watch:css": "npx @tailwindcss/cli -i ./frontend-leptos/input.css -o ./target/site/pkg/handyman.css --watch"
+    },
+    "devDependencies": {
+        "@tailwindcss/cli": "^4.0.0",
+        "tailwindcss": "^4.0.0"
+    }
+}

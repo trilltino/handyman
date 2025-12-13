@@ -1,0 +1,53 @@
+[package]
+name = "api"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+# Internal
+lib-core = { workspace = true }
+lib-utils = { workspace = true }
+lib-web = { workspace = true }
+shared = { workspace = true }
+
+# Web
+axum = { workspace = true }
+tokio = { workspace = true }
+tower = { workspace = true }
+tower-http = { workspace = true, features = ["compression-gzip"] }
+tower_governor = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+dotenvy = { workspace = true }
+clap = { workspace = true }
+anyhow = { workspace = true }
+
+# Config
+config = "0.14"
+
+# Database
+sqlx = { workspace = true }
+
+# Payments
+async-stripe = { workspace = true }
+
+# Date/Time
+chrono = { workspace = true }
+
+# Numeric conversions
+num-traits = "0.2"
+rust_decimal = { version = "1.35", features = ["serde-with-float"] }
+
+# Observability
+metrics = { workspace = true }
+metrics-exporter-prometheus = { workspace = true }
+
+# Email
+lettre = { workspace = true }
+
+# OpenAPI Documentation
+utoipa = "4.0"
+utoipa-axum = "0.1"
+utoipa-swagger-ui = { version = "6.0", features = ["axum"] }

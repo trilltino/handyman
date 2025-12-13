@@ -1,0 +1,73 @@
+/* 
+ * UTILITIES LAYER
+ * 
+ * Provides single-purpose utility classes for visual effects specific to the "Void" theme.
+ * Includes text glows, background patterns, and animation utilities.
+ */
+@layer utilities {
+
+    /* 
+     * TEXT PRESETS 
+     */
+    .text-gradient {
+        @apply text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400;
+    }
+
+    .text-gradient-red {
+        @apply text-transparent bg-clip-text bg-gradient-to-br from-brand-light via-brand to-brand-dark;
+    }
+
+    .text-glow {
+        text-shadow: 0 0 20px rgba(220, 38, 38, 0.5);
+    }
+
+    .text-glow-white {
+        text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+    }
+
+    /* 
+     * BACKGROUNDS
+     */
+    .bg-grid-white {
+        background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h40v40H0V0zm1 1h38v38H1V1z' fill='%23ffffff' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E");
+    }
+
+    .bg-grid-red {
+        background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h40v40H0V0zm1 1h38v38H1V1z' fill='%23DC2626' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+    }
+
+    /* 
+     * LAYOUT
+     */
+    .center-abs {
+        @apply absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2;
+    }
+
+    .mask-gradient-b {
+        mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+    }
+
+    /*
+     * ANIMATIONS
+     */
+    .animate-float {
+        animation: float 6s ease-in-out infinite;
+    }
+
+    .animate-pulse-slow {
+        animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    /* Slight delay for stagger effects */
+    .delay-100 {
+        animation-delay: 100ms;
+    }
+
+    .delay-200 {
+        animation-delay: 200ms;
+    }
+
+    .delay-300 {
+        animation-delay: 300ms;
+    }
+}

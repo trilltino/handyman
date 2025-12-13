@@ -1,0 +1,20 @@
+User-agent: *
+Allow: /
+
+Disallow: /admin/
+Disallow: /api/admin/
+Disallow: /debug/
+Disallow: /test/
+
+Allow: *.css
+Allow: *.js
+Allow: *.png
+Allow: *.jpg
+Allow: *.jpeg
+Allow: *.gif
+Allow: *.svg
+Allow: *.webp
+
+Sitemap: https://handymanmarketplace.com/sitemap.xml
+
+Crawl-delay: 1

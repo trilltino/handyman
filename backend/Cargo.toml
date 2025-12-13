@@ -1,73 +1,72 @@
-# Backend Crate - Handyman Marketplace API Server
-#
-# This is the backend API server built with Axum and PostgreSQL.
-# It handles authentication, bookings, contact forms, and user management.
-#
-# Architecture:
-# - Axum 0.8 for HTTP routing and handlers
-# - PostgreSQL with bb8 connection pooling
-# - JWT authentication with HMAC-SHA256
-# - Repository pattern for database access
-# - Middleware for auth and response mapping
+[workspace]
+members = [
+    "apps/api",
+    "libs/lib-core",
+    "libs/lib-utils",
+    "libs/lib-web",
+    "libs/lib-auth",
+]
+resolver = "2"
 
-[package]
-name = "backend"
-version.workspace = true   # Inherits version from workspace root
-edition.workspace = true   # Rust 2021 edition
-authors.workspace = true
-license.workspace = true
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+authors = ["Your Name <your.email@example.com>"]
+license = "MIT OR Apache-2.0"
 
-# Multiple binary targets for different purposes
-[[bin]]
-name = "backend"
-path = "src/main.rs"  # Main API server (cargo run --bin backend)
+[workspace.lints.rust]
+unsafe_code = "warn"
 
-[[bin]]
-name = "init_db"
-path = "src/bin/init_db.rs"  # Initialize database schema (cargo run --bin init_db)
+[workspace.dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
 
-[[bin]]
-name = "create_db"
-path = "src/bin/create_db.rs"  # Create database (cargo run --bin create_db)
+axum = "0.8.0"
+axum-extra = "0.9"
+tokio = { version = "1.0", features = ["full"] }
+tower = "0.5"
+tower-http = { version = "0.6", features = ["fs", "cors", "trace"] }
+tower-cookies = "0.11"
+tower_governor = "0.8"
 
-[dependencies]
-# --- Workspace Dependencies (versions defined in root Cargo.toml) ---
-serde.workspace = true          # JSON serialization
-serde_json.workspace = true     # JSON parsing
-axum.workspace = true           # Web framework
-tokio.workspace = true          # Async runtime
-tower.workspace = true          # Middleware abstractions
-tower-http.workspace = true     # HTTP middleware (CORS, tracing)
-tracing.workspace = true        # Structured logging
-tracing-subscriber.workspace = true  # Log configuration
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 
-# --- Database (PostgreSQL) ---
-tokio-postgres = { version = "0.7", features = ["with-chrono-0_4", "with-serde_json-1", "with-uuid-1"] }  # Async PostgreSQL client
-bb8 = "0.8"           # Generic connection pool
-bb8-postgres = "0.8"  # PostgreSQL adapter for bb8 pool
+shared = { path = "../shared" }
+lib-core = { path = "libs/lib-core" }
+lib-utils = { path = "libs/lib-utils" }
+lib-web = { path = "libs/lib-web" }
+lib-auth = { path = "libs/lib-auth" }
 
-# --- Date/Time ---
-chrono = { version = "0.4", features = ["serde"] }  # Date and time handling (created_at, updated_at)
+time = { version = "0.3", features = ["serde", "formatting", "parsing"] }
+chrono = { version = "0.4", features = ["serde"] }
+dotenvy = "0.15"
+anyhow = "1.0"
+thiserror = "1.0"
+async-trait = "0.1"
+strum_macros = "0.26"
+uuid = { version = "1.0", features = ["v4", "serde"] }
+base64 = "0.22"
 
-# --- Configuration & Environment ---
-dotenvy = "0.15"  # Load environment variables from .env file
+hmac = "0.12"
+sha2 = "0.10"
 
-# --- Error Handling ---
-anyhow = "1.0"     # Convenient error handling with context
-thiserror = "1.0"  # Derive macros for custom error types
+sqlx = { version = "0.8", features = ["postgres", "runtime-tokio-rustls", "chrono", "uuid", "time", "rust_decimal"] }
+bb8 = "0.8"
+bb8-postgres = "0.8"
+clap = { version = "4.5", features = ["derive"] }
+metrics = "0.22"
+metrics-exporter-prometheus = "0.14"
+lettre = { version = "0.11", features = ["smtp-transport"] }
+async-stripe = { version = "0.28", features = ["runtime-tokio-hyper-rustls-webpki"] }
 
-# --- Async Utilities ---
-async-trait = "0.1"  # Async methods in traits (for repository pattern)
+derive_more = "0.99"
+serde_with = "3.11"
+log = "0.4"
+env_logger = "0.11"
+config = "0.14"
+num-traits = "0.2"
+rust_decimal = { version = "1.35", features = ["serde-with-float"] }
 
-# --- Type Utilities ---
-strum_macros = "0.26"  # Enum utilities (Display, FromStr, etc.)
-uuid = { version = "1.0", features = ["v4", "serde"] }  # UUIDs for token salts
-
-# --- Authentication & Security ---
-tower-cookies = "0.11"  # Cookie management for JWT tokens
-hmac = "0.12"           # HMAC for JWT signatures
-sha2 = "0.10"           # SHA-256 hashing (for HMAC and passwords)
-base64 = "0.22"         # Base64 encoding for JWT tokens
-
-# --- Local Workspace Crates ---
-shared = { path = "../shared" }  # Shared types (BookingForm, ContactForm, etc.)
+jsonwebtoken = "9.3"
+argon2 = "0.5"

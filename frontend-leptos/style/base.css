@@ -1,0 +1,86 @@
+/* 
+ * BASE LAYER
+ * 
+ * Sets the foundational default styles for the "Void & Brand" design system.
+ * Enforces dark mode, fluid typography, and resets.
+ */
+@layer base {
+
+    /* Global Reset - ENFORCE DARK MODE */
+    :root {
+        color-scheme: dark;
+    }
+
+    html {
+        @apply scroll-smooth;
+    }
+
+    body {
+        @apply bg-void text-white font-sans antialiased overflow-x-hidden;
+        background-color: #000000;
+        /* Fallback */
+        background-image:
+            radial-gradient(circle at 50% 0%, #1a0505 0%, transparent 40%),
+            radial-gradient(circle at 80% 80%, #0d0202 0%, transparent 30%);
+    }
+
+    /* Selection - Cyber Style */
+    ::selection {
+        @apply bg-brand text-white;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: #000000;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        @apply bg-void-highlight rounded-full border-2 border-void;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        @apply bg-brand;
+    }
+
+    /* Typography Defaults */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        @apply font-heading tracking-tight font-bold text-white;
+        text-wrap: balance;
+    }
+
+    h1 {
+        @apply text-5xl md:text-6xl lg:text-7xl leading-[1.1] mb-6;
+        letter-spacing: -0.02em;
+    }
+
+    h2 {
+        @apply text-3xl md:text-4xl lg:text-5xl mb-4;
+        letter-spacing: -0.01em;
+    }
+
+    h3 {
+        @apply text-2xl md:text-3xl mb-3;
+    }
+
+    p {
+        @apply text-gray-400 leading-relaxed text-base md:text-lg;
+    }
+
+    /* Link Resets */
+    a {
+        @apply transition-colors duration-200 outline-none;
+    }
+
+    a:focus-visible {
+        @apply ring-2 ring-brand ring-offset-2 ring-offset-void rounded;
+    }
+}

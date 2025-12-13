@@ -1,0 +1,88 @@
+# Fly.io Application Configuration for Handyman Marketplace
+# https://fly.io/docs/reference/configuration/
+
+app = "handyman-marketplace"
+primary_region = "iad"  # US East (Ashburn, VA) - Change to your preferred region
+kill_signal = "SIGINT"
+kill_timeout = "5s"
+
+[experimental]
+  auto_rollback = true
+
+# Build configuration - uses Dockerfile.production
+[build]
+  dockerfile = "Dockerfile.production"
+
+# Environment variables (non-secret configuration)
+[env]
+  SERVER_ADDR = "0.0.0.0:3000"
+  RUST_LOG = "info,frontend_leptos=info"
+  LEPTOS_SITE_ROOT = "site"
+  LEPTOS_SITE_ADDR = "0.0.0.0:3000"
+
+# HTTP service configuration
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = false  # Keep at least one instance running always
+  auto_start_machines = true
+  min_machines_running = 1
+  processes = ["app"]
+
+  # Health checks using the /health endpoint
+  [[http_service.checks]]
+    grace_period = "15s"       # Time to wait before starting health checks
+    interval = "30s"           # Check every 30 seconds
+    method = "GET"
+    timeout = "5s"             # Timeout for each check
+    path = "/health"
+
+    # HTTP response expectations
+    [http_service.checks.headers]
+      # Add any required headers here if needed
+
+# VM resources
+[[vm]]
+  memory = "1gb"    # 1GB RAM recommended for Rust applications
+  cpu_kind = "shared"
+  cpus = 1
+
+# Metrics endpoint (optional - for Prometheus monitoring)
+[[services]]
+  protocol = "tcp"
+  internal_port = 3000
+
+  [[services.ports]]
+    port = 80
+    handlers = ["http"]
+    force_https = true
+
+  [[services.ports]]
+    port = 443
+    handlers = ["tls", "http"]
+
+  [services.concurrency]
+    type = "connections"
+    hard_limit = 1000
+    soft_limit = 500
+
+# Persistent storage (optional - for logs or generated files)
+# Uncomment if you need persistent storage
+# [[mounts]]
+#   source = "handyman_data"
+#   destination = "/app/data"
+#   initial_size = "1gb"
+
+# Deployment configuration
+[deploy]
+  release_command = "echo 'Migrations run automatically on startup'"
+  strategy = "rolling"  # Rolling deployment for zero-downtime
+
+# Regions (add more regions for global deployment)
+# Example: Deploy to multiple regions for low latency worldwide
+# [[regions]]
+#   name = "iad"  # US East
+# [[regions]]
+#   name = "lhr"  # London
+# [[regions]]
+#   name = "syd"  # Sydney

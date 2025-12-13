@@ -1,0 +1,100 @@
+# Multi-stage Docker build for XFHandyman
+# Stage 1: Build the Rust backend
+FROM rust:1.75-slim AS builder-backend
+
+WORKDIR /app
+
+# Install required packages for building
+RUN apt-get update && apt-get install -y \
+    pkg-config \
+    libssl-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy workspace configuration
+COPY Cargo.toml Cargo.lock ./
+
+# Copy backend source
+COPY backend/ ./backend/
+
+# Build the backend
+RUN cd backend && cargo build --release --bin api
+
+# Stage 2: Build the Leptos frontend
+FROM rust:1.75-slim AS builder-frontend
+
+WORKDIR /app
+
+# Install required packages
+RUN apt-get update && apt-get install -y \
+    curl \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install wasm-pack
+RUN curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+
+# Install trunk
+RUN wget -qO- https://github.com/thedodd/trunk/releases/download/v0.17.2/trunk-x86_64-unknown-linux-gnu.tar.gz | tar -xzf- && \
+    mv trunk /usr/local/bin/
+
+# Copy frontend source
+COPY frontend-leptos/ ./frontend-leptos/
+
+# Build the frontend
+RUN cd frontend-leptos && trunk build --release
+
+# Stage 3: Runtime image
+FROM debian:bookworm-slim
+
+# Install runtime dependencies
+RUN apt-get update && apt-get install -y \
+    ca-certificates \
+    postgresql-client \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create app user
+RUN useradd -r -s /bin/false appuser
+
+# Create directories
+RUN mkdir -p /app/static && chown -R appuser:appuser /app
+
+# Copy built backend binary
+COPY --from=builder-backend /app/backend/target/release/api /app/api
+
+# Copy built frontend assets
+COPY --from=builder-frontend /app/frontend-leptos/dist/ /app/static/
+
+# Copy migrations
+COPY migrations/ /app/migrations/
+
+# Copy configuration files
+COPY .env.example /app/.env.example
+
+# Set ownership
+RUN chown -R appuser:appuser /app
+
+# Switch to non-root user
+USER appuser
+
+# Set working directory
+WORKDIR /app
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:3000/api/health || exit 1
+
+# Expose port
+EXPOSE 3000
+
+# Run database migrations and start the application
+CMD ["/bin/bash", "-c", "\
+    echo 'Waiting for database...' && \
+    while ! pg_isready -h $DB_HOST -p $DB_PORT -U $DB_USER; do \
+        sleep 1; \
+    done && \
+    echo 'Running migrations...' && \
+    ./api --migrate && \
+    echo 'Starting application...' && \
+    ./api \
+"]

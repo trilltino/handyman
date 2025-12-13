@@ -1,0 +1,49 @@
+# Leptos Configuration for Handyman Marketplace (Workspace Root)
+# This configuration is used when running cargo-leptos from the workspace root
+
+# Output name for the WASM bundle
+output-name = "handyman"
+
+# Binary target name - MUST match the [[bin]] name in frontend-leptos/Cargo.toml
+bin-target = "frontend-leptos"
+
+# Workspace package specification
+bin-package = "frontend-leptos"
+lib-package = "frontend-leptos"
+
+# Site root folder where cargo-leptos generates all output
+site-root = "target/site"
+
+# Site package directory where the WASM bundle and JS files will be placed
+site-pkg-dir = "pkg"
+
+# Assets source directory - relative to frontend-leptos package
+assets-dir = "frontend-leptos/public"
+
+# CSS is built via npm (npx @tailwindcss/cli) before cargo leptos runs
+# No tailwind-input-file needed - avoids cargo-leptos download issues
+
+# Server configuration
+site-addr = "127.0.0.1:3001"
+reload-port = 3002
+
+# Browser compatibility target
+browserquery = "defaults"
+
+# The environment Leptos will run in
+env = "DEV"
+
+# Features for server binary (SSR)
+bin-features = ["ssr"]
+
+# Don't use default features for bin target
+bin-default-features = false
+
+# Features for client WASM (hydration)
+lib-features = ["hydrate"]
+
+# Don't use default features for lib target
+lib-default-features = false
+
+# Watch additional files for changes
+watch-additional-files = ["frontend-leptos/style", "frontend-leptos/public"]

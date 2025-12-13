@@ -1,52 +1,122 @@
 # Handyman Marketplace - Workspace Root Configuration
-#
-# This is a Cargo workspace that organizes the handyman marketplace project into three crates:
-# 1. backend  - Axum web server with PostgreSQL database
-# 2. frontend - Yew WebAssembly single-page application
-# 3. shared   - Common types shared between backend and frontend
-#
-# Workspace benefits:
-# - Shared dependencies across crates (defined once, used everywhere)
-# - Unified build process (cargo build builds everything)
-# - Consistent versioning across all crates
-# - Single target directory for faster builds
 
 [workspace]
 members = [
-    "backend",   # Axum API server (native Rust)
-    "frontend",  # Yew WASM frontend (compiles to WebAssembly)
-    "shared",    # Shared types (compiles twice: native + WASM)
+    "backend/apps/api",
+    "backend/libs/lib-core",
+    "backend/libs/lib-utils",
+    "backend/libs/lib-web",
+    "backend/libs/lib-auth",
+    "frontend-leptos",
+    "shared",
 ]
-resolver = "2"  # Use Cargo's new feature resolver (recommended for workspaces)
+resolver = "2"
 
 [workspace.package]
 version = "0.1.0"
-edition = "2021"  # Rust 2021 edition (latest stable features)
+edition = "2021"
 authors = ["Your Name <your.email@example.com>"]
 license = "MIT OR Apache-2.0"
 
+[workspace.lints.rust]
+unsafe_code = "warn"
+
+[[workspace.metadata.leptos]]
+name = "frontend-leptos"
+crate-type = ["cdylib", "rlib"]
+package = "frontend-leptos"
+bin-package = "frontend-leptos"
+lib-package = "frontend-leptos"
+lib-features = ["hydrate"]
+bin-features = ["ssr"]
+output-name = "handyman"
+site-root = "target/site"
+site-pkg-dir = "pkg"
+assets-dir = "frontend-leptos/public"
+site-addr = "127.0.0.1:3001"
+reload-port = 3002
+browserquery = "defaults"
+env = "DEV"
+bin-default-features = false
+lib-default-features = false
+
 [workspace.dependencies]
-# Shared dependencies used by multiple crates
-# By defining here, version stays consistent across backend/frontend/shared
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
 
-# --- Serialization (Backend + Frontend + Shared) ---
-serde = { version = "1.0", features = ["derive"] }  # JSON serialization with derive macros
-serde_json = "1.0"  # JSON parsing and generation
+axum = "0.8.0"
+axum-extra = "0.9"
+tokio = { version = "1.48", features = ["full"] }
+tower = "0.5"
+tower-http = { version = "0.6", features = ["fs", "cors", "trace"] }
+tower-cookies = "0.11"
+tower_governor = "0.8"
 
-# --- Backend Dependencies (Native Rust) ---
-axum = "0.8.0"  # Web framework built on tokio and hyper
-tokio = { version = "1.0", features = ["full"] }  # Async runtime (full features)
-tower = "0.5"  # Middleware and service abstractions
-tower-http = { version = "0.6", features = ["fs", "cors", "trace"] }  # HTTP middleware (CORS, etc.)
-tracing = "0.1"  # Structured logging framework
-tracing-subscriber = { version = "0.3", features = ["env-filter"] }  # Log output handling
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 
-# --- Frontend Dependencies (WebAssembly) ---
-yew = { version = "0.21", features = ["csr"] }  # React-like framework for WASM (client-side rendering)
-yew-router = "0.18"  # Client-side routing for single-page apps
-wasm-bindgen = "0.2"  # Rust ↔ JavaScript interop layer
-wasm-bindgen-futures = "0.4"  # Convert JS Promises to Rust Futures
-web-sys = { version = "0.3", features = ["HtmlInputElement", "HtmlSelectElement", "HtmlTextAreaElement", "Window"] }  # Browser API bindings
-js-sys = "0.3"  # JavaScript standard library bindings (Array, Object, etc.)
-gloo = "0.11"  # High-level WASM utilities (timers, storage, etc.)
-gloo-net = { version = "0.6", features = ["http"] }  # HTTP client for WASM
+yew = { version = "0.21", features = ["csr"] }
+yew-router = "0.18"
+wasm-bindgen = "=0.2.105"
+wasm-bindgen-futures = "0.4"
+web-sys = { version = "0.3", features = ["HtmlInputElement", "HtmlSelectElement", "HtmlTextAreaElement", "Window"] }
+js-sys = "0.3"
+gloo = "0.11"
+gloo-net = { version = "0.6", features = ["http"] }
+
+shared = { path = "shared" }
+lib-core = { path = "backend/libs/lib-core" }
+lib-utils = { path = "backend/libs/lib-utils" }
+lib-web = { path = "backend/libs/lib-web" }
+lib-auth = { path = "backend/libs/lib-auth" }
+
+time = { version = "0.3", features = ["serde", "formatting", "parsing"] }
+chrono = { version = "0.4", features = ["serde"] }
+dotenvy = "0.15"
+anyhow = "1.0"
+thiserror = "1.0"
+async-trait = "0.1"
+strum_macros = "0.26"
+uuid = { version = "1.19", features = ["v4", "serde"] }
+base64 = "0.22"
+
+hmac = "0.12"
+sha2 = "0.10"
+
+sqlx = { version = "0.8", features = ["postgres", "runtime-tokio-rustls", "chrono", "uuid", "time", "rust_decimal"] }
+bb8 = "0.8"
+bb8-postgres = "0.8"
+clap = { version = "4.5", features = ["derive"] }
+metrics = "0.22"
+metrics-exporter-prometheus = "0.14"
+lettre = { version = "0.11", features = ["smtp-transport"] }
+async-stripe = { version = "0.41", features = ["runtime-tokio-hyper-rustls-webpki"] }
+
+derive_more = "0.99"
+serde_with = "3.11"
+log = "0.4"
+env_logger = "0.11"
+config = "0.14"
+num-traits = "0.2"
+rust_decimal = { version = "1.35", features = ["serde-with-float"] }
+
+jsonwebtoken = { version = "10", features = ["aws_lc_rs"] }
+argon2 = "0.5"
+
+[profile.dev]
+opt-level = 1
+codegen-units = 256
+split-debuginfo = "unpacked"
+debug = "limited"
+incremental = true
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+strip = true
+
+[profile.leptos-dev]
+inherits = "dev"
+opt-level = 0
+codegen-units = 256

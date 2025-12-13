@@ -1,0 +1,38 @@
+[package]
+name = "lib-web"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+# Internal dependencies
+lib-auth = { path = "../lib-auth" }
+lib-utils = { path = "../lib-utils" }
+lib-core = { path = "../lib-core" }
+
+# Web framework
+axum = { workspace = true }
+axum-extra = { workspace = true }
+tower = { workspace = true }
+tower-cookies = { workspace = true }
+
+# Serialization
+serde = { workspace = true }
+serde_json = { workspace = true }
+
+# Async runtime
+tokio = { workspace = true }
+
+# Time
+time = { workspace = true }
+
+# UUID for request tracking
+uuid = { workspace = true }
+
+# Error handling
+thiserror = { workspace = true }
+
+# Logging
+tracing = { workspace = true }
+
+[lints]
+workspace = true

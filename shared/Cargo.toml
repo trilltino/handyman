@@ -23,10 +23,10 @@ edition.workspace = true   # Rust 2021 edition
 authors.workspace = true
 license.workspace = true
 
-[lib]
-path = "lib.rs"  # Library entry point (contains shared types)
+
 
 [dependencies]
 # --- Workspace Dependencies (versions defined in root Cargo.toml) ---
 serde.workspace = true       # JSON serialization with #[derive(Serialize, Deserialize)]
 serde_json.workspace = true  # JSON parsing and generation
+utoipa = { version = "4.0" }

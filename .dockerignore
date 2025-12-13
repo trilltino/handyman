@@ -1,0 +1,67 @@
+# Build artifacts (MUST INCLUDE FOR DOCKER BUILD)
+# Note: We need Cargo.lock for reproducible builds
+# Note: We need target/ directories to be empty for clean builds
+
+# Development environment files
+.env
+.env.local
+.env.production
+*.log
+leptos-server.log
+monitor.log
+
+# Git files
+.git/
+.gitignore
+.gitattributes
+
+# Documentation (keep only essential docs)
+*.md
+!README.md
+docs/
+
+# IDE and editor files
+.vscode/
+.idea/
+.claude/
+*.swp
+*.swo
+*~
+
+# Build artifacts (keep Cargo.lock for reproducible builds)
+target/
+.cargo/
+
+# SQLx offline data
+.sqlx/
+
+# Deployment files (needed for Fly.io deployment)
+fly.toml
+
+# CI/CD (GitHub Actions runs outside Docker)
+.github/
+
+# Node modules (if any)
+node_modules/
+package-lock.json
+yarn.lock
+
+# Testing artifacts
+coverage/
+.coverage
+htmlcov/
+
+# Temporary files
+tmp/
+temp/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Backup files
+*.bak
+*.backup
+*.old
+*.orig
