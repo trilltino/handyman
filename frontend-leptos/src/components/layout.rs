@@ -11,13 +11,11 @@ pub fn Navbar() -> impl IntoView {
                 // Logo
                 <a href="/" class="navbar-logo">
                     <span class="text-brand">"⚡"</span>
-                    " Handyman"
+                    " XFTradesmen"
                 </a>
                 
                 // Desktop Navigation
                 <div class="hidden md:flex navbar-nav">
-                    <a href="/pricing" class="navbar-link">"Services"</a>
-                    
                     // Example Sites Dropdown
                     <div class="dropdown">
                         <button class="navbar-link dropdown-trigger">
@@ -42,12 +40,12 @@ pub fn Navbar() -> impl IntoView {
                         </div>
                     </div>
                     
+                    <a href="/packages" class="navbar-link">"Packages"</a>
                     <a href="/about" class="navbar-link">"About"</a>
                     <a href="/blog" class="navbar-link">"Blog"</a>
-                    <a href="/contact" class="navbar-link">"Contact"</a>
                     
                     <a href="/contact" class="btn btn-primary btn-sm">
-                        "Get Quote"
+                        "Contact"
                     </a>
                 </div>
                 
@@ -72,7 +70,7 @@ pub fn Footer() -> impl IntoView {
                     // Brand
                     <div class="md:col-span-2">
                         <a href="/" class="text-2xl font-bold text-white mb-4 inline-block">
-                            <span class="text-brand">"⚡"</span>" Handyman"
+                            <span class="text-brand">"⚡"</span>" XFTradesmen"
                         </a>
                         <p class="text-gray-500 max-w-sm">
                             "Professional handyman services in Coventry and surrounding areas. 
@@ -88,7 +86,7 @@ pub fn Footer() -> impl IntoView {
                         <ul class="space-y-2">
                             <li><a href="/electrician-coventry" class="text-gray-500 hover:text-brand-light text-sm">"Electrical"</a></li>
                             <li><a href="/plumber-coventry" class="text-gray-500 hover:text-brand-light text-sm">"Plumbing"</a></li>
-                            <li><a href="/pricing" class="text-gray-500 hover:text-brand-light text-sm">"All Services"</a></li>
+                            <li><a href="/packages" class="text-gray-500 hover:text-brand-light text-sm">"Packages"</a></li>
                         </ul>
                     </div>
                     

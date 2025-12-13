@@ -24,6 +24,7 @@ use crate::pages::home::Home;
 use crate::pages::about::About;
 use crate::pages::contact::Contact;
 use crate::pages::pricing::Pricing;
+use crate::pages::packages::Packages;
 use crate::pages::coventry::Coventry;
 use crate::pages::blog::index::BlogIndex;
 use crate::pages::blog::article::BlogArticle;
@@ -38,7 +39,7 @@ pub fn App() -> impl IntoView {
     view! {
         <Html attr:lang="en-gb" />
         <Stylesheet id="leptos" href="/pkg/handyman.css"/>
-        <Title text="Handyman Marketplace"/>
+        <Title text="XFTradesmen"/>
         
         // Import Google Fonts
         <Link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -54,6 +55,7 @@ pub fn App() -> impl IntoView {
                 <Routes fallback=|| "Page not found.">
                     <Route path=path!("/") view=Home/>
                     <Route path=path!("/pricing") view=Pricing/>
+                    <Route path=path!("/packages") view=Packages/>
                     <Route path=path!("/about") view=About/>
                     <Route path=path!("/contact") view=Contact/>
                     <Route path=path!("/coventry") view=Coventry/>
