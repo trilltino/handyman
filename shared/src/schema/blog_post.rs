@@ -31,14 +31,14 @@ pub fn create_blog_post_schema(
         "url": url,
         "author": {
             "@type": "Organization",
-            "name": "Handyman Marketplace"
+            "name": "XF Tradesmen"
         },
         "publisher": {
             "@type": "Organization",
-            "name": "Handyman Marketplace",
+            "name": "XF Tradesmen",
             "logo": {
                 "@type": "ImageObject",
-                "url": "https://handymanmarketplace.com/logo.png"
+                "url": "https://xftradesmen.com/logo.png"
             }
         }
     })
@@ -73,7 +73,7 @@ mod tests {
         );
 
         assert_eq!(schema["author"]["@type"], "Organization");
-        assert_eq!(schema["author"]["name"], "Handyman Marketplace");
+        assert_eq!(schema["author"]["name"], "XF Tradesmen");
         assert_eq!(schema["publisher"]["@type"], "Organization");
         assert!(schema["publisher"]["logo"]["@type"].is_string());
     }
@@ -96,8 +96,8 @@ mod tests {
     fn test_blog_post_schema_with_custom_values() {
         let title = "How to Market Your Handyman Business";
         let description = "Learn the best strategies...";
-        let url = "https://handymanmarketplace.com/blog/marketing-tips";
-        let image = "https://handymanmarketplace.com/blog/marketing.jpg";
+        let url = "https://xftradesmen.com/blog/marketing-tips";
+        let image = "https://xftradesmen.com/blog/marketing.jpg";
 
         let schema = create_blog_post_schema(
             title.to_string(),

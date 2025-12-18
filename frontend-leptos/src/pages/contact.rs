@@ -52,9 +52,9 @@ pub fn Contact() -> impl IntoView {
 
     view! {
         <SeoHead metadata=PageMetadata {
-            title: "Contact Us - Free Handyman Website Consultation | Handyman Marketplace".to_string(),
+            title: "Contact Us - Free Handyman Website Consultation | XF Tradesmen".to_string(),
             description: "Questions about our handyman website builder? Get a free consultation. Our team responds within 24 hours.".to_string(),
-            canonical_url: Some("https://handymanmarketplace.com/contact".to_string()),
+            canonical_url: Some("https://xftradesmen.com/contact".to_string()),
             og_image: None,
         }/>
 

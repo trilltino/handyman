@@ -63,6 +63,7 @@ pub fn App() -> impl IntoView {
                     <Route path=path!("/plumber-coventry") view=Plumber/>
                     <Route path=path!("/blog") view=BlogIndex/>
                     <Route path=path!("/blog/:slug") view=BlogArticle/>
+                    <Route path=path!("/industries") view=crate::pages::industries::Industries/>
                 </Routes>
             </main>
             

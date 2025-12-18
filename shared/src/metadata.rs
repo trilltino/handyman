@@ -28,12 +28,12 @@ impl PageMetadata {
     #[must_use]
     pub fn for_homepage() -> Self {
         Self {
-            title: "Handyman Marketplace - Connect with UK Tradesmen".to_string(),
+            title: "XF Tradesmen - Connect with UK Tradesmen".to_string(),
             description:
                 "Find professional handymen, electricians, plumbers, and tradesmen in your area. Get quality services, competitive quotes, and verified reviews."
                     .to_string(),
-            og_image: Some("https://handymanmarketplace.com/og-image.jpg".to_string()),
-            canonical_url: Some("https://handymanmarketplace.com/".to_string()),
+            og_image: Some("https://xftradesmen.com/og-image.jpg".to_string()),
+            canonical_url: Some("https://xftradesmen.com/".to_string()),
         }
     }
 
@@ -42,7 +42,7 @@ impl PageMetadata {
     pub fn for_service(service_name: &str, location: &str) -> Self {
         Self {
             title: format!(
-                "{} in {} - Professional {} Services | Handyman Marketplace",
+                "{} in {} - Professional {} Services | XF Tradesmen",
                 service_name.to_uppercase(),
                 location,
                 service_name
@@ -51,9 +51,9 @@ impl PageMetadata {
                 "Find qualified {} in {}. Professional services, verified tradesmen, competitive pricing. Get quotes from local {} today.",
                 service_name, location, service_name
             ),
-            og_image: Some("https://handymanmarketplace.com/og-image.jpg".to_string()),
+            og_image: Some("https://xftradesmen.com/og-image.jpg".to_string()),
             canonical_url: Some(format!(
-                "https://handymanmarketplace.com/{}-{}",
+                "https://xftradesmen.com/{}-{}",
                 service_name.to_lowercase().replace(' ', "-"),
                 location.to_lowercase().replace(' ', "-")
             )),
@@ -64,9 +64,9 @@ impl PageMetadata {
     #[must_use]
     pub fn for_blog(title: &str, description: &str) -> Self {
         Self {
-            title: format!("{} | Blog | Handyman Marketplace", title),
+            title: format!("{} | Blog | XF Tradesmen", title),
             description: description.to_string(),
-            og_image: Some("https://handymanmarketplace.com/og-image.jpg".to_string()),
+            og_image: Some("https://xftradesmen.com/og-image.jpg".to_string()),
             canonical_url: None,
         }
     }

@@ -9,7 +9,7 @@ use axum::http::header;
 pub async fn robots_txt_handler() -> impl IntoResponse {
     let robots = r#"User-agent: *
 Allow: /
-Sitemap: https://handymanmarketplace.com/sitemap.xml
+Sitemap: https://xftradesmen.com/sitemap.xml
 "#;
 
     Response::builder()
@@ -20,7 +20,7 @@ Sitemap: https://handymanmarketplace.com/sitemap.xml
 
 /// Handler for /sitemap.xml
 pub async fn sitemap_xml_handler() -> impl IntoResponse {
-    let base_url = "https://handymanmarketplace.com";
+    let base_url = "https://xftradesmen.com";
     
     // List of all static routes
     let static_routes = vec![

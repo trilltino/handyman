@@ -17,7 +17,7 @@ pub fn create_service_schema() -> serde_json::Value {
         "description": "Complete website building service for handymen and contractors including design, development, booking systems, and marketing tools",
         "provider": {
             "@type": "Organization",
-            "name": "Handyman Marketplace"
+            "name": "XF Tradesmen"
         },
         "areaServed": "GB",
         "serviceType": "Website Development",
@@ -46,7 +46,7 @@ mod tests {
     fn test_service_schema_has_provider() {
         let schema = create_service_schema();
         assert_eq!(schema["provider"]["@type"], "Organization");
-        assert_eq!(schema["provider"]["name"], "Handyman Marketplace");
+        assert_eq!(schema["provider"]["name"], "XF Tradesmen");
     }
 
     #[test]

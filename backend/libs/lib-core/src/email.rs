@@ -24,7 +24,7 @@
 //! - `SMTP_PORT` - SMTP port (default: 587)
 //! - `SMTP_USERNAME` - SMTP authentication username (required)
 //! - `SMTP_PASSWORD` - SMTP authentication password (required)
-//! - `FROM_EMAIL` - Sender email address (default: noreply@handymanmarketplace.com)
+//! - `FROM_EMAIL` - Sender email address (default: noreply@xftradesmen.com)
 //! - `CONTACT_NOTIFICATION_EMAIL` - Recipient for contact form submissions
 //!
 //! ## Usage
@@ -156,7 +156,7 @@ impl EmailService {
             .build();
 
         let from_email = env::var("FROM_EMAIL")
-            .unwrap_or_else(|_| "noreply@handymanmarketplace.com".to_string());
+            .unwrap_or_else(|_| "noreply@xftradesmen.com".to_string());
 
         Ok(EmailService { mailer, from_email })
     }
@@ -278,7 +278,7 @@ impl EmailService {
     /// # Configuration
     ///
     /// Sends to the email address specified in `CONTACT_NOTIFICATION_EMAIL`
-    /// environment variable (defaults to admin@handymanmarketplace.com).
+    /// environment variable (defaults to admin@xftradesmen.com).
     ///
     /// # Example
     ///
@@ -301,7 +301,7 @@ impl EmailService {
         message: &str,
     ) -> Result<(), EmailError> {
         let notification_email = env::var("CONTACT_NOTIFICATION_EMAIL")
-            .unwrap_or_else(|_| "admin@handymanmarketplace.com".to_string());
+            .unwrap_or_else(|_| "admin@xftradesmen.com".to_string());
 
         let email_subject = subject
             .map(|s| format!("Contact Form: {}", s))
@@ -351,7 +351,7 @@ impl EmailService {
             </div>
         </div>
         <div class="footer">
-            <p>This message was sent from your Handyman Marketplace website contact form.</p>
+            <p>This message was sent from your XF Tradesmen website contact form.</p>
             <p>Please reply directly to the sender's email address or use your email client's reply feature.</p>
         </div>
     </div>

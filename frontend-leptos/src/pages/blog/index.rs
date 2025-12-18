@@ -11,9 +11,9 @@ use crate::components::ui::{Button, ButtonVariant};
 pub fn BlogIndex() -> impl IntoView {
     view! {
         <SeoHead metadata=PageMetadata {
-            title: "Handyman Marketplace Blog - Tips for Tradesmen | Handyman Marketplace".to_string(),
+            title: "XF Tradesmen Blog - Tips for Tradesmen | XF Tradesmen".to_string(),
             description: "Expert advice for plumbers, electricians, and handymen on growing their business online. Marketing tips, SEO guides, and website best practices.".to_string(),
-            canonical_url: Some("https://handymanmarketplace.com/blog".to_string()),
+            canonical_url: Some("https://xftradesmen.com/blog".to_string()),
             og_image: None,
         }/>
 

@@ -15,6 +15,6 @@ Allow: *.gif
 Allow: *.svg
 Allow: *.webp
 
-Sitemap: https://handymanmarketplace.com/sitemap.xml
+Sitemap: https://xftradesmen.com/sitemap.xml
 
 Crawl-delay: 1

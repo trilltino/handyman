@@ -1,4 +1,4 @@
-# Handyman Marketplace - Workspace Root Configuration
+# XF Tradesmen - Workspace Root Configuration
 
 [workspace]
 members = [
@@ -29,7 +29,7 @@ bin-package = "frontend-leptos"
 lib-package = "frontend-leptos"
 lib-features = ["hydrate"]
 bin-features = ["ssr"]
-output-name = "handyman"
+output-name = "xftradesmen"
 site-root = "target/site"
 site-pkg-dir = "pkg"
 assets-dir = "frontend-leptos/public"
@@ -59,7 +59,12 @@ yew = { version = "0.21", features = ["csr"] }
 yew-router = "0.18"
 wasm-bindgen = "=0.2.105"
 wasm-bindgen-futures = "0.4"
-web-sys = { version = "0.3", features = ["HtmlInputElement", "HtmlSelectElement", "HtmlTextAreaElement", "Window"] }
+web-sys = { version = "0.3", features = [
+    "HtmlInputElement",
+    "HtmlSelectElement",
+    "HtmlTextAreaElement",
+    "Window",
+] }
 js-sys = "0.3"
 gloo = "0.11"
 gloo-net = { version = "0.6", features = ["http"] }
@@ -83,14 +88,23 @@ base64 = "0.22"
 hmac = "0.12"
 sha2 = "0.10"
 
-sqlx = { version = "0.8", features = ["postgres", "runtime-tokio-rustls", "chrono", "uuid", "time", "rust_decimal"] }
+sqlx = { version = "0.8", features = [
+    "postgres",
+    "runtime-tokio-rustls",
+    "chrono",
+    "uuid",
+    "time",
+    "rust_decimal",
+] }
 bb8 = "0.8"
 bb8-postgres = "0.8"
 clap = { version = "4.5", features = ["derive"] }
 metrics = "0.22"
 metrics-exporter-prometheus = "0.14"
 lettre = { version = "0.11", features = ["smtp-transport"] }
-async-stripe = { version = "0.41", features = ["runtime-tokio-hyper-rustls-webpki"] }
+async-stripe = { version = "0.41", features = [
+    "runtime-tokio-hyper-rustls-webpki",
+] }
 
 derive_more = "0.99"
 serde_with = "3.11"

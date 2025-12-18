@@ -5,10 +5,10 @@
 #[cfg(feature = "ssr")]
 #[tokio::main]
 async fn main() {
-    use axum::Router;
+    use axum::{routing::any, Router};
+    use frontend_leptos_lib::App;
     use leptos::prelude::*;
     use leptos_axum::{generate_route_list, LeptosRoutes};
-    use frontend_leptos::App;
 
     // Initialize logging
     simple_logger::SimpleLogger::new()
@@ -26,6 +26,7 @@ async fn main() {
 
     // Build Axum router with Leptos integration
     let app = Router::new()
+        .route("/api/{*fn_name}", any(proxy_handler)) // Proxy API requests
         .leptos_routes(&leptos_options, routes, {
             let leptos_options = leptos_options.clone();
             move || shell(leptos_options.clone())
@@ -41,6 +42,66 @@ async fn main() {
         .unwrap();
 }
 
+#[cfg(feature = "ssr")]
+async fn proxy_handler(req: axum::extract::Request) -> axum::response::Response {
+    use axum::response::IntoResponse;
+
+    // The backend API URL - usually running on localhost:3001 in production
+    // or defined via environment variable
+    let api_url = std::env::var("API_URL").unwrap_or_else(|_| "http://127.0.0.1:3001".to_string());
+
+    let path = req.uri().path();
+    let path_query = req
+        .uri()
+        .path_and_query()
+        .map(|v| v.as_str())
+        .unwrap_or(path);
+
+    let uri = format!("{}{}", api_url, path_query);
+
+    let client = reqwest::Client::new();
+
+    // Reconstruct the request to the backend
+    let (parts, body) = req.into_parts();
+
+    let req_builder = client.request(parts.method, uri).headers(parts.headers);
+
+    // Axum body to Reqwest body conversion is complex, simpler to stream bytes
+    // For now, let's just forward as is if possible, or read bytes
+    // Using bytes is safer for simple proxying
+    let bytes = axum::body::to_bytes(body, usize::MAX)
+        .await
+        .unwrap_or_default();
+
+    let resp = req_builder.body(bytes).send().await;
+
+    match resp {
+        Ok(resp) => {
+            let mut response_builder = axum::response::Response::builder().status(resp.status());
+
+            // Forward headers
+            if let Some(headers) = response_builder.headers_mut() {
+                for (key, value) in resp.headers() {
+                    headers.insert(key, value.clone());
+                }
+            }
+
+            let bytes = resp.bytes().await.unwrap_or_default();
+            response_builder
+                .body(axum::body::Body::from(bytes))
+                .unwrap()
+        }
+        Err(e) => {
+            log::error!("Proxy error: {}", e);
+            (
+                axum::http::StatusCode::BAD_GATEWAY,
+                format!("Proxy error: {}", e),
+            )
+                .into_response()
+        }
+    }
+}
+
 #[cfg(not(feature = "ssr"))]
 pub fn main() {
     // no client-side main function
@@ -50,10 +111,10 @@ pub fn main() {
 
 #[cfg(feature = "ssr")]
 fn shell(options: leptos::prelude::LeptosOptions) -> impl leptos::prelude::IntoView {
+    use frontend_leptos_lib::App;
     use leptos::prelude::*;
     use leptos_meta::MetaTags;
-    use frontend_leptos::App;
-    
+
     view! {
         <!DOCTYPE html>
         <html lang="en">

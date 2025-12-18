@@ -2,10 +2,10 @@
 //!
 //! Service packages with direct Stripe checkout integration.
 
-use leptos::prelude::*;
 use crate::components::seo::SeoHead;
-use shared::PageMetadata;
+use leptos::prelude::*;
 use leptos_meta::Script;
+use shared::PageMetadata;
 
 /// Stripe checkout URL (direct link to payment page)
 const STRIPE_CHECKOUT_URL: &str = "https://buy.stripe.com/6oU4gsbhy2r14ZN3Uw83C00";
@@ -15,7 +15,7 @@ pub fn Packages() -> impl IntoView {
     view! {
         <SeoHead metadata=PageMetadata {
             title: "Website Packages & Pricing | XFTradesmen".to_string(),
-            description: "Professional tradesman website packages. £129 one-time setup + £30/month. SEO-optimized, mobile-responsive websites for electricians, plumbers, and contractors.".to_string(),
+            description: "Professional tradesman website packages. £239 one-time setup + £30/month. SEO-optimized, mobile-responsive websites for electricians, plumbers, and contractors.".to_string(),
             canonical_url: Some("https://xftradesmen.com/packages".to_string()),
             og_image: None,
         }/>
@@ -40,7 +40,7 @@ pub fn Packages() -> impl IntoView {
                     <div class="max-w-2xl mx-auto relative group">
                         // Glow Effect
                         <div class="absolute -inset-1 bg-gradient-to-r from-brand to-brand-dark rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
-                        
+
                         <div class="relative bg-void border border-void-highlight rounded-2xl p-8 md:p-12 shadow-2xl">
                             <div class="absolute top-0 right-0 p-4">
                                 <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-mono font-bold bg-brand/10 text-brand border border-brand/20 uppercase tracking-wide">"Best Value"</span>
@@ -48,15 +48,15 @@ pub fn Packages() -> impl IntoView {
 
                             <h2 class="text-3xl font-bold text-white mb-2 font-heading">"Professional Website"</h2>
                             <p class="text-gray-400 mb-8 border-b border-void-highlight pb-8">"Complete tradesman website with SEO, hosting, and support"</p>
-                            
+
                             // Pricing Display
                             <div class="mb-8">
                                 // One-time setup fee
                                 <div class="flex items-baseline gap-2 mb-4">
-                                    <span class="text-5xl font-black text-white tracking-tighter">"£129"</span>
+                                    <span class="text-5xl font-black text-white tracking-tighter">"£239"</span>
                                     <span class="text-lg text-gray-400">"one-time setup"</span>
                                 </div>
-                                
+
                                 // Monthly subscription
                                 <div class="flex items-baseline gap-2 p-4 bg-void-surface/50 rounded-lg border border-void-highlight">
                                     <span class="text-brand text-sm font-mono">"+THEN"</span>
@@ -105,7 +105,7 @@ pub fn Packages() -> impl IntoView {
                             </ul>
 
                             // Direct Stripe checkout link
-                            <a 
+                            <a
                                 href=STRIPE_CHECKOUT_URL
                                 target="_blank"
                                 rel="noopener noreferrer"
@@ -116,7 +116,7 @@ pub fn Packages() -> impl IntoView {
                                     <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                                 </span>
                             </a>
-                            
+
                             <p class="text-center text-gray-500 text-xs mt-4">"Secure payment via Stripe. Cancel anytime."</p>
                         </div>
                     </div>
@@ -130,7 +130,7 @@ pub fn Packages() -> impl IntoView {
                         <h2 class="text-3xl font-bold text-white mb-4 font-heading">"Why Choose XFTradesmen?"</h2>
                         <div class="h-1 w-20 bg-brand mx-auto rounded-full"></div>
                     </div>
-                    
+
                     <div class="grid md:grid-cols-3 gap-8">
                         <div class="card-deep">
                             <div class="w-12 h-12 bg-void-highlight rounded-lg flex items-center justify-center text-brand mb-6">
@@ -151,7 +151,7 @@ pub fn Packages() -> impl IntoView {
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                             </div>
                             <h3 class="text-xl font-bold text-white mb-3">"Simple Pricing"</h3>
-                            <p class="text-gray-400">"No hidden fees. £129 setup then £30/month. Cancel anytime with no penalties."</p>
+                            <p class="text-gray-400">"No hidden fees. £239 setup then £30/month. Cancel anytime with no penalties."</p>
                         </div>
                     </div>
                 </div>
@@ -161,13 +161,13 @@ pub fn Packages() -> impl IntoView {
             <section class="bg-void-surface py-24 px-4">
                 <div class="max-w-4xl mx-auto">
                     <h2 class="text-3xl font-bold text-white mb-12 text-center font-heading">"Frequently Asked Questions"</h2>
-                    
+
                     <div class="grid gap-6">
                         <div class="border border-void-highlight rounded-xl p-6 bg-void hover:border-brand/30 transition-colors">
-                            <h3 class="text-lg font-bold text-white mb-2">"What's included in the £129 setup?"</h3>
+                            <h3 class="text-lg font-bold text-white mb-2">"What's included in the £239 setup?"</h3>
                             <p class="text-gray-400">"Custom design, domain setup, SEO configuration, contact forms, and full website build. Your site will be live within 48 hours."</p>
                         </div>
-                        
+
                         <div class="border border-void-highlight rounded-xl p-6 bg-void hover:border-brand/30 transition-colors">
                             <h3 class="text-lg font-bold text-white mb-2">"What does the £30/month cover?"</h3>
                             <p class="text-gray-400">"Secure hosting, SSL certificate, ongoing updates, technical support, and SEO maintenance. Everything to keep your site running perfectly."</p>
@@ -184,14 +184,14 @@ pub fn Packages() -> impl IntoView {
                         </div>
                     </div>
                 </div>
-                
+
                 <Script type_="application/ld+json">
                 {r#"{
                   "@context": "https://schema.org",
                   "@type": "FAQPage",
                   "mainEntity": [{
                     "@type": "Question",
-                    "name": "What's included in the £129 setup?",
+                    "name": "What's included in the £239 setup?",
                     "acceptedAnswer": {
                       "@type": "Answer",
                       "text": "Custom design, domain setup, SEO configuration, contact forms, and full website build. Your site will be live within 48 hours."

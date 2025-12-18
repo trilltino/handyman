@@ -1,10 +1,10 @@
 {
-    "name": "handyman-frontend",
+    "name": "xftradesmen-frontend",
     "version": "1.0.0",
-    "description": "Handyman Marketplace Frontend",
+    "description": "XF Tradesmen - Professional Website Platform for UK Tradespeople",
     "scripts": {
-        "build:css": "npx @tailwindcss/cli -i ./frontend-leptos/input.css -o ./target/site/pkg/handyman.css",
-        "watch:css": "npx @tailwindcss/cli -i ./frontend-leptos/input.css -o ./target/site/pkg/handyman.css --watch"
+        "build:css": "npx @tailwindcss/cli -i ./frontend-leptos/input.css -o ./target/site/pkg/xftradesmen.css --minify",
+        "watch:css": "npx @tailwindcss/cli -i ./frontend-leptos/input.css -o ./target/site/pkg/xftradesmen.css --watch"
     },
     "devDependencies": {
         "@tailwindcss/cli": "^4.0.0",

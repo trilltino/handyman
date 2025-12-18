@@ -29,17 +29,17 @@ pub fn BlogArticle() -> impl IntoView {
     };
 
     let title = move || match slug().as_str() {
-        "why-tradesmen-need-websites" => "Why Tradesmen with Websites Earn 40% More - Handyman Marketplace".to_string(),
-        "local-seo-guide" => "Ultimate Guide to Local SEO for Plumbers - Handyman Marketplace".to_string(),
-        "building-trust-online" => "How to Build Trust with Clients Online - Handyman Marketplace".to_string(),
-        _ => "Blog Article - Handyman Marketplace".to_string()
+        "why-tradesmen-need-websites" => "Why Tradesmen with Websites Earn 40% More - XF Tradesmen".to_string(),
+        "local-seo-guide" => "Ultimate Guide to Local SEO for Plumbers - XF Tradesmen".to_string(),
+        "building-trust-online" => "How to Build Trust with Clients Online - XF Tradesmen".to_string(),
+        _ => "Blog Article - XF Tradesmen".to_string()
     };
 
     view! {
         <SeoHead metadata=PageMetadata {
             title: title(),
             description: "Read our latest expert guide for tradesmen. Learn how to grow your business with digital tools.".to_string(),
-            canonical_url: Some(format!("https://handymanmarketplace.com/blog/{}", slug())),
+            canonical_url: Some(format!("https://xftradesmen.com/blog/{}", slug())),
             og_image: None,
         }/>
 
@@ -74,7 +74,7 @@ pub fn BlogArticle() -> impl IntoView {
                          </span>
                          <span class="flex items-center gap-2">
                              <span class="w-1 h-1 bg-brand rounded-full"></span>
-                             "BY HANDYMAN MARKETPLACE"
+                             "BY XF Tradesmen"
                          </span>
                     </div>
                 </div>
@@ -109,7 +109,7 @@ pub fn BlogArticle() -> impl IntoView {
 
                     <h2>"Next Steps"</h2>
                     <p>
-                        "Ready to take action? Start by building your free website with Handyman Marketplace today."
+                        "Ready to take action? Start by building your free website with XF Tradesmen today."
                     </p>
                 </div>
                 

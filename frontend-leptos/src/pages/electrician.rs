@@ -16,7 +16,7 @@ pub fn Electrician() -> impl IntoView {
     "serviceType": "Electrician Website Builder",
     "provider": {
       "@type": "LocalBusiness",
-      "name": "Handyman Marketplace - Coventry",
+      "name": "XF Tradesmen - Coventry",
       "address": {
         "@type": "PostalAddress",
         "addressLocality": "Coventry",
@@ -33,9 +33,9 @@ pub fn Electrician() -> impl IntoView {
 
     view! {
         <SeoHead metadata=PageMetadata {
-            title: "Electrician Website Design Coventry - Get More Calls | Handyman Marketplace".to_string(),
+            title: "Electrician Website Design Coventry - Get More Calls | XF Tradesmen".to_string(),
             description: "Best website builder for Coventry electricians. Rank for 'Emergency Electrician Coventry' and book more rewiring and installation jobs.".to_string(),
-            canonical_url: Some("https://handymanmarketplace.com/electrician-coventry".to_string()),
+            canonical_url: Some("https://xftradesmen.com/electrician-coventry".to_string()),
             og_image: None,
         }/>
         <Script type_="application/ld+json">{schema}</Script>

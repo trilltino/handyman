@@ -1,6 +1,6 @@
 //! Organization structured data schema
 
-/// Creates Organization structured data for Handyman Marketplace.
+/// Creates Organization structured data for XF Tradesmen.
 ///
 /// This schema provides search engines with information about the business,
 /// including contact details, service area, and areas of expertise.
@@ -15,8 +15,8 @@
 /// {
 ///   "@context": "https://schema.org",
 ///   "@type": "Organization",
-///   "name": "Handyman Marketplace",
-///   "url": "https://handymanmarketplace.com",
+///   "name": "XF Tradesmen",
+///   "url": "https://xftradesmen.com",
 ///   ...
 /// }
 /// ```
@@ -25,10 +25,10 @@ pub fn create_organization_schema() -> serde_json::Value {
     serde_json::json!({
         "@context": "https://schema.org",
         "@type": "Organization",
-        "name": "Handyman Marketplace",
+        "name": "XF Tradesmen",
         "description": "Professional website building service specializing in handyman and contractor websites",
-        "url": "https://handymanmarketplace.com",
-        "logo": "https://handymanmarketplace.com/logo.png",
+        "url": "https://xftradesmen.com",
+        "logo": "https://xftradesmen.com/logo.png",
         "contactPoint": {
             "@type": "ContactPoint",
             "telephone": "+44-123-456-7890",
@@ -59,7 +59,7 @@ mod tests {
         let schema = create_organization_schema();
         assert_eq!(schema["@context"], "https://schema.org");
         assert_eq!(schema["@type"], "Organization");
-        assert_eq!(schema["name"], "Handyman Marketplace");
+        assert_eq!(schema["name"], "XF Tradesmen");
         assert!(schema["url"].is_string());
     }
 

@@ -2,18 +2,20 @@
 //!
 //! Service packages and Stripe payment integration.
 
+use crate::api::stripe::get_stripe_config;
 use leptos::prelude::*;
 use leptos::task::spawn_local;
-use crate::api::stripe::get_stripe_config;
 
 use crate::components::seo::SeoHead;
-use shared::PageMetadata;
+use crate::components::ui::FaqCard;
 use leptos_meta::Script;
+use shared::PageMetadata;
 
 #[component]
 pub fn Pricing() -> impl IntoView {
-    let (stripe_config, set_stripe_config) = signal(Option::<Result<crate::api::stripe::StripeConfig, String>>::None);
-    
+    let (stripe_config, set_stripe_config) =
+        signal(Option::<Result<crate::api::stripe::StripeConfig, String>>::None);
+
     {
         spawn_local(async move {
             set_stripe_config.set(Some(get_stripe_config().await));
@@ -22,9 +24,9 @@ pub fn Pricing() -> impl IntoView {
 
     view! {
         <SeoHead metadata=PageMetadata {
-            title: "Website Plans & Pricing - Affordable for Handymen | Handyman Marketplace".to_string(),
+            title: "Website Plans & Pricing - Affordable for Handymen | XF Tradesmen".to_string(),
             description: "Choose your perfect handyman website plan. Simple pricing starting at $29/month. Launch in minutes with our proven templates.".to_string(),
-            canonical_url: Some("https://handymanmarketplace.com/pricing".to_string()),
+            canonical_url: Some("https://xftradesmen.com/pricing".to_string()),
             og_image: None,
         }/>
 
@@ -48,7 +50,7 @@ pub fn Pricing() -> impl IntoView {
                     <div class="max-w-2xl mx-auto relative group">
                         // Glow Effect
                         <div class="absolute -inset-1 bg-gradient-to-r from-brand to-brand-dark rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
-                        
+
                         <div class="relative bg-void border border-void-highlight rounded-2xl p-8 md:p-12 shadow-2xl">
                             <div class="absolute top-0 right-0 p-4">
                                 <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-mono font-bold bg-brand/10 text-brand border border-brand/20 uppercase tracking-wide">"Most Popular"</span>
@@ -56,10 +58,20 @@ pub fn Pricing() -> impl IntoView {
 
                             <h2 class="text-3xl font-bold text-white mb-2 font-heading">"Professional Website"</h2>
                             <p class="text-gray-400 mb-8 border-b border-void-highlight pb-8">"Everything you need to get found and book more jobs"</p>
-                            
-                            <div class="flex items-baseline mb-8">
-                                <span class="text-6xl font-black text-white tracking-tighter">"$29"</span>
-                                <span class="text-xl text-gray-400 ml-2">" / month"</span>
+
+                            <div class="mb-8">
+                                // One-time setup fee
+                                <div class="flex items-baseline gap-2 mb-4">
+                                    <span class="text-5xl font-black text-white tracking-tighter">"£239"</span>
+                                    <span class="text-lg text-gray-400">"one-time setup"</span>
+                                </div>
+
+                                // Monthly subscription
+                                <div class="flex items-baseline gap-2 p-4 bg-void-surface/50 rounded-lg border border-void-highlight">
+                                    <span class="text-brand text-sm font-mono">"+THEN"</span>
+                                    <span class="text-3xl font-bold text-white">"£30"</span>
+                                    <span class="text-gray-400">"/ month"</span>
+                                </div>
                             </div>
 
                             <ul class="space-y-4 mb-10">
@@ -126,7 +138,7 @@ pub fn Pricing() -> impl IntoView {
                                     })
                                 }}
                             </Suspense>
-                            
+
                             <p class="text-center text-gray-500 text-xs mt-4">"Secure SSL Encryption. Cancel Anytime."</p>
                         </div>
                     </div>
@@ -137,10 +149,10 @@ pub fn Pricing() -> impl IntoView {
             <section class="bg-void border-t border-void-highlight py-24 px-4">
                 <div class="max-w-6xl mx-auto">
                     <div class="text-center mb-16">
-                        <h2 class="text-3xl font-bold text-white mb-4 font-heading">"Why Choose Handyman Marketplace?"</h2>
+                        <h2 class="text-3xl font-bold text-white mb-4 font-heading">"Why Choose XF Tradesmen?"</h2>
                         <div class="h-1 w-20 bg-brand mx-auto rounded-full"></div>
                     </div>
-                    
+
                     <div class="grid md:grid-cols-3 gap-8">
                         <div class="card-deep">
                             <div class="w-12 h-12 bg-void-highlight rounded-lg flex items-center justify-center text-brand mb-6">
@@ -171,30 +183,27 @@ pub fn Pricing() -> impl IntoView {
             <section class="bg-void-surface py-24 px-4">
                 <div class="max-w-4xl mx-auto">
                     <h2 class="text-3xl font-bold text-white mb-12 text-center font-heading">"Frequently Asked Questions"</h2>
-                    
+
                     <div class="grid gap-6">
-                        <div class="border border-void-highlight rounded-xl p-6 bg-void hover:border-brand/30 transition-colors">
-                            <h3 class="text-lg font-bold text-white mb-2">"Do I need to sign a contract?"</h3>
-                            <p class="text-gray-400">"No, there are no long-term contracts. Our service is month-to-month, and you can cancel at any time without penalty."</p>
-                        </div>
-                        
-                        <div class="border border-void-highlight rounded-xl p-6 bg-void hover:border-brand/30 transition-colors">
-                            <h3 class="text-lg font-bold text-white mb-2">"Is hosting included?"</h3>
-                            <p class="text-gray-400">"Yes, fast and secure cloud hosting is included in your £29/month subscription. We handle all the technical maintenance."</p>
-                        </div>
-
-                        <div class="border border-void-highlight rounded-xl p-6 bg-void hover:border-brand/30 transition-colors">
-                            <h3 class="text-lg font-bold text-white mb-2">"Can I use my own domain name?"</h3>
-                            <p class="text-gray-400">"Absolutely. We can use a domain you already own, or assist you in purchasing a new one for your business."</p>
-                        </div>
-
-                         <div class="border border-void-highlight rounded-xl p-6 bg-void hover:border-brand/30 transition-colors">
-                            <h3 class="text-lg font-bold text-white mb-2">"How long does it take to launch?"</h3>
-                            <p class="text-gray-400">"Most sites are live within 24-48 hours. Once you choose a template and send us your details, we get to work immediately."</p>
-                        </div>
+                        <FaqCard
+                            question="Do I need to sign a contract?"
+                            answer="No, there are no long-term contracts. Our service is month-to-month, and you can cancel at any time without penalty."
+                        />
+                        <FaqCard
+                            question="Is hosting included?"
+                            answer="Yes, fast and secure cloud hosting is included in your £29/month subscription. We handle all the technical maintenance."
+                        />
+                        <FaqCard
+                            question="Can I use my own domain name?"
+                            answer="Absolutely. We can use a domain you already own, or assist you in purchasing a new one for your business."
+                        />
+                        <FaqCard
+                            question="How long does it take to launch?"
+                            answer="Most sites are live within 24-48 hours. Once you choose a template and send us your details, we get to work immediately."
+                        />
                     </div>
                 </div>
-                
+
                 <Script type_="application/ld+json">
                 {r#"{
                   "@context": "https://schema.org",

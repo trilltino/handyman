@@ -40,6 +40,7 @@ pub fn Navbar() -> impl IntoView {
                         </div>
                     </div>
                     
+                    <a href="/industries" class="navbar-link">"Industries"</a>
                     <a href="/packages" class="navbar-link">"Packages"</a>
                     <a href="/about" class="navbar-link">"About"</a>
                     <a href="/blog" class="navbar-link">"Blog"</a>
@@ -105,7 +106,7 @@ pub fn Footer() -> impl IntoView {
                 
                 // Bottom
                 <div class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-void-highlight text-gray-600 text-sm">
-                    <p>"© 2024 Handyman Marketplace. All rights reserved."</p>
+                    <p>"© 2024 XF Tradesmen. All rights reserved."</p>
                     <div class="flex gap-6 mt-4 md:mt-0">
                         <a href="#" class="hover:text-brand-light">"Privacy"</a>
                         <a href="#" class="hover:text-brand-light">"Terms"</a>

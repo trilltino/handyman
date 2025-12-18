@@ -11,4 +11,5 @@ pub mod coventry;
 pub mod blog;
 pub mod electrician;
 pub mod plumber;
+pub mod industries;
 

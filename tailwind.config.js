@@ -2,7 +2,10 @@
 module.exports = {
   content: {
     relative: true,
-    files: ["*.html", "./src/**/*.rs"],
+    files: [
+      "./frontend-leptos/**/*.rs",
+      "./frontend-leptos/public/**/*.html",
+    ],
     transform: {
       rs: (content) => content.replace(/(?:^|\s)class:/g, ' '),
     },

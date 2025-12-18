@@ -12,7 +12,7 @@ use shared::PageMetadata;
 #[allow(dead_code)]
 pub fn canonical_base() -> String {
     std::env::var("CANONICAL_BASE")
-        .unwrap_or_else(|_| "https://handymanmarketplace.com".to_string())
+        .unwrap_or_else(|_| "https://xftradesmen.com".to_string())
 }
 
 /// Build an absolute URL from a path using the canonical base.
@@ -40,8 +40,8 @@ pub fn SeoHead(
 ) -> impl IntoView {
     let title = metadata.title;
     let description = metadata.description;
-    let image = metadata.og_image.unwrap_or_else(|| "https://handymanmarketplace.com/og-image.jpg".to_string());
-    let url = metadata.canonical_url.unwrap_or_else(|| "https://handymanmarketplace.com".to_string());
+    let image = metadata.og_image.unwrap_or_else(|| "https://xftradesmen.com/og-image.jpg".to_string());
+    let url = metadata.canonical_url.unwrap_or_else(|| "https://xftradesmen.com".to_string());
     
     view! {
         <Title text=title.clone()/>
@@ -72,11 +72,11 @@ pub fn LocalBusinessSchema() -> impl IntoView {
             {r#"{
                 "@context": "https://schema.org",
                 "@type": "LocalBusiness",
-                "name": "Handyman Marketplace",
+                "name": "XF Tradesmen",
                 "description": "Professional handyman website solutions for tradespeople. SEO-optimized websites for electricians, plumbers, and general contractors.",
-                "url": "https://handymanmarketplace.com",
+                "url": "https://xftradesmen.com",
                 "telephone": "+44-123-456-7890",
-                "email": "info@handymanmarketplace.com",
+                "email": "info@xftradesmen.com",
                 "address": {
                     "@type": "PostalAddress",
                     "addressLocality": "Coventry",
@@ -116,9 +116,9 @@ pub fn OrganizationSchema() -> impl IntoView {
             {r#"{
                 "@context": "https://schema.org",
                 "@type": "Organization",
-                "name": "Handyman Marketplace",
-                "url": "https://handymanmarketplace.com",
-                "logo": "https://handymanmarketplace.com/logo.png",
+                "name": "XF Tradesmen",
+                "url": "https://xftradesmen.com",
+                "logo": "https://xftradesmen.com/logo.png",
                 "contactPoint": {
                     "@type": "ContactPoint",
                     "telephone": "+44-123-456-7890",

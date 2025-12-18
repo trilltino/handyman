@@ -11,9 +11,9 @@ use shared::PageMetadata;
 pub fn About() -> impl IntoView {
     view! {
         <SeoHead metadata=PageMetadata {
-            title: "About Handyman Marketplace - Built by Tradespeople | Handyman Marketplace".to_string(),
+            title: "About XF Tradesmen - Built by Tradespeople | XF Tradesmen".to_string(),
             description: "Learn our story. We help handymen, plumbers, electricians get found online with professional, SEO-optimized websites.".to_string(),
-            canonical_url: Some("https://handymanmarketplace.com/about".to_string()),
+            canonical_url: Some("https://xftradesmen.com/about".to_string()),
             og_image: None,
         }/>
 
@@ -52,7 +52,7 @@ pub fn About() -> impl IntoView {
                             
                             <div class="space-y-6 text-gray-400 leading-relaxed">
                                 <p>
-                                    "Founded in <span class='text-white font-semibold'>2024</span>, Handyman Marketplace was initialized with a singular directive: 
+                                    "Founded in <span class='text-white font-semibold'>2024</span>, XF Tradesmen was initialized with a singular directive: 
                                     to equip independent tradespeople with elite-level digital tools."
                                 </p>
                                 <p>

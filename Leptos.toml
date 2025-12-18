@@ -1,8 +1,8 @@
-# Leptos Configuration for Handyman Marketplace (Workspace Root)
+# Leptos Configuration for XF Tradesmen (Workspace Root)
 # This configuration is used when running cargo-leptos from the workspace root
 
 # Output name for the WASM bundle
-output-name = "handyman"
+output-name = "xftradesmen"
 
 # Binary target name - MUST match the [[bin]] name in frontend-leptos/Cargo.toml
 bin-target = "frontend-leptos"
@@ -20,8 +20,9 @@ site-pkg-dir = "pkg"
 # Assets source directory - relative to frontend-leptos package
 assets-dir = "frontend-leptos/public"
 
-# CSS is built via npm (npx @tailwindcss/cli) before cargo leptos runs
-# No tailwind-input-file needed - avoids cargo-leptos download issues
+# Use pre-built CSS from npm (Tailwind v4)
+# This file is created by: npm run build:css
+style-file = "target/site/pkg/xftradesmen.css"
 
 # Server configuration
 site-addr = "127.0.0.1:3001"
