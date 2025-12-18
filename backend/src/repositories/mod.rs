@@ -14,13 +14,11 @@
 //! - **Uses**: PostgreSQL connection from pool
 //! - **Flow**: Handler → Repository → Database → Repository → Handler
 
-mod customer;  // Customer CRUD operations
-mod booking;   // Booking CRUD operations
-mod contact;   // Contact message CRUD operations
-mod user;      // User CRUD operations
+mod booking; // Booking CRUD operations
+mod contact;
+mod customer; // Customer CRUD operations // Contact message CRUD operations
 
 // Re-export repository structs
-pub use customer::CustomerRepository;
 pub use booking::BookingRepository;
 pub use contact::ContactRepository;
-pub use user::UserRepository;
+pub use customer::CustomerRepository;

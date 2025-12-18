@@ -16,9 +16,9 @@
 //! - **Security**: Hides internal error details from clients via ClientError mapping
 //! - **Examples**: LoginFail (403), DatabaseError (500), EntityNotFound (400)
 
-use axum::http::StatusCode;           // HTTP status codes (200, 401, 403, 500, etc.)
+use axum::http::StatusCode; // HTTP status codes (200, 401, 403, 500, etc.)
 use axum::response::{IntoResponse, Response}; // Convert Error to HTTP response
-use serde::Serialize;                  // JSON serialization for error responses
+use serde::Serialize; // JSON serialization for error responses
 
 /// Type alias for Result with our custom Error
 /// Used throughout the app: `Result<User>` instead of `Result<User, Error>`
@@ -30,16 +30,6 @@ pub type Result<T> = core::result::Result<T, Error>;
 #[derive(Debug, Clone, Serialize, strum_macros::AsRefStr)]
 #[serde(tag = "type", content = "data")]
 pub enum Error {
-    // -- Authentication Errors (return 403 Forbidden)
-    /// Invalid username/password combination
-    LoginFail,
-    /// No auth token cookie present in request
-    AuthFailNoAuthTokenCookie,
-    /// Token format is invalid (not base64.base64.base64 or expired)
-    AuthFailTokenWrongFormat,
-    /// Context not found in request extensions (middleware issue)
-    AuthFailCtxNotInRequestExt,
-
     // -- Database Errors (return 400 or 500)
     /// PostgreSQL query error with error message
     DatabaseError(String),
@@ -88,25 +78,8 @@ impl Error {
     /// Security: Hides internal error details (DB errors, stack traces) from clients
     pub fn client_status_and_error(&self) -> (StatusCode, ClientError) {
         match self {
-            // 403 Forbidden - Invalid credentials
-            Self::LoginFail => (
-                StatusCode::FORBIDDEN,
-                ClientError::LOGIN_FAIL,
-            ),
-
-            // 403 Forbidden - All auth failures (missing/invalid token, no context)
-            Self::AuthFailNoAuthTokenCookie
-            | Self::AuthFailTokenWrongFormat
-            | Self::AuthFailCtxNotInRequestExt => (
-                StatusCode::FORBIDDEN,
-                ClientError::NO_AUTH,
-            ),
-
             // 400 Bad Request - Entity (User, Booking) not found
-            Self::EntityNotFound { .. } => (
-                StatusCode::BAD_REQUEST,
-                ClientError::ENTITY_NOT_FOUND,
-            ),
+            Self::EntityNotFound { .. } => (StatusCode::BAD_REQUEST, ClientError::ENTITY_NOT_FOUND),
 
             // 500 Internal Server Error - PostgreSQL errors
             Self::DatabaseError(_) => (
@@ -115,10 +88,7 @@ impl Error {
             ),
 
             // 400 Bad Request - Stripe payment/subscription errors
-            Self::StripeError(_) => (
-                StatusCode::BAD_REQUEST,
-                ClientError::STRIPE_ERROR,
-            ),
+            Self::StripeError(_) => (StatusCode::BAD_REQUEST, ClientError::STRIPE_ERROR),
         }
     }
 }
@@ -128,10 +98,6 @@ impl Error {
 #[derive(Debug, strum_macros::AsRefStr)]
 #[allow(non_camel_case_types)]
 pub enum ClientError {
-    /// Login failed - invalid username or password
-    LOGIN_FAIL,
-    /// Authentication required - no valid token
-    NO_AUTH,
     /// Requested entity not found in database
     ENTITY_NOT_FOUND,
     /// Internal server error (database, etc.)

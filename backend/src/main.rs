@@ -16,32 +16,26 @@
 //!
 //! ## Relation to Entire Program
 //! - **Central Hub**: All HTTP requests flow through this server
-//! - **Connects**: Frontend (Yew) → This Server → Database (PostgreSQL)
-//! - **Orchestrates**: Authentication, booking creation, user management, contact forms
-//! - **Future**: Will handle handyman profiles, job matching, payments, reviews
+//! - **Connects**: Frontend → This Server → Database (PostgreSQL)
+//! - **Orchestrates**: Booking creation, contact forms
+//! - **Future**: Will handle profiles, job matching, payments, reviews
 //!
 //! ## Key Routes
-//! - `POST /api/register` - User registration
-//! - `POST /api/login` - User authentication
 //! - `POST /api/booking` - Create service booking
 //! - `POST /api/contact` - Contact form submission
-//! - `GET /api/me` - Get current user (protected)
 //!
 //! ## Middleware Order (Reverse execution)
 //! 1. Response mapping (mw_response_map) - Transforms responses
-//! 2. Context resolver (mw_ctx_resolver) - Extracts user context from auth token
-//! 3. Cookie manager - Handles HTTP cookies for sessions
+//! 2. Logging and tracing
 //! 4. CORS - Validates cross-origin requests from frontend
 
 mod db;              // Database connection pool management (src/db/)
-mod models;          // Data models: User, Customer, Booking, Contact (src/models/)
+mod models;          // Data models: Customer, Booking, Contact (src/models/)
 mod repositories;    // Database CRUD operations (src/repositories/)
 mod handlers;        // HTTP request handlers (src/handlers/)
 mod error;           // Custom error types and error handling (src/error.rs)
 mod config;          // Configuration from environment variables (src/config.rs)
-mod ctx;             // Request context with user authentication info (src/ctx.rs)
-mod token;           // JWT token generation and validation (src/token.rs)
-mod middleware;      // HTTP middleware for auth and response mapping (src/middleware/)
+mod middleware;      // HTTP middleware for response mapping (src/middleware/)
 
 use axum::{
     middleware as axum_middleware,
@@ -55,8 +49,8 @@ use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 use std::net::SocketAddr;
 
 use db::create_pool;
-use handlers::{root, health_check, handle_contact, handle_booking, handle_register, handle_login, handle_logout, handle_me};
-use middleware::{mw_ctx_resolver, mw_ctx_require, mw_response_map};
+use handlers::{root, health_check, handle_contact, handle_booking};
+use middleware::mw_response_map;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
@@ -81,28 +75,16 @@ async fn main() -> anyhow::Result<()> {
     let pool = create_pool(database_url).await?;
     tracing::info!("Database connection pool created successfully");
 
-    // Define routes that require authentication
-    let routes_protected = Router::new()
-        .route("/api/me", get(handle_me))
-        .route_layer(axum_middleware::from_fn(mw_ctx_require));
 
     // Build our application with routes
     let app = Router::new()
         .route("/", get(root))
         .route("/api/health", get(health_check))
-        // Auth routes (public)
-        .route("/api/register", post(handle_register))
-        .route("/api/login", post(handle_login))
-        .route("/api/logout", post(handle_logout))
         // Public API routes
         .route("/api/contact", post(handle_contact))
         .route("/api/booking", post(handle_booking))
-        // Protected routes
-        .merge(routes_protected)
         // Middleware layers (order matters - added in reverse order of execution)
         .layer(axum_middleware::map_response(mw_response_map))
-        .layer(axum_middleware::from_fn_with_state(pool.clone(), mw_ctx_resolver))
-        .layer(CookieManagerLayer::new())
         .layer(
             CorsLayer::new()
                 .allow_origin("http://127.0.0.1:8080".parse::<axum::http::HeaderValue>().unwrap())
