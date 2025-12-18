@@ -174,23 +174,6 @@ impl Error {
     }
 }
 
-// Convert lib-auth errors
-impl From<lib_auth::pwd::Error> for Error {
-    fn from(err: lib_auth::pwd::Error) -> Self {
-        Error::PasswordError(err.to_string())
-    }
-}
-
-impl From<lib_auth::token::Error> for Error {
-    fn from(err: lib_auth::token::Error) -> Self {
-        match err {
-            lib_auth::token::Error::TokenExpired => Error::TokenExpired,
-            lib_auth::token::Error::InvalidSignature => Error::InvalidToken,
-            _ => Error::TokenError(err.to_string()),
-        }
-    }
-}
-
 /// Client error response (safe to send to clients).
 #[derive(Serialize)]
 struct ClientError {

@@ -5,7 +5,6 @@ edition.workspace = true
 
 [dependencies]
 # Internal dependencies
-lib-auth = { path = "../lib-auth" }
 lib-utils = { path = "../lib-utils" }
 lib-core = { path = "../lib-core" }
 

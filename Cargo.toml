@@ -6,7 +6,6 @@ members = [
     "backend/libs/lib-core",
     "backend/libs/lib-utils",
     "backend/libs/lib-web",
-    "backend/libs/lib-auth",
     "frontend-leptos",
     "shared",
 ]
@@ -73,7 +72,6 @@ shared = { path = "shared" }
 lib-core = { path = "backend/libs/lib-core" }
 lib-utils = { path = "backend/libs/lib-utils" }
 lib-web = { path = "backend/libs/lib-web" }
-lib-auth = { path = "backend/libs/lib-auth" }
 
 time = { version = "0.3", features = ["serde", "formatting", "parsing"] }
 chrono = { version = "0.4", features = ["serde"] }

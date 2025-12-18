@@ -1,11 +1,5 @@
 [workspace]
-members = [
-    "apps/api",
-    "libs/lib-core",
-    "libs/lib-utils",
-    "libs/lib-web",
-    "libs/lib-auth",
-]
+members = ["apps/api", "libs/lib-core", "libs/lib-utils", "libs/lib-web"]
 resolver = "2"
 
 [workspace.package]
@@ -36,7 +30,6 @@ shared = { path = "../shared" }
 lib-core = { path = "libs/lib-core" }
 lib-utils = { path = "libs/lib-utils" }
 lib-web = { path = "libs/lib-web" }
-lib-auth = { path = "libs/lib-auth" }
 
 time = { version = "0.3", features = ["serde", "formatting", "parsing"] }
 chrono = { version = "0.4", features = ["serde"] }
@@ -51,14 +44,23 @@ base64 = "0.22"
 hmac = "0.12"
 sha2 = "0.10"
 
-sqlx = { version = "0.8", features = ["postgres", "runtime-tokio-rustls", "chrono", "uuid", "time", "rust_decimal"] }
+sqlx = { version = "0.8", features = [
+    "postgres",
+    "runtime-tokio-rustls",
+    "chrono",
+    "uuid",
+    "time",
+    "rust_decimal",
+] }
 bb8 = "0.8"
 bb8-postgres = "0.8"
 clap = { version = "4.5", features = ["derive"] }
 metrics = "0.22"
 metrics-exporter-prometheus = "0.14"
 lettre = { version = "0.11", features = ["smtp-transport"] }
-async-stripe = { version = "0.28", features = ["runtime-tokio-hyper-rustls-webpki"] }
+async-stripe = { version = "0.28", features = [
+    "runtime-tokio-hyper-rustls-webpki",
+] }
 
 derive_more = "0.99"
 serde_with = "3.11"
