@@ -54,6 +54,8 @@ use serde::Serialize;
 /// automatically converted to HTTP responses.
 pub type Result<T> = core::result::Result<T, Error>;
 
+use std::borrow::Cow;
+
 /// Web layer errors.
 ///
 /// This enum wraps errors from various layers (database, auth, business logic)
@@ -103,7 +105,7 @@ pub enum Error {
     ///
     /// Returned when request data fails validation constraints.
     #[error("Validation error: {0}")]
-    ValidationError(String),
+    ValidationError(Cow<'static, str>),
 
     /// Business logic error from lib-core (varies by type).
     ///
@@ -179,7 +181,7 @@ impl Error {
 struct ClientError {
     error: String,
     #[serde(skip_serializing_if = "Option::is_none")]
-    detail: Option<String>,
+    detail: Option<Cow<'static, str>>,
 }
 
 impl IntoResponse for Error {
@@ -216,22 +218,22 @@ impl IntoResponse for Error {
                     ModelError::EntityNotFound { entity, id } => (
                         StatusCode::NOT_FOUND,
                         "Resource not found",
-                        Some(format!("{} with id {} not found", entity, id)),
+                        Some(format!("{} with id {} not found", entity, id).into()),
                     ),
                     ModelError::UserAlreadyExists { username } => (
                         StatusCode::CONFLICT,
                         "User already exists",
-                        Some(username.clone()),
+                        Some(username.clone().into()),
                     ),
                     ModelError::UniqueViolation { table, constraint } => (
                         StatusCode::CONFLICT,
                         "Unique constraint violation",
-                        Some(format!("{} constraint on {}", constraint, table)),
+                        Some(format!("{} constraint on {}", constraint, table).into()),
                     ),
                     ModelError::ValidationError(msg) => (
                         StatusCode::BAD_REQUEST,
                         "Validation error",
-                        Some(msg.clone()),
+                        Some(msg.clone().into()),
                     ),
                     // Internal errors - don't expose details
                     _ => (

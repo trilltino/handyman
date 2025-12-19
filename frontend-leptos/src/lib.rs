@@ -15,21 +15,19 @@ use leptos_router::{
     path,
 };
 
-mod pages;
 mod components;
+mod pages;
 // mod seo; // Removed, moved to components
 pub mod api;
-
-use crate::pages::home::Home;
 use crate::pages::about::About;
-use crate::pages::contact::Contact;
-use crate::pages::pricing::Pricing;
-use crate::pages::packages::Packages;
-use crate::pages::coventry::Coventry;
-use crate::pages::blog::index::BlogIndex;
 use crate::pages::blog::article::BlogArticle;
-use crate::pages::electrician::Electrician;
-use crate::pages::plumber::Plumber;
+use crate::pages::blog::index::BlogIndex;
+use crate::pages::contact::Contact;
+use crate::pages::coventry::Coventry;
+use crate::pages::handyman::Handyman;
+use crate::pages::home::Home;
+use crate::pages::packages::Packages;
+use crate::pages::pricing::Pricing;
 
 #[component]
 pub fn App() -> impl IntoView {
@@ -38,18 +36,18 @@ pub fn App() -> impl IntoView {
 
     view! {
         <Html attr:lang="en-gb" />
-        <Stylesheet id="leptos" href="/pkg/handyman.css"/>
+        <Stylesheet id="leptos" href="/xftradesmen.css"/>
         <Title text="XFTradesmen"/>
-        
+
         // Import Google Fonts
         <Link rel="preconnect" href="https://fonts.googleapis.com"/>
         <Link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/>
         <Link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
-        
+
         <Router>
             // Fixed Navigation
             <crate::components::layout::Navbar />
-            
+
             // Main Content (with top padding for fixed nav)
             <main class="pt-16">
                 <Routes fallback=|| "Page not found.">
@@ -59,14 +57,13 @@ pub fn App() -> impl IntoView {
                     <Route path=path!("/about") view=About/>
                     <Route path=path!("/contact") view=Contact/>
                     <Route path=path!("/coventry") view=Coventry/>
-                    <Route path=path!("/electrician-coventry") view=Electrician/>
-                    <Route path=path!("/plumber-coventry") view=Plumber/>
+                    <Route path=path!("/handyman") view=Handyman/>
                     <Route path=path!("/blog") view=BlogIndex/>
                     <Route path=path!("/blog/:slug") view=BlogArticle/>
                     <Route path=path!("/industries") view=crate::pages::industries::Industries/>
                 </Routes>
             </main>
-            
+
             // Footer
             <crate::components::layout::Footer />
         </Router>

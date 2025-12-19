@@ -24,6 +24,7 @@ docs/
 .vscode/
 .idea/
 .claude/
+.agent/
 *.swp
 *.swo
 *~
@@ -35,25 +36,27 @@ target/
 # SQLx offline data
 .sqlx/
 
-# Deployment files (needed for Fly.io deployment)
-fly.toml
+# Reference folder (large, not needed for build)
+reference/
 
 # CI/CD (GitHub Actions runs outside Docker)
 .github/
 
 # Node modules (if any)
 node_modules/
-package-lock.json
 yarn.lock
 
 # Testing artifacts
 coverage/
 .coverage
 htmlcov/
+playwright-report/
+test-results/
 
 # Temporary files
 tmp/
 temp/
+errors.txt
 
 # OS-specific files
 .DS_Store

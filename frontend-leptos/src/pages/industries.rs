@@ -23,52 +23,52 @@ pub fn Industries() -> impl IntoView {
                     <IndustryCard
                         title="Electricians"
                         description="Emergency callout features, local service pages, and electrical safety schema."
-                        icon="zap"
+                        image="/industry_electrician.png"
                     />
                     <IndustryCard
                         title="Plumbers"
                         description="Boiler service booking, emergency leak pages, and Gas Safe highlighting."
-                        icon="droplet"
+                        image="/industry_plumber.png"
                     />
                     <IndustryCard
                         title="Carpenters"
                         description="Portfolio galleries for bespoke joinery, wardrobes, and kitchen installations."
-                        icon="hammer"
+                        image="/industry_carpenter.png"
                     />
                     <IndustryCard
                         title="Bricklayers"
                         description="Showcase extensions, garden walls, and repointing work with high-res imagery."
-                        icon="grid"
+                        image="/industry_bricklayer.png"
                     />
                      <IndustryCard
                         title="Plasterers"
                         description="Highlight smooth finishes, rendering, and dry lining services."
-                        icon="layers"
+                        image="/industry_plasterer.png"
                     />
                      <IndustryCard
                         title="Roofers"
                         description="Trust-building elements for new roofs, repairs, and flat roofing."
-                        icon="home"
+                        image="/industry_roofer.png"
                     />
                      <IndustryCard
                         title="Painters & Decorators"
                         description="Visual portfolios for interior and exterior transformation projects."
-                        icon="brush"
+                        image="/industry_painter.png"
                     />
                     <IndustryCard
                         title="Gas Engineers"
                         description="Safety certification display, landlord checks, and boiler servicing."
-                        icon="flame"
+                        image="/industry_gas_engineer.png"
                     />
                     <IndustryCard
                         title="Locksmiths"
                         description="Fast-response design, click-to-call buttons, and emergency entry focus."
-                        icon="lock"
+                        image="/industry_locksmith.png"
                     />
                     <IndustryCard
                         title="HVAC Technicians"
                         description="Seasonal service promotion for heating and cooling systems."
-                        icon="thermometer"
+                        image="/industry_hvac.png"
                     />
                 </div>
             </div>
@@ -90,17 +90,22 @@ pub fn Industries() -> impl IntoView {
 fn IndustryCard(
     title: &'static str,
     description: &'static str,
-    icon: &'static str, // Just a placeholder for icon logic if we had distinct icons
+    image: &'static str,
 ) -> impl IntoView {
     view! {
-        <div class="card p-8 border border-gray-100 rounded-lg shadow-sm hover:shadow-xl hover:border-deep-red transition duration-300 group bg-white">
-            <div class="text-4xl mb-4 text-deep-red group-hover:scale-110 transition duration-300">
-                // Simulating icons with generic classes or text for now
-                // In a real app we'd use Lucide or similar
-                <i class={format!("icon-{}", icon)}></i>
+        <div class="card overflow-hidden border border-gray-100 rounded-lg shadow-sm hover:shadow-xl hover:border-deep-red transition duration-300 group bg-white">
+            <div class="relative h-48 overflow-hidden">
+                <img
+                    src=image
+                    alt=format!("{} services", title)
+                    class="w-full h-full object-cover group-hover:scale-110 transition duration-500"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                <h3 class="absolute bottom-4 left-4 text-2xl font-bold text-white">{title}</h3>
             </div>
-            <h3 class="text-2xl font-bold mb-3 text-deep-black group-hover:text-deep-red transition">{title}</h3>
-            <p class="text-gray-600">{description}</p>
+            <div class="p-6">
+                <p class="text-gray-600">{description}</p>
+            </div>
         </div>
     }
 }

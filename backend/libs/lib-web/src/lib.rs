@@ -68,10 +68,12 @@
 //! ```
 
 pub mod error;
+pub mod extractors;
 pub mod middleware;
 
 // Re-export commonly used types
 pub use error::{Error, Result};
+pub use extractors::ValidatedJson;
 pub use middleware::CtxW;
 
 // Prelude for convenient importing

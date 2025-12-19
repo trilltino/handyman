@@ -49,8 +49,9 @@ pub async fn version_handler() -> Json<Value> {
     )
 )]
 pub async fn stripe_config_handler() -> Json<Value> {
+    let config = crate::config::app_config();
     Json(json!({
-        "product_id": std::env::var("STRIPE_PRODUCT_ID").unwrap_or_default(),
-        "public_key": std::env::var("STRIPE_PUBLIC_KEY").unwrap_or_default(),
+        "product_id": config.stripe.product_id,
+        "public_key": config.stripe.public_key,
     }))
 }

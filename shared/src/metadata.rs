@@ -25,7 +25,6 @@ pub struct PageMetadata {
 
 impl PageMetadata {
     /// Create metadata for the homepage
-    #[must_use]
     pub fn for_homepage() -> Self {
         Self {
             title: "XF Tradesmen - Connect with UK Tradesmen".to_string(),
@@ -38,7 +37,6 @@ impl PageMetadata {
     }
 
     /// Create metadata for a service page
-    #[must_use]
     pub fn for_service(service_name: &str, location: &str) -> Self {
         Self {
             title: format!(
@@ -61,7 +59,6 @@ impl PageMetadata {
     }
 
     /// Create metadata for a blog post
-    #[must_use]
     pub fn for_blog(title: &str, description: &str) -> Self {
         Self {
             title: format!("{} | Blog | XF Tradesmen", title),

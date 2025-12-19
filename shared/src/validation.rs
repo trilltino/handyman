@@ -24,6 +24,8 @@
 
 use crate::types::{ContactForm, Product, ProductImage};
 
+use std::borrow::Cow;
+
 /// Trait for validating data structures.
 ///
 /// All input types (especially those coming from external sources like forms or APIs)
@@ -32,7 +34,7 @@ use crate::types::{ContactForm, Product, ProductImage};
 /// # Returns
 ///
 /// - `Ok(())` if validation passes
-/// - `Err(String)` with a descriptive error message if validation fails
+/// - `Err(Cow<'static, str>)` with a descriptive error message if validation fails
 ///
 /// # Example
 ///
@@ -54,13 +56,13 @@ pub trait Validate {
     /// # Returns
     ///
     /// - `Ok(())` if the value is valid
-    /// - `Err(String)` with a descriptive, user-friendly error message if validation fails
+    /// - `Err(Cow<'static, str>)` with a descriptive, user-friendly error message if validation fails
     ///
     /// # Errors
     ///
     /// Returns an error if any validation constraints are violated.
     #[must_use = "validation results should be checked"]
-    fn validate(&self) -> Result<(), String>;
+    fn validate(&self) -> Result<(), Cow<'static, str>>;
 
     /// Convenience method to check if the value is valid without error details.
     ///
@@ -97,24 +99,24 @@ impl Validate for ContactForm {
     /// # Errors
     ///
     /// Returns a descriptive error message for the first validation failure encountered.
-    fn validate(&self) -> Result<(), String> {
+    fn validate(&self) -> Result<(), Cow<'static, str>> {
         // Validate name (trim whitespace for better UX)
         if self.name.trim().is_empty() {
-            return Err("Name is required".to_string());
+            return Err(Cow::Borrowed("Name is required"));
         }
 
         // Validate email
         let trimmed_email = self.email.trim();
         if trimmed_email.is_empty() {
-            return Err("Email is required".to_string());
+            return Err(Cow::Borrowed("Email is required"));
         }
         if !trimmed_email.contains('@') {
-            return Err("Email must be valid (must contain '@')".to_string());
+            return Err(Cow::Borrowed("Email must be valid (must contain '@')"));
         }
 
         // Validate message
         if self.message.trim().is_empty() {
-            return Err("Message is required".to_string());
+            return Err(Cow::Borrowed("Message is required"));
         }
 
         Ok(())
@@ -131,9 +133,9 @@ impl Validate for Product {
     /// # Errors
     ///
     /// Returns an error if the product name is empty.
-    fn validate(&self) -> Result<(), String> {
+    fn validate(&self) -> Result<(), Cow<'static, str>> {
         if self.name.trim().is_empty() {
-            return Err("Product name is required".to_string());
+            return Err(Cow::Borrowed("Product name is required"));
         }
         Ok(())
     }
@@ -149,9 +151,9 @@ impl Validate for ProductImage {
     /// # Errors
     ///
     /// Returns an error if the image URL is empty.
-    fn validate(&self) -> Result<(), String> {
+    fn validate(&self) -> Result<(), Cow<'static, str>> {
         if self.image_url.trim().is_empty() {
-            return Err("Image URL is required".to_string());
+            return Err(Cow::Borrowed("Image URL is required"));
         }
         Ok(())
     }
@@ -251,7 +253,9 @@ mod tests {
             product_id: 1,
             image_url: "https://example.com/image.jpg".to_string(),
             alt_text: Some("Product image".to_string()),
+            is_primary: true,
             display_order: 0,
+            created_at: None,
         };
         assert!(image.validate().is_ok());
     }
@@ -263,7 +267,9 @@ mod tests {
             product_id: 1,
             image_url: "".to_string(),
             alt_text: None,
+            is_primary: false,
             display_order: 0,
+            created_at: None,
         };
         let result = image.validate();
         assert!(result.is_err());

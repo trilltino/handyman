@@ -15,12 +15,10 @@
 //! - [`ProductImage`] - Product image metadata
 
 pub mod api;
-pub mod auth;
 pub mod contact;
 pub mod product;
 
 pub use api::ApiResponse;
-pub use auth::{AuthResponse, LoginPayload, RegisterPayload};
 pub use contact::ContactForm;
 pub use product::{Product, ProductImage, ProductWithImages};
 

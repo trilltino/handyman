@@ -26,6 +26,7 @@ async fn main() {
 
     // Build Axum router with Leptos integration
     let app = Router::new()
+        .route("/health", get(|| async { "OK" })) // Health check for Fly.io
         .route("/api/{*fn_name}", any(proxy_handler)) // Proxy API requests
         .leptos_routes(&leptos_options, routes, {
             let leptos_options = leptos_options.clone();
@@ -74,12 +75,11 @@ async fn proxy_handler(req: axum::extract::Request) -> axum::response::Response 
         .unwrap_or_default();
 
     let resp = req_builder.body(bytes).send().await;
-
     match resp {
         Ok(resp) => {
             let mut response_builder = axum::response::Response::builder().status(resp.status());
-
             // Forward headers
+
             if let Some(headers) = response_builder.headers_mut() {
                 for (key, value) in resp.headers() {
                     headers.insert(key, value.clone());

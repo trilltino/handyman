@@ -62,7 +62,6 @@ impl<T> ApiResponse<T> {
     /// let response = ApiResponse::success("Operation completed", vec![1, 2, 3]);
     /// assert!(response.success);
     /// ```
-    #[must_use]
     #[inline]
     pub fn success(message: impl Into<String>, data: T) -> Self {
         Self {
@@ -87,7 +86,6 @@ impl<T> ApiResponse<T> {
     /// assert!(!response.success);
     /// assert_eq!(response.data, None);
     /// ```
-    #[must_use]
     #[inline]
     pub fn error(message: impl Into<String>) -> Self {
         Self {
@@ -95,6 +93,18 @@ impl<T> ApiResponse<T> {
             message: message.into(),
             data: None,
         }
+    }
+
+    /// Set the message of the response.
+    pub fn with_message(mut self, message: impl Into<String>) -> Self {
+        self.message = message.into();
+        self
+    }
+
+    /// Set the data of the response.
+    pub fn with_data(mut self, data: T) -> Self {
+        self.data = Some(data);
+        self
     }
 
     /// Maps the response data to a different type.
@@ -108,9 +118,8 @@ impl<T> ApiResponse<T> {
     ///
     /// let response = ApiResponse::success("OK", vec![1, 2, 3]);
     /// let mapped = response.map(|data| data.map(|v| v.len()));
-    /// assert_eq!(mapped.data, Some(Some(3)));
+    /// assert_eq!(mapped.data, Some(3));
     /// ```
-    #[must_use]
     pub fn map<U>(self, f: impl FnOnce(Option<T>) -> Option<U>) -> ApiResponse<U> {
         ApiResponse {
             success: self.success,

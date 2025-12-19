@@ -47,7 +47,12 @@ axum = "0.8.0"
 axum-extra = "0.9"
 tokio = { version = "1.48", features = ["full"] }
 tower = "0.5"
-tower-http = { version = "0.6", features = ["fs", "cors", "trace"] }
+tower-http = { version = "0.6", features = [
+    "fs",
+    "cors",
+    "trace",
+    "set-header",
+] }
 tower-cookies = "0.11"
 tower_governor = "0.8"
 

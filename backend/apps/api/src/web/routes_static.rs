@@ -2,11 +2,11 @@
 //!
 //! Provides health checks, version info, Stripe config, and Prometheus metrics.
 
+use crate::web::handlers::static_content::{health_handler, version_handler};
 use axum::routing::get;
 use axum::Router;
 use metrics_exporter_prometheus::{Matcher, PrometheusBuilder, PrometheusHandle};
 use std::sync::OnceLock;
-use crate::web::handlers::static_content::{health_handler, version_handler, stripe_config_handler};
 
 static METRICS_RECORDER: OnceLock<PrometheusHandle> = OnceLock::new();
 
@@ -28,7 +28,6 @@ pub fn routes() -> Router {
     Router::new()
         .route("/health", get(health_handler))
         .route("/status/version", get(version_handler))
-        .route("/api/stripe-config", get(stripe_config_handler))
         .route(
             "/metrics",
             get(move || async move { recorder_handle.render() }),

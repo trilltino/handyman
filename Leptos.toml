@@ -20,9 +20,10 @@ site-pkg-dir = "pkg"
 # Assets source directory - relative to frontend-leptos package
 assets-dir = "frontend-leptos/public"
 
-# Use pre-built CSS from npm (Tailwind v4)
-# This file is created by: npm run build:css
-style-file = "target/site/pkg/xftradesmen.css"
+# CSS is built separately via npm (not managed by cargo-leptos)
+# Run: npm run build:css
+# The output is placed in: target/site/pkg/xftradesmen.css
+# This is referenced in frontend-leptos/src/lib.rs via <Stylesheet>
 
 # Server configuration
 site-addr = "127.0.0.1:3001"

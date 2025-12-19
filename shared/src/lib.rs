@@ -47,5 +47,5 @@ pub mod validation;
 
 pub use error::{SharedError, SharedResult};
 pub use metadata::PageMetadata;
-pub use types::{ApiResponse, ContactForm, Product, ProductImage, ProductWithImages, LoginPayload, RegisterPayload, AuthResponse};
+pub use types::{ApiResponse, ContactForm, Product, ProductImage, ProductWithImages};
 pub use validation::Validate;

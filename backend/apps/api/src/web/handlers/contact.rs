@@ -13,10 +13,10 @@ use axum::extract::{Json, State};
 use lib_core::email::email_service;
 use lib_core::model::contact::{ContactBmc, ContactForCreate};
 use lib_core::model::ModelManager;
-use lib_web::Error;
+use lib_web::{Error, ValidatedJson};
 use serde_json::{json, Value};
-use tracing::{error, info};
 use shared::{ApiResponse, ContactForm};
+use tracing::{error, info};
 
 /// Handles contact form submissions.
 #[utoipa::path(
@@ -31,11 +31,8 @@ use shared::{ApiResponse, ContactForm};
 )]
 pub async fn api_contact_handler(
     State(mm): State<ModelManager>,
-    Json(payload): Json<ContactForm>,
+    ValidatedJson(payload): ValidatedJson<ContactForm>,
 ) -> Result<Json<ApiResponse<Value>>, Error> {
-    payload.validate()
-        .map_err(|e| Error::ValidationError(e))?;
-
     let contact = ContactForCreate {
         name: payload.name,
         email: payload.email,

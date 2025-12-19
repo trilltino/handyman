@@ -13,12 +13,13 @@
 //!
 //! - `STRIPE_WEBHOOK_SECRET`: Secret for verifying webhook signatures
 
+use crate::config::app_config;
 use axum::body::Bytes;
 use axum::http::HeaderMap;
+use axum::Json;
 use lib_web::error::Error;
-use serde_json::json;
+use serde_json::{json, Value};
 use shared::ApiResponse;
-use std::env;
 use tracing::{error, info};
 
 /// Handles incoming Stripe webhook events
@@ -35,9 +36,8 @@ use tracing::{error, info};
 pub async fn stripe_webhook_handler(
     headers: HeaderMap,
     body: Bytes,
-) -> Result<axum::Json<ApiResponse<serde_json::Value>>, Error> {
-    let webhook_secret = env::var("STRIPE_WEBHOOK_SECRET")
-        .unwrap_or_else(|_| "whsec_test".to_string());
+) -> Result<Json<ApiResponse<Value>>, Error> {
+    let config = app_config();
 
     let signature = headers
         .get("stripe-signature")
@@ -50,20 +50,17 @@ pub async fn stripe_webhook_handler(
     let body_str = std::str::from_utf8(&body)
         .map_err(|_| Error::ValidationError("Invalid body encoding".into()))?;
 
-    let event = stripe::Webhook::construct_event(
-        body_str,
-        signature,
-        &webhook_secret,
-    )
-    .map_err(|e| {
-        error!("Webhook verification failed: {}", e);
-        Error::ValidationError("Invalid webhook signature".into())
-    })?;
+    let event =
+        stripe::Webhook::construct_event(body_str, signature, &config.stripe.webhook_secret)
+            .map_err(|e| {
+                error!("Webhook verification failed: {}", e);
+                Error::ValidationError("Invalid webhook signature".into())
+            })?;
 
     info!("Received verified webhook event: {:?}", event.type_);
 
-    use stripe::{EventType, EventObject};
-    
+    use stripe::{EventObject, EventType};
+
     match event.type_ {
         EventType::PaymentIntentSucceeded => {
             if let EventObject::PaymentIntent(payment_intent) = event.data.object {

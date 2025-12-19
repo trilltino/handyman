@@ -27,20 +27,28 @@
 //! APP_SERVER__PORT=3000 APP_DB__URL=postgres://prod_db cargo run -p api
 //! ```
 
-use config::{Config, Environment};
+use config::{Config, ConfigError, Environment};
 use serde::Deserialize;
 use std::env;
+use std::sync::OnceLock;
+
+/// Global application configuration instance.
+pub fn app_config() -> &'static AppConfig {
+    static INSTANCE: OnceLock<AppConfig> = OnceLock::new();
+    INSTANCE.get_or_init(|| AppConfig::load().expect("Failed to load application configuration"))
+}
 
 /// Application configuration.
 ///
-/// Contains all server and database settings loaded from environment.
+/// Contains all server, database and service settings loaded from environment.
 #[derive(Debug, Deserialize, Clone)]
 pub struct AppConfig {
     /// Server configuration (host, port)
     pub server: ServerConfig,
     /// Database configuration (connection URL)
-    #[allow(dead_code)]
     pub db: DbConfig,
+    /// Stripe configuration
+    pub stripe: StripeConfig,
 }
 
 /// Server network configuration.
@@ -56,8 +64,20 @@ pub struct ServerConfig {
 #[derive(Debug, Deserialize, Clone)]
 pub struct DbConfig {
     /// PostgreSQL connection string
-    #[allow(dead_code)]
     pub url: String,
+}
+
+/// Stripe service configuration.
+#[derive(Debug, Deserialize, Clone)]
+pub struct StripeConfig {
+    /// Stripe public key
+    pub public_key: String,
+    /// Stripe secret key
+    pub secret_key: String,
+    /// Stripe product ID for the main package
+    pub product_id: String,
+    /// Stripe webhook secret
+    pub webhook_secret: String,
 }
 
 impl AppConfig {
@@ -65,31 +85,31 @@ impl AppConfig {
     ///
     /// Looks for environment variables prefixed with `APP_` and separated
     /// by double underscores (`__`) for nested keys.
-    ///
-    /// # Returns
-    ///
-    /// - `Ok(AppConfig)` - Configuration successfully loaded
-    /// - `Err(ConfigError)` - Configuration loading failed
-    ///
-    /// # Examples
-    ///
-    /// ```bash
-    /// # Use environment variables
-    /// APP_SERVER__PORT=3000 cargo run
-    ///
-    /// # Or use defaults
-    /// cargo run
-    /// ```
-    pub fn load() -> Result<Self, config::ConfigError> {
+    pub fn load() -> Result<Self, ConfigError> {
         let _run_mode = env::var("RUN_MODE").unwrap_or_else(|_| "development".into());
 
         let s = Config::builder()
-            .add_source(Environment::with_prefix("APP").separator("__"))
+            // Start with development defaults
             .set_default("server.host", "127.0.0.1")?
             .set_default("server.port", 8080)?
             .set_default(
                 "db.url",
                 "postgres://postgres:Ab13cba46def79_@localhost:5432/handyman",
+            )?
+            .set_default("stripe.public_key", "")?
+            .set_default("stripe.secret_key", "")?
+            .set_default("stripe.product_id", "")?
+            .set_default("stripe.webhook_secret", "")?
+            // Add environment variables (APP_SERVER__PORT etc)
+            .add_source(Environment::with_prefix("APP").separator("__"))
+            // Map legacy vars to structure
+            .set_override_option("db.url", env::var("DATABASE_URL").ok())?
+            .set_override_option("stripe.public_key", env::var("STRIPE_PUBLIC_KEY").ok())?
+            .set_override_option("stripe.secret_key", env::var("STRIPE_SECRET_KEY").ok())?
+            .set_override_option("stripe.product_id", env::var("STRIPE_PRODUCT_ID").ok())?
+            .set_override_option(
+                "stripe.webhook_secret",
+                env::var("STRIPE_WEBHOOK_SECRET").ok(),
             )?
             .build()?;
 

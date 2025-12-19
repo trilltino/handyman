@@ -44,12 +44,10 @@
 //! - RUST_LOG=info or warn
 
 mod config;
-mod extractors;
 mod middleware;
-mod validators;
 mod web;
 
-use crate::config::AppConfig;
+use crate::config::app_config;
 use clap::Parser;
 use lib_core::model::ModelManager;
 use std::net::SocketAddr;
@@ -80,7 +78,7 @@ struct Args {
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
     dotenvy::dotenv().ok();
-    
+
     let args = Args::parse();
 
     // Handle --test-db flag
@@ -95,7 +93,7 @@ async fn main() -> anyhow::Result<()> {
 
     tracing_subscriber::fmt::init();
 
-    let config = AppConfig::load()?;
+    let config = app_config();
     println!(
         "Server config: {}:{}",
         config.server.host, config.server.port
@@ -115,7 +113,8 @@ async fn main() -> anyhow::Result<()> {
 
     let app = middleware::apply_middleware(web::routes(mm));
 
-    let addr = SocketAddr::from(([127, 0, 0, 1], config.server.port));
+    let addr = format!("{}:{}", config.server.host, config.server.port).parse::<SocketAddr>()?;
+
     tracing::info!("listening on {}", addr);
     let listener = TcpListener::bind(addr).await?;
     axum::serve(listener, app).await?;
@@ -157,19 +156,16 @@ async fn test_database_connection() -> anyhow::Result<()> {
 /// - 1 - Migrations failed
 async fn run_migrations() -> anyhow::Result<()> {
     tracing::info!("Running database migrations...");
-    
+
     // Get database URL from environment
-    let database_url = std::env::var("DATABASE_URL")
-        .expect("DATABASE_URL must be set");
-    
+    let database_url = std::env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+
     // Connect to database
     let pool = sqlx::PgPool::connect(&database_url).await?;
-    
+
     // Run migrations from the migrations folder
-    sqlx::migrate!("../../../migrations")
-        .run(&pool)
-        .await?;
-    
+    sqlx::migrate!("../../../migrations").run(&pool).await?;
+
     tracing::info!("Migrations completed successfully");
     Ok(())
 }

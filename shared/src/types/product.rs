@@ -70,7 +70,7 @@ impl Product {
     /// let product = Product::new(1, "Website".to_string(), 500.0);
     /// assert_eq!(product.id, 1);
     /// ```
-    #[must_use]
+    #[must_use = "The created product should be used"]
     pub const fn new(id: i32, name: String, price: f64) -> Self {
         Self {
             id,

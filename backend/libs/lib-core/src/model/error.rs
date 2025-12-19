@@ -30,7 +30,7 @@ pub enum Error {
     CantCreateModelManagerProvider(String),
 
     // -- Validation
-    ValidationError(String),
+    ValidationError(std::borrow::Cow<'static, str>),
 
     // -- Modules
     #[from]

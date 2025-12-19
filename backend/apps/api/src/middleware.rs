@@ -47,35 +47,17 @@
 //! - Reduces bandwidth usage
 //! - Automatically detects Accept-Encoding header
 
-use axum::http::{header, Method};
+use axum::http::{header, HeaderValue, Method};
 use std::time::Duration;
 use tower_http::compression::CompressionLayer;
 use tower_http::cors::{Any, CorsLayer};
+use tower_http::set_header::SetResponseHeaderLayer;
 use tower_http::trace::TraceLayer;
 
 /// Apply middleware pipeline to an Axum router.
 ///
 /// Adds the complete middleware stack in the correct order for
 /// request handling, tracing, and response optimization.
-///
-/// # Arguments
-///
-/// * `app` - Axum router to wrap with middleware
-///
-/// # Returns
-///
-/// Router wrapped with all middleware layers
-///
-/// # Example
-///
-/// ```rust,no_run
-/// use axum::Router;
-/// use lib_core::model::ModelManager;
-///
-/// let mm = ModelManager::new().await?;
-/// let app = web::routes(mm);
-/// let app_with_middleware = apply_middleware(app);
-/// ```
 pub fn apply_middleware<S>(app: axum::Router<S>) -> axum::Router<S>
 where
     S: Clone + Send + Sync + 'static,
@@ -89,4 +71,21 @@ where
     )
     .layer(TraceLayer::new_for_http())
     .layer(CompressionLayer::new())
+    // Security Headers
+    .layer(SetResponseHeaderLayer::overriding(
+        header::X_CONTENT_TYPE_OPTIONS,
+        HeaderValue::from_static("nosniff"),
+    ))
+    .layer(SetResponseHeaderLayer::overriding(
+        header::X_FRAME_OPTIONS,
+        HeaderValue::from_static("DENY"),
+    ))
+    .layer(SetResponseHeaderLayer::overriding(
+        header::STRICT_TRANSPORT_SECURITY,
+        HeaderValue::from_static("max-age=31536000; includeSubDomains"),
+    ))
+    .layer(SetResponseHeaderLayer::overriding(
+        header::X_XSS_PROTECTION,
+        HeaderValue::from_static("1; mode=block"),
+    ))
 }

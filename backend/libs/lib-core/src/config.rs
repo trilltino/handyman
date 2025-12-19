@@ -8,7 +8,7 @@ use std::sync::OnceLock;
 pub fn core_config() -> &'static CoreConfig {
     static INSTANCE: OnceLock<CoreConfig> = OnceLock::new();
 
-    INSTANCE.get_or_init(|| CoreConfig::load_from_env())
+    INSTANCE.get_or_init(CoreConfig::load_from_env)
 }
 
 #[allow(non_snake_case)]

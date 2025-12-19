@@ -2,13 +2,15 @@
 //!
 //! This module processes Stripe webhook events for payment confirmations.
 
-use axum::routing::post;
+use crate::web::handlers::payment::stripe_webhook_handler;
+use crate::web::handlers::static_content::stripe_config_handler;
+use axum::routing::{get, post};
 use axum::Router;
 use lib_core::model::ModelManager;
-use crate::web::handlers::payment::stripe_webhook_handler;
 
 pub fn routes(mm: ModelManager) -> Router {
     Router::new()
-        .route("/api/webhooks/stripe", post(stripe_webhook_handler))
+        .route("/webhooks/stripe", post(stripe_webhook_handler))
+        .route("/stripe-config", get(stripe_config_handler))
         .with_state(mm)
 }
