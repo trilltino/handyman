@@ -99,7 +99,10 @@ async fn main() -> anyhow::Result<()> {
         .with_state(pool);
 
     // Run the server
-    let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
+    let port = std::env::var("PORT").unwrap_or_else(|_| "3000".to_string());
+    let addr_str = format!("127.0.0.1:{}", port);
+    let addr: SocketAddr = addr_str.parse().expect("Invalid address format");
+
     tracing::info!("listening on {}", addr);
     let listener = tokio::net::TcpListener::bind(addr).await?;
     axum::serve(listener, app).await?;
