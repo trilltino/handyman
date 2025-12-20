@@ -27,7 +27,7 @@ ENV CARGO_HTTP_MULTIPLEXING=false
 COPY . .
 
 # Install Node dependencies (for Tailwind)
-RUN npm ci
+RUN npm install
 
 # Build CSS (Tailwind)
 RUN npm run build:css
