@@ -4,11 +4,14 @@
 # Stage 1: Chef - Computes the recipe file
 FROM rust:1.83-slim-bookworm AS chef
 WORKDIR /app
-RUN cargo install cargo-chef
 RUN apt-get update && apt-get install -y \
     pkg-config \
     libssl-dev \
+    curl \
     && rm -rf /var/lib/apt/lists/*
+# Install cargo-binstall first, then use it for cargo-chef (avoids edition2024 compile issues)
+RUN curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash \
+    && cargo binstall cargo-chef -y --force
 
 # Stage 2: Planner - Creates the recipe
 FROM chef AS planner
