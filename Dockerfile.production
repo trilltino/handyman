@@ -45,7 +45,7 @@ COPY --from=planner /app/recipe.json recipe.json
 # Build dependencies - this is the cached layer!
 RUN cargo chef cook --release --recipe-path recipe.json
 
-
+RUN cargo chef cook --release --target wasm32-unknown-unknown --recipe-path recipe.json -p frontend-leptos
 # Copy source code
 COPY . .
 
