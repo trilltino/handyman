@@ -5,8 +5,11 @@
 #[cfg(feature = "ssr")]
 #[tokio::main]
 async fn main() {
-    use axum::{routing::any, Router};
-    use frontend_leptos_lib::App;
+    use axum::{
+        routing::{any, get},
+        Router,
+    };
+    use frontend_leptos::App;
     use leptos::prelude::*;
     use leptos_axum::{generate_route_list, LeptosRoutes};
 
@@ -111,7 +114,7 @@ pub fn main() {
 
 #[cfg(feature = "ssr")]
 fn shell(options: leptos::prelude::LeptosOptions) -> impl leptos::prelude::IntoView {
-    use frontend_leptos_lib::App;
+    use frontend_leptos::App;
     use leptos::prelude::*;
     use leptos_meta::MetaTags;
 
