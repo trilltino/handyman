@@ -2,10 +2,10 @@
 //!
 //! Lists all blog posts.
 
-use leptos::prelude::*;
 use crate::components::seo::SeoHead;
-use shared::PageMetadata;
 use crate::components::ui::{Button, ButtonVariant};
+use leptos::prelude::*;
+use shared::PageMetadata;
 
 #[component]
 pub fn BlogIndex() -> impl IntoView {
@@ -40,7 +40,7 @@ pub fn BlogIndex() -> impl IntoView {
                          <div class="h-1 w-12 bg-gradient-to-r from-brand to-transparent rounded-full"></div>
                          <h2 class="text-2xl font-bold text-white tracking-widest uppercase font-mono">"Latest Transmissions"</h2>
                     </div>
-                    
+
                     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                         // Article 1
                         <div class="card-deep overflow-hidden group p-0 border-void-highlight hover:border-brand/50 transition-all duration-300">
@@ -116,7 +116,7 @@ pub fn BlogIndex() -> impl IntoView {
                     </div>
                 </div>
             </section>
-            
+
             <section class="bg-void border-t border-void-highlight py-24 px-4 overflow-hidden relative">
                  <div class="absolute inset-y-0 right-0 w-1/3 bg-gradient-to-l from-brand/5 to-transparent"></div>
                 <div class="max-w-2xl mx-auto text-center relative z-10">

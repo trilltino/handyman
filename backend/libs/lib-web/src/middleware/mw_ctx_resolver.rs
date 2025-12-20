@@ -56,12 +56,10 @@ async fn resolve_ctx(cookies: &Cookies) -> CtxExtResult {
     // Note: For now, we'll use a simple validation
     // TODO: Implement proper JWT validation with secret
     let _config = core_config();
-    
+
     // Parse user_id from token (simplified for now)
     // In production, you'd validate the JWT signature
-    let user_id: i64 = token
-        .parse()
-        .unwrap_or(1); // Default to user 1 for development
+    let user_id: i64 = token.parse().unwrap_or(1); // Default to user 1 for development
 
     // Create context with just user_id
     let ctx = Ctx::new(user_id);

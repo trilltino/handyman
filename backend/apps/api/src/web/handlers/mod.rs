@@ -8,5 +8,5 @@
 
 pub mod contact;
 pub mod payment;
-pub mod static_content;
 pub mod seo;
+pub mod static_content;

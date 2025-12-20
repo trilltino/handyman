@@ -2,12 +2,12 @@
 //!
 //! Contact form with validation and API submission.
 
-use leptos::prelude::*;
-use leptos::html::{Input, Textarea};
-use leptos::task::spawn_local;
-use leptos::ev::SubmitEvent;
-use shared::PageMetadata;
 use crate::components::seo::SeoHead;
+use leptos::ev::SubmitEvent;
+use leptos::html::{Input, Textarea};
+use leptos::prelude::*;
+use leptos::task::spawn_local;
+use shared::PageMetadata;
 
 #[component]
 pub fn Contact() -> impl IntoView {
@@ -24,24 +24,33 @@ pub fn Contact() -> impl IntoView {
         set_success_msg.set(None);
         set_error_msg.set(None);
 
-        let n = name_ref.get().map(|el| el.value()).unwrap_or_else(String::new);
-        let e = email_ref.get().map(|el| el.value()).unwrap_or_else(String::new);
-        let m = message_ref.get().map(|el| el.value()).unwrap_or_else(String::new);
+        let n = name_ref
+            .get()
+            .map(|el| el.value())
+            .unwrap_or_else(String::new);
+        let e = email_ref
+            .get()
+            .map(|el| el.value())
+            .unwrap_or_else(String::new);
+        let m = message_ref
+            .get()
+            .map(|el| el.value())
+            .unwrap_or_else(String::new);
 
         spawn_local(async move {
             match crate::api::contact::submit_contact_form(n, e, m).await {
                 Ok(msg) => {
                     set_success_msg.set(Some(msg));
-                    if let Some(el) = name_ref.get() { 
-                        el.set_value(""); 
+                    if let Some(el) = name_ref.get() {
+                        el.set_value("");
                     }
-                    if let Some(el) = email_ref.get() { 
-                        el.set_value(""); 
+                    if let Some(el) = email_ref.get() {
+                        el.set_value("");
                     }
-                    if let Some(el) = message_ref.get() { 
-                        el.set_value(""); 
+                    if let Some(el) = message_ref.get() {
+                        el.set_value("");
                     }
-                },
+                }
                 Err(err) => {
                     set_error_msg.set(Some(err));
                 }
@@ -76,14 +85,14 @@ pub fn Contact() -> impl IntoView {
 
             <section class="bg-void-surface border-t border-void-highlight py-24 px-4 relative">
                  <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-void-highlight/10 via-transparent to-transparent"></div>
-                
+
                 <div class="max-w-2xl mx-auto relative z-10">
                     <div class="card-deep relative overflow-hidden">
                         // Glow
                          <div class="absolute top-0 right-0 w-64 h-64 bg-brand/5 blur-[80px] rounded-full pointer-events-none"></div>
 
                         <h2 class="text-3xl font-bold text-white mb-8 text-center font-heading">"Send Transmission"</h2>
-                        
+
                         <form on:submit=submit_form class="space-y-6">
                             {move || success_msg.get().map(|msg| {
                                 view! {

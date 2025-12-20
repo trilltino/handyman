@@ -2,9 +2,9 @@
 //!
 //! Provides static SEO files for search engine crawlers.
 
+use crate::web::handlers::seo::{robots_txt_handler, sitemap_xml_handler};
 use axum::routing::get;
 use axum::Router;
-use crate::web::handlers::seo::{robots_txt_handler, sitemap_xml_handler};
 
 pub fn routes() -> Router {
     Router::new()

@@ -155,8 +155,8 @@ impl EmailService {
             .credentials(creds)
             .build();
 
-        let from_email = env::var("FROM_EMAIL")
-            .unwrap_or_else(|_| "noreply@xftradesmen.com".to_string());
+        let from_email =
+            env::var("FROM_EMAIL").unwrap_or_else(|_| "noreply@xftradesmen.com".to_string());
 
         Ok(EmailService { mailer, from_email })
     }
@@ -357,10 +357,7 @@ impl EmailService {
     </div>
 </body>
 </html>"#,
-            contact_name,
-            contact_email,
-            contact_email,
-            message
+            contact_name, contact_email, contact_email, message
         );
 
         let email_message = EmailMessage {

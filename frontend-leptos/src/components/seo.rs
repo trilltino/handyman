@@ -4,15 +4,14 @@
 //! Uses `PageMetadata` from shared crate for consistency.
 
 use leptos::prelude::*;
-use leptos_meta::{Meta, Title, Script};
+use leptos_meta::{Meta, Script, Title};
 use shared::PageMetadata;
 
 /// Returns the canonical base URL for the site.
 /// Controlled via CANONICAL_BASE env var. Defaults to production domain.
 #[allow(dead_code)]
 pub fn canonical_base() -> String {
-    std::env::var("CANONICAL_BASE")
-        .unwrap_or_else(|_| "https://xftradesmen.com".to_string())
+    std::env::var("CANONICAL_BASE").unwrap_or_else(|_| "https://xftradesmen.com".to_string())
 }
 
 /// Build an absolute URL from a path using the canonical base.
@@ -40,9 +39,13 @@ pub fn SeoHead(
 ) -> impl IntoView {
     let title = metadata.title;
     let description = metadata.description;
-    let image = metadata.og_image.unwrap_or_else(|| "https://xftradesmen.com/og-image.jpg".to_string());
-    let url = metadata.canonical_url.unwrap_or_else(|| "https://xftradesmen.com".to_string());
-    
+    let image = metadata
+        .og_image
+        .unwrap_or_else(|| "https://xftradesmen.com/og-image.jpg".to_string());
+    let url = metadata
+        .canonical_url
+        .unwrap_or_else(|| "https://xftradesmen.com".to_string());
+
     view! {
         <Title text=title.clone()/>
         <Meta name="description" content=description.clone()/>
@@ -63,7 +66,7 @@ pub fn SeoHead(
 }
 
 /// LocalBusiness Schema.org structured data.
-/// 
+///
 /// Adds JSON-LD markup for local business SEO rich snippets.
 #[component]
 pub fn LocalBusinessSchema() -> impl IntoView {
@@ -107,7 +110,7 @@ pub fn LocalBusinessSchema() -> impl IntoView {
 }
 
 /// Organization Schema.org structured data.
-/// 
+///
 /// Adds JSON-LD markup for organization SEO.
 #[component]
 pub fn OrganizationSchema() -> impl IntoView {

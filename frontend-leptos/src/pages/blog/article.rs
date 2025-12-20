@@ -2,11 +2,11 @@
 //!
 //! Individual blog post view with dynamic routing.
 
-use leptos::prelude::*;
 use crate::components::seo::SeoHead;
-use shared::PageMetadata;
+use leptos::prelude::*;
 use leptos_router::hooks::use_params;
 use leptos_router::params::Params;
+use shared::PageMetadata;
 
 #[derive(PartialEq, Clone, Params)]
 pub struct BlogParams {
@@ -16,12 +16,13 @@ pub struct BlogParams {
 #[component]
 pub fn BlogArticle() -> impl IntoView {
     let params = use_params::<BlogParams>();
-    
-    // In a real app, we would fetch data based on the slug. 
+
+    // In a real app, we would fetch data based on the slug.
     // For now, we'll just show a generic template or switch based on slug mock.
-    
+
     let slug = move || {
-        params.read()
+        params
+            .read()
             .as_ref()
             .ok()
             .and_then(|p| p.slug.clone())
@@ -29,10 +30,14 @@ pub fn BlogArticle() -> impl IntoView {
     };
 
     let title = move || match slug().as_str() {
-        "why-tradesmen-need-websites" => "Why Tradesmen with Websites Earn 40% More - XF Tradesmen".to_string(),
+        "why-tradesmen-need-websites" => {
+            "Why Tradesmen with Websites Earn 40% More - XF Tradesmen".to_string()
+        }
         "local-seo-guide" => "Ultimate Guide to Local SEO for Plumbers - XF Tradesmen".to_string(),
-        "building-trust-online" => "How to Build Trust with Clients Online - XF Tradesmen".to_string(),
-        _ => "Blog Article - XF Tradesmen".to_string()
+        "building-trust-online" => {
+            "How to Build Trust with Clients Online - XF Tradesmen".to_string()
+        }
+        _ => "Blog Article - XF Tradesmen".to_string(),
     };
 
     view! {
@@ -52,7 +57,7 @@ pub fn BlogArticle() -> impl IntoView {
                         <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
                         "Back to Knowledge Base"
                     </a>
-                    
+
                     <div class="flex items-center gap-4 mb-6">
                         <span class="px-2 py-1 rounded bg-void-highlight text-gray-400 text-[10px] font-mono uppercase tracking-widest">"Intelligence"</span>
                         <span class="text-gray-500 text-xs font-mono uppercase">"August 15, 2024"</span>
@@ -66,7 +71,7 @@ pub fn BlogArticle() -> impl IntoView {
                             _ => "Article Title Placeholder"
                         }}
                     </h1>
-                    
+
                     <div class="flex items-center gap-4 text-xs text-brand-light border-b border-void-highlight pb-8 font-mono">
                          <span class="flex items-center gap-2">
                             <span class="w-1 h-1 bg-brand rounded-full"></span>
@@ -78,17 +83,17 @@ pub fn BlogArticle() -> impl IntoView {
                          </span>
                     </div>
                 </div>
-                
+
                 <div class="prose prose-invert prose-lg max-w-none prose-headings:font-heading prose-headings:font-bold prose-a:text-brand prose-a:no-underline hover:prose-a:text-brand-light prose-blockquote:border-l-brand prose-blockquote:bg-void-surface prose-blockquote:py-2 prose-blockquote:px-6 prose-blockquote:not-italic prose-blockquote:rounded-r-lg">
                     <p class="lead text-xl text-gray-300 mb-8 font-light leading-relaxed">
                         "Introduction placeholder. This is where the engaging hook would go, explaining why this topic is critical for tradesmen right now."
                     </p>
-                    
+
                     <h2>"Why This Matters"</h2>
                     <p>
                         "Content placeholder. Detailed explanation of the problem and solution."
                     </p>
-                    
+
                     // Specific content injection based on slug could go here
                     {move || match slug().as_str() {
                          "why-tradesmen-need-websites" => view! {
@@ -102,8 +107,8 @@ pub fn BlogArticle() -> impl IntoView {
                                 </ul>
                             </div>
                          }.into_any(),
-                         _ => view! { 
-                            <p>"Specific content for this article is being drafted..."</p> 
+                         _ => view! {
+                            <p>"Specific content for this article is being drafted..."</p>
                         }.into_any()
                     }}
 
@@ -112,7 +117,7 @@ pub fn BlogArticle() -> impl IntoView {
                         "Ready to take action? Start by building your free website with XF Tradesmen today."
                     </p>
                 </div>
-                
+
                 <div class="mt-20 card-deep border-brand/20 p-10 text-center relative overflow-hidden group">
                      <div class="absolute inset-0 bg-brand/5 group-hover:bg-brand/10 transition duration-500"></div>
                      <div class="relative z-10">

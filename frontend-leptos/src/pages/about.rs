@@ -2,9 +2,9 @@
 //!
 //! Company information and team overview.
 
-use leptos::prelude::*;
-use crate::components::ui::FeatureList;
 use crate::components::seo::SeoHead;
+use crate::components::ui::FeatureList;
+use leptos::prelude::*;
 use shared::PageMetadata;
 
 #[component]
@@ -45,18 +45,18 @@ pub fn About() -> impl IntoView {
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div>
                             <div class="inline-block px-3 py-1 rounded-full bg-brand/10 border border-brand/20 text-brand text-xs font-mono font-bold mb-6">"OUR MISSION"</div>
                             <h2 class="text-3xl font-bold text-white mb-6 font-heading">"Digital Dominance for Local Trades"</h2>
-                            
+
                             <div class="space-y-6 text-gray-400 leading-relaxed">
                                 <p>
-                                    "Founded in <span class='text-white font-semibold'>2024</span>, XF Tradesmen was initialized with a singular directive: 
+                                    "Founded in <span class='text-white font-semibold'>2024</span>, XF Tradesmen was initialized with a singular directive:
                                     to equip independent tradespeople with elite-level digital tools."
                                 </p>
                                 <p>
-                                    "We observed a market failure: skilled professionals relying on subpar, slow, and unoptimized websites. 
+                                    "We observed a market failure: skilled professionals relying on subpar, slow, and unoptimized websites.
                                     We engineered a solution. A platform that provides high-speed, SEO-optimised infrastructure 
                                     that ensures you dominate local search results."
                                 </p>
@@ -72,7 +72,7 @@ pub fn About() -> impl IntoView {
                          <span class="text-brand font-mono text-sm tracking-widest uppercase mb-2 block">"System Capabilities"</span>
                         <h2 class="text-3xl md:text-4xl font-bold text-white tracking-tight font-heading">"WHAT WE PROVIDE"</h2>
                     </div>
-                    
+
                     <div class="max-w-4xl mx-auto">
                         <FeatureList features=vec![
                             "High-Performance Rust Architecture".to_string(),
@@ -85,7 +85,7 @@ pub fn About() -> impl IntoView {
                     </div>
                 </div>
             </section>
-            
+
             <section class="bg-brand-deep py-24 px-4 text-center relative overflow-hidden">
                 <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10 mix-blend-overlay"></div>
                 <div class="max-w-3xl mx-auto relative z-10">

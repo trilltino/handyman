@@ -13,7 +13,7 @@ pub fn Navbar() -> impl IntoView {
                     <span class="text-brand">"⚡"</span>
                     " XFTradesmen"
                 </a>
-                
+
                 // Desktop Navigation
                 <div class="hidden md:flex navbar-nav">
                     // Example Sites Dropdown
@@ -39,17 +39,17 @@ pub fn Navbar() -> impl IntoView {
                             </a>
                         </div>
                     </div>
-                    
+
                     <a href="/industries" class="navbar-link">"Industries"</a>
                     <a href="/packages" class="navbar-link">"Packages"</a>
                     <a href="/about" class="navbar-link">"About"</a>
                     <a href="/blog" class="navbar-link">"Blog"</a>
-                    
+
                     <a href="/contact" class="btn btn-primary btn-sm">
                         "Contact"
                     </a>
                 </div>
-                
+
                 // Mobile Menu Button
                 <button class="md:hidden btn-ghost" aria-label="Menu">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -74,11 +74,11 @@ pub fn Footer() -> impl IntoView {
                             <span class="text-brand">"⚡"</span>" XFTradesmen"
                         </a>
                         <p class="text-gray-500 max-w-sm">
-                            "Professional handyman services in Coventry and surrounding areas. 
+                            "Professional handyman services in Coventry and surrounding areas.
                             Licensed, insured, and ready to help."
                         </p>
                     </div>
-                    
+
                     // Services
                     <div>
                         <h4 class="text-sm font-semibold text-gray-300 uppercase tracking-wider mb-4">
@@ -90,7 +90,7 @@ pub fn Footer() -> impl IntoView {
                             <li><a href="/packages" class="text-gray-500 hover:text-brand-light text-sm">"Packages"</a></li>
                         </ul>
                     </div>
-                    
+
                     // Company
                     <div>
                         <h4 class="text-sm font-semibold text-gray-300 uppercase tracking-wider mb-4">
@@ -103,7 +103,7 @@ pub fn Footer() -> impl IntoView {
                         </ul>
                     </div>
                 </div>
-                
+
                 // Bottom
                 <div class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-void-highlight text-gray-600 text-sm">
                     <p>"© 2024 XF Tradesmen. All rights reserved."</p>

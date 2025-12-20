@@ -40,10 +40,10 @@ use serde::{Deserialize, Serialize};
 pub struct ContactForm {
     /// Sender's name from contact form (1-100 chars)
     pub name: String,
-    
+
     /// Sender's email for follow-up (valid format, max 254 characters)
     pub email: String,
-    
+
     /// Message content from textarea (1-5000 chars after trimming)
     pub message: String,
 }
@@ -73,11 +73,15 @@ impl ContactForm {
     /// assert_eq!(form.message, "Hello!");
     /// ```
     #[must_use]
-    pub fn new(name: impl Into<String>, email: impl Into<String>, message: impl Into<String>) -> Self {
+    pub fn new(
+        name: impl Into<String>,
+        email: impl Into<String>,
+        message: impl Into<String>,
+    ) -> Self {
         let name = name.into();
         let email = email.into();
         let message = message.into();
-        
+
         Self {
             name: name.trim().to_string(),
             email: email.trim().to_lowercase(),
