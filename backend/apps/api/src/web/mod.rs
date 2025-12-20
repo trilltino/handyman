@@ -5,6 +5,7 @@
 pub mod handlers;
 pub mod openapi;
 pub mod routes_contact;
+pub mod routes_health;
 pub mod routes_payment;
 pub mod routes_seo;
 pub mod routes_static;
@@ -19,7 +20,8 @@ pub fn routes(mm: ModelManager) -> Router {
 
     let system_routes = Router::new()
         .merge(routes_static::routes())
-        .merge(routes_seo::routes());
+        .merge(routes_seo::routes())
+        .merge(routes_health::routes(mm.clone()));
 
     Router::new().nest("/api", api_routes).merge(system_routes)
 }

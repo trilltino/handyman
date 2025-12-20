@@ -13,8 +13,9 @@
 //! - **Used by**: Monitoring systems, deployment health checks
 //! - **Future**: Will add database ping, cache status, queue depth
 
-use axum::{http::StatusCode, Json};  // Axum HTTP types
-use serde_json::json;                 // JSON response helper
+use axum::{extract::State, http::StatusCode, Json};
+use serde_json::json;
+use crate::db::DbPool;
 
 /// Root endpoint - simple API identifier
 /// Route: GET /
@@ -23,26 +24,48 @@ pub async fn root() -> &'static str {
     "Handyman API Server"
 }
 
-/// Health check endpoint with server info
+/// Health check endpoint with server info and deep dependency checks
 /// Route: GET /api/health
 ///
 /// Returns JSON with:
-/// - status: "healthy" (always, for now)
-/// - timestamp: Current UTC time (RFC3339 format)
-/// - version: API version from Cargo.toml
-///
-/// # Future Enhancements
-/// - Check database connection
-/// - Check Redis cache connection
-/// - Check Stripe API connectivity
-/// - Report queue depth for background jobs
-pub async fn health_check() -> (StatusCode, Json<serde_json::Value>) {
+/// - status: "healthy" or "degraded"
+/// - timestamp: Current UTC time
+/// - version: API version
+/// - checks: Object containing status of dependencies (database, etc)
+pub async fn health_check(
+    State(pool): State<DbPool>,
+) -> (StatusCode, Json<serde_json::Value>) {
+    // Check Database Connection
+    let db_status = match pool.get().await {
+        Ok(conn) => {
+            // connection acquired, try a simple query
+            match conn.query_one("SELECT 1", &[]).await {
+                Ok(_) => "ok",
+                Err(e) => {
+                    tracing::error!("Health check database query failed: {}", e);
+                    "error_query"
+                }
+            }
+        },
+        Err(e) => {
+            tracing::error!("Health check failed to acquire database connection: {}", e);
+            "error_connection"
+        }
+    };
+
+    // Determine overall status
+    let status = if db_status == "ok" { "healthy" } else { "degraded" };
+    let http_status = if db_status == "ok" { StatusCode::OK } else { StatusCode::SERVICE_UNAVAILABLE };
+
     (
-        StatusCode::OK,
+        http_status,
         Json(json!({
-            "status": "healthy",
+            "status": status,
             "timestamp": chrono::Utc::now().to_rfc3339(),
-            "version": env!("CARGO_PKG_VERSION"),  // Compile-time version from Cargo.toml
+            "version": env!("CARGO_PKG_VERSION"),
+            "checks": {
+                "database": db_status
+            }
         }))
     )
 }

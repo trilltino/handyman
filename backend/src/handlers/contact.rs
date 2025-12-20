@@ -18,12 +18,14 @@
 //! - **Calls**: ContactRepository → Database
 //! - **Future**: Will integrate email notifications
 
+
 use axum::{extract::State, http::StatusCode, Json};  // Axum HTTP types
 use serde_json::json;                                 // JSON response helper
 
 use crate::db::DbPool;                      // Database connection pool
 use crate::models::NewContactMessage;       // Contact message DTO
 use crate::repositories::ContactRepository; // Contact database operations
+use lib_core::email::email_service;         // Email service
 
 /// Handle contact form submission
 /// Route: POST /api/contact
@@ -55,10 +57,26 @@ pub async fn handle_contact(
         Ok(message) => {
             tracing::info!("Contact message saved with ID: {}", message.id);
 
-            // TODO: Send email notification to admin
-            // email::send_contact_notification(&message)?;
-            // TODO: Send auto-reply to sender
-            // email::send_contact_confirmation(&message)?;
+            // Send email notification to admin
+            // We spawn this task so it doesn't block the HTTP response
+            // If email fails, we log it but the user still sees "Success"
+            let email_payload = payload.clone();
+            tokio::spawn(async move {
+                if let Ok(service) = email_service() {
+                    if let Err(e) = service.send_contact_notification(
+                        &email_payload.name,
+                        &email_payload.email,
+                        None,
+                        &email_payload.message
+                    ).await {
+                        tracing::error!("Failed to send contact notification email: {}", e);
+                    } else {
+                        tracing::info!("Contact notification email sent successfully");
+                    }
+                } else {
+                    tracing::warn!("Email service not available - skipping notification");
+                }
+            });
 
             Ok((
                 StatusCode::OK,
@@ -78,3 +96,4 @@ pub async fn handle_contact(
         }
     }
 }
+

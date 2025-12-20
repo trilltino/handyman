@@ -55,13 +55,19 @@ use middleware::mw_response_map;
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
     // Initialize tracing
-    tracing_subscriber::registry()
-        .with(
-            tracing_subscriber::EnvFilter::try_from_default_env()
-                .unwrap_or_else(|_| "backend=debug,tower_http=debug,axum=trace".into()),
-        )
-        .with(tracing_subscriber::fmt::layer())
-        .init();
+    // Initialize tracing with JSON logs for production, pretty for dev
+    let filter = tracing_subscriber::EnvFilter::try_from_default_env()
+        .unwrap_or_else(|_| "backend=debug,tower_http=debug,axum=trace,lib_core=debug".into());
+
+    let registry = tracing_subscriber::registry().with(filter);
+
+    if cfg!(debug_assertions) {
+        // Local usage: Pretty print
+        registry.with(tracing_subscriber::fmt::layer().pretty()).init();
+    } else {
+        // Production usage: JSON logs
+        registry.with(tracing_subscriber::fmt::layer().json()).init();
+    }
 
     // Load environment variables
     dotenvy::dotenv().ok();
@@ -85,6 +91,13 @@ async fn main() -> anyhow::Result<()> {
         .route("/api/booking", post(handle_booking))
         // Middleware layers (order matters - added in reverse order of execution)
         .layer(axum_middleware::map_response(mw_response_map))
+        .layer(
+            tower_http::trace::TraceLayer::new_for_http()
+                .make_span_with(tower_http::trace::DefaultMakeSpan::new().include_headers(true))
+                .on_request(tower_http::trace::DefaultOnRequest::new().level(tracing::Level::INFO))
+                .on_response(tower_http::trace::DefaultOnResponse::new().level(tracing::Level::INFO)),
+        )
+        .layer(tower_http::request_id::SetRequestIdLayer::x_request_id(tower_http::request_id::MakeRequestUuid))
         .layer(
             CorsLayer::new()
                 .allow_origin("http://127.0.0.1:8080".parse::<axum::http::HeaderValue>().unwrap())

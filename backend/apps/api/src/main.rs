@@ -91,13 +91,36 @@ async fn main() -> anyhow::Result<()> {
         return run_migrations().await;
     }
 
-    tracing_subscriber::fmt::init();
+    // Initialize tracing with JSON logs for production, pretty for dev
+    use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
+
+    let filter = tracing_subscriber::EnvFilter::try_from_default_env()
+        .unwrap_or_else(|_| "api=debug,tower_http=debug,axum=trace,lib_core=debug".into());
+
+    let registry = tracing_subscriber::registry().with(filter);
+
+    if cfg!(debug_assertions) {
+        registry
+            .with(tracing_subscriber::fmt::layer().pretty())
+            .init();
+    } else {
+        registry
+            .with(tracing_subscriber::fmt::layer().json())
+            .init();
+    }
 
     let config = app_config();
     println!(
         "Server config: {}:{}",
         config.server.host, config.server.port
     );
+
+    // Check Email Configuration
+    if std::env::var("SMTP_USERNAME").is_err() || std::env::var("SMTP_PASSWORD").is_err() {
+        tracing::warn!("SMTP_USERNAME or SMTP_PASSWORD not set. Emails will NOT be sent.");
+    } else {
+        tracing::info!("SMTP Configuration detected.");
+    }
 
     let mm = match ModelManager::new().await {
         Ok(mm) => {
@@ -111,7 +134,21 @@ async fn main() -> anyhow::Result<()> {
         }
     };
 
-    let app = middleware::apply_middleware(web::routes(mm));
+    let mut app = middleware::apply_middleware(web::routes(mm));
+
+    // Add Request ID and Tracing Middleware
+    app = app
+        .layer(
+            tower_http::trace::TraceLayer::new_for_http()
+                .make_span_with(tower_http::trace::DefaultMakeSpan::new().include_headers(true))
+                .on_request(tower_http::trace::DefaultOnRequest::new().level(tracing::Level::INFO))
+                .on_response(
+                    tower_http::trace::DefaultOnResponse::new().level(tracing::Level::INFO),
+                ),
+        )
+        .layer(tower_http::request_id::SetRequestIdLayer::x_request_id(
+            tower_http::request_id::MakeRequestUuid,
+        ));
 
     let addr = format!("{}:{}", config.server.host, config.server.port).parse::<SocketAddr>()?;
 
