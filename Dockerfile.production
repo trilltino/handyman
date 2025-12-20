@@ -36,7 +36,7 @@ RUN npm run build:css
 RUN cargo build --release --bin api --locked --jobs 1
 
 # Build Leptos App (SSR binary + WASM client)
-RUN cargo leptos build --release --locked -- --jobs 1
+RUN cargo leptos build --release
 
 # Stage 2: Runtime image
 FROM debian:bookworm-slim

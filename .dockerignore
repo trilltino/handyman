@@ -31,6 +31,7 @@ docs/
 
 # Build artifacts (keep Cargo.lock for reproducible builds)
 target/
+target
 .cargo/
 
 # SQLx offline data
@@ -38,12 +39,14 @@ target/
 
 # Reference folder (large, not needed for build)
 reference/
+reference
 
 # CI/CD (GitHub Actions runs outside Docker)
 .github/
 
 # Node modules (if any)
 node_modules/
+node_modules
 yarn.lock
 
 # Testing artifacts
