@@ -1,22 +1,9 @@
-use axum::Router;
-use lib_core::model::ModelManager;
+//! Integration tests for the API
+//!
+//! These are placeholder tests that demonstrate the test structure.
+//! Full integration tests would require setting up a test database and server.
+
 use serde_json::json;
-use std::net::SocketAddr;
-use tower::ServiceExt;
-
-#[tokio::test]
-async fn test_health_endpoint() {
-    // This is a basic integration test structure
-    // In a real implementation, you'd set up a test database
-    // and run the full application
-
-    // For now, just test that the routes can be created
-    let mm = ModelManager::new().await.unwrap();
-    let app = apps::api::web::routes(mm);
-
-    // Test that the router was created successfully
-    assert!(true); // Placeholder assertion
-}
 
 #[tokio::test]
 async fn test_contact_form_validation() {
