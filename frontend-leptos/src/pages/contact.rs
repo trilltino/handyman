@@ -24,18 +24,9 @@ pub fn Contact() -> impl IntoView {
         set_success_msg.set(None);
         set_error_msg.set(None);
 
-        let n = name_ref
-            .get()
-            .map(|el| el.value())
-            .unwrap_or_else(String::new);
-        let e = email_ref
-            .get()
-            .map(|el| el.value())
-            .unwrap_or_else(String::new);
-        let m = message_ref
-            .get()
-            .map(|el| el.value())
-            .unwrap_or_else(String::new);
+        let n = name_ref.get().map(|el| el.value()).unwrap_or_default();
+        let e = email_ref.get().map(|el| el.value()).unwrap_or_default();
+        let m = message_ref.get().map(|el| el.value()).unwrap_or_default();
 
         spawn_local(async move {
             match crate::api::contact::submit_contact_form(n, e, m).await {

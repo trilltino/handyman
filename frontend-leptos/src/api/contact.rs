@@ -20,7 +20,7 @@ pub async fn submit_contact_form(
     };
 
     if let Err(e) = form.validate() {
-        return Err(e.into());
+        return Err(e);
     }
 
     #[cfg(feature = "ssr")]
@@ -37,7 +37,7 @@ pub async fn submit_contact_form(
         if response.status().is_success() {
             Ok("Message sent successfully! We'll get back to you soon.".to_string())
         } else {
-            Err(format!("Failed to send message. Please try again."))
+            Err("Failed to send message. Please try again.".to_string())
         }
     }
 

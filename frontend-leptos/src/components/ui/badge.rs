@@ -6,6 +6,7 @@ use leptos::prelude::*;
 
 /// Badge color variant for different contexts.
 #[derive(Clone, Copy, PartialEq)]
+#[allow(dead_code)]
 pub enum BadgeVariant {
     /// Red/brand color - default style
     Brand,

@@ -6,6 +6,7 @@ use leptos::prelude::*;
 
 /// Card style variant.
 #[derive(Clone, Copy, PartialEq)]
+#[allow(dead_code)]
 pub enum CardVariant {
     /// Deep dark card with subtle border
     Deep,
