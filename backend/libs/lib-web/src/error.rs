@@ -233,7 +233,7 @@ impl IntoResponse for Error {
                     ModelError::ValidationError(msg) => (
                         StatusCode::BAD_REQUEST,
                         "Validation error",
-                        Some(msg.clone().into()),
+                        Some(msg.clone()),
                     ),
                     // Internal errors - don't expose details
                     _ => (

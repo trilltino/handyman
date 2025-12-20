@@ -2,11 +2,12 @@
 //!
 //! Provides styled containers for different content types.
 
+#![allow(dead_code)]
+
 use leptos::prelude::*;
 
 /// Card style variant.
 #[derive(Clone, Copy, PartialEq)]
-#[allow(dead_code)]
 pub enum CardVariant {
     /// Deep dark card with subtle border
     Deep,

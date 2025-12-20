@@ -2,6 +2,8 @@
 //!
 //! Provides consistent section spacing and styling with optional subtitle.
 
+#![allow(dead_code)]
+
 use leptos::prelude::*;
 
 /// Full-width content section with responsive layout.

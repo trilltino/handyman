@@ -4,7 +4,6 @@
 //!
 //! Handles contact form submission to backend.
 
-use shared::validation::Validate;
 use shared::ContactForm;
 
 /// Submit a contact form message to the backend.
@@ -19,9 +18,7 @@ pub async fn submit_contact_form(
         message: message.trim().to_string(),
     };
 
-    if let Err(e) = form.validate() {
-        return Err(e);
-    }
+    form.validate()?;
 
     #[cfg(feature = "ssr")]
     {

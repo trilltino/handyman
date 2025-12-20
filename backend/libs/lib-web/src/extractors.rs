@@ -25,7 +25,7 @@ where
             .await
             .map_err(|rejection| Error::ValidationError(rejection.to_string().into()))?;
 
-        value.validate().map_err(|e| Error::ValidationError(e))?;
+        value.validate().map_err(Error::ValidationError)?;
 
         Ok(ValidatedJson(value))
     }

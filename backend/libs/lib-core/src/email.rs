@@ -430,5 +430,5 @@ pub enum EmailError {
 pub fn email_service() -> &'static Result<EmailService, EmailError> {
     static INSTANCE: std::sync::OnceLock<Result<EmailService, EmailError>> =
         std::sync::OnceLock::new();
-    INSTANCE.get_or_init(|| EmailService::new())
+    INSTANCE.get_or_init(EmailService::new)
 }

@@ -42,6 +42,7 @@ pub fn app_config() -> &'static AppConfig {
 ///
 /// Contains all server, database and service settings loaded from environment.
 #[derive(Debug, Deserialize, Clone)]
+#[allow(dead_code)]
 pub struct AppConfig {
     /// Server configuration (host, port)
     pub server: ServerConfig,
@@ -62,6 +63,7 @@ pub struct ServerConfig {
 
 /// Database connection configuration.
 #[derive(Debug, Deserialize, Clone)]
+#[allow(dead_code)]
 pub struct DbConfig {
     /// PostgreSQL connection string
     pub url: String,
@@ -69,6 +71,7 @@ pub struct DbConfig {
 
 /// Stripe service configuration.
 #[derive(Debug, Deserialize, Clone)]
+#[allow(dead_code)]
 pub struct StripeConfig {
     /// Stripe public key
     pub public_key: String,
