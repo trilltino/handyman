@@ -46,9 +46,10 @@ RUN curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/ca
 COPY --from=planner /app/recipe.json recipe.json
 
 # Build dependencies - this is the cached layer!
+# Note: We only cache native target. WASM deps are built by cargo-leptos
+# because the recipe includes server deps (mio, tokio) that don't compile to wasm32
 RUN cargo chef cook --release --recipe-path recipe.json
 
-RUN cargo chef cook --release --target wasm32-unknown-unknown --recipe-path recipe.json -p frontend-leptos
 # Copy source code
 COPY . .
 
