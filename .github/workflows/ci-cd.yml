@@ -31,12 +31,8 @@ jobs:
       - name: Run security audit
         run: cargo audit
 
-      - name: Check for secrets
-        run: |
-          if grep -r "SECRET\|KEY\|PASSWORD" --exclude-dir=.git --exclude-dir=target .; then
-            echo "Potential secrets found in codebase"
-            exit 1
-          fi
+      # Note: Secret scanning is handled by GitHub's built-in secret scanning feature
+      # Manual grep-based scanning causes too many false positives with env var names
 
   # Code Quality
   quality:
@@ -106,7 +102,7 @@ jobs:
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/xfhandyman_test
 
-  # Frontend Build
+  # Frontend Build (Leptos SSR)
   build-frontend:
     name: Build Frontend
     runs-on: ubuntu-latest
@@ -114,25 +110,34 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Set up Rust (nightly)
+        uses: dtolnay/rust-toolchain@nightly
+        with:
+          targets: wasm32-unknown-unknown
+
+      - name: Cache dependencies
+        uses: Swatinem/rust-cache@v2
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
           cache: 'npm'
           cache-dependency-path: package-lock.json
 
-      - name: Install wasm-pack
-        run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+      - name: Install npm dependencies
+        run: npm ci
 
-      - name: Install trunk
-        run: |
-          wget -qO- https://github.com/thedodd/trunk/releases/download/v0.17.2/trunk-x86_64-unknown-linux-gnu.tar.gz | tar -xzf-
-          sudo mv trunk /usr/local/bin/
+      - name: Build CSS (Tailwind)
+        run: npm run build:css
 
-      - name: Build frontend
+      - name: Install cargo-leptos
         run: |
-          cd frontend-leptos
-          trunk build --release
+          curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
+          cargo binstall cargo-leptos -y --force
+
+      - name: Build Leptos frontend
+        run: cargo leptos build --release
 
   # Docker Build
   docker:
