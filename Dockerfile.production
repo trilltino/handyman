@@ -33,7 +33,7 @@ RUN npm install
 RUN npm run build:css
 
 # Build the backend API
-RUN cargo build --release --bin api --locked --jobs 1
+RUN cargo build --release --bin api --jobs 1
 
 # Build Leptos App (SSR binary + WASM client)
 RUN cargo leptos build --release
