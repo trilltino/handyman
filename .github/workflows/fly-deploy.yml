@@ -50,7 +50,7 @@ jobs:
           echo "[WAIT] Waiting for deployment to stabilize..."
           sleep 15
           echo "[CHECK] Checking health endpoint..."
-          curl -f https://handyman-marketplace.fly.dev/health || exit 1
+          curl -f https://xftradesmen.fly.dev/health || exit 1
           echo "[OK] Deployment successful!"
 
   notify:
@@ -64,7 +64,7 @@ jobs:
         run: |
           if [ "${{ needs.deploy.result }}" == "success" ]; then
             echo "[OK] Deployment succeeded"
-            echo "[WEB] Application URL: https://handyman-marketplace.fly.dev"
+            echo "[WEB] Application URL: https://xftradesmen.fly.dev"
           else
             echo "[FAIL] Deployment failed"
             exit 1
