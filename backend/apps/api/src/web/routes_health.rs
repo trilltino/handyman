@@ -10,6 +10,15 @@ pub fn routes(mm: ModelManager) -> Router {
         .with_state(mm)
 }
 
+#[utoipa::path(
+    get,
+    path = "/health",
+    tag = "health",
+    responses(
+        (status = 200, description = "Service health status with database check", body = serde_json::Value),
+        (status = 503, description = "Service degraded", body = serde_json::Value)
+    )
+)]
 pub async fn api_health_handler(
     State(mm): State<ModelManager>,
 ) -> (StatusCode, Json<serde_json::Value>) {
