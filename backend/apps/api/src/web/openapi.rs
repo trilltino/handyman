@@ -10,9 +10,9 @@ use utoipa_swagger_ui::SwaggerUi;
 #[openapi(
     paths(
         crate::web::handlers::contact::api_contact_handler,
-        crate::web::handlers::static_content::health_handler,
         crate::web::handlers::static_content::version_handler,
-        crate::web::handlers::static_content::stripe_config_handler
+        crate::web::handlers::static_content::stripe_config_handler,
+        crate::web::routes_health::api_health_handler
     ),
     components(
         schemas(

@@ -10,7 +10,7 @@ pub fn routes(mm: ModelManager) -> Router {
         .with_state(mm)
 }
 
-async fn api_health_handler(
+pub async fn api_health_handler(
     State(mm): State<ModelManager>,
 ) -> (StatusCode, Json<serde_json::Value>) {
     // Check Database Connection
