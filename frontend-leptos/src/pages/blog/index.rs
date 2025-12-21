@@ -5,6 +5,7 @@
 use crate::components::seo::SeoHead;
 use crate::components::ui::{Button, ButtonVariant};
 use leptos::prelude::*;
+use leptos_meta::Script;
 use shared::PageMetadata;
 
 #[derive(Clone)]
