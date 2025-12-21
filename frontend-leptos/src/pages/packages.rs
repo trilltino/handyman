@@ -7,15 +7,17 @@ use leptos::prelude::*;
 use leptos_meta::Script;
 use shared::PageMetadata;
 
-/// Stripe checkout URL (direct link to payment page)
-const STRIPE_CHECKOUT_URL: &str = "https://buy.stripe.com/6oU4gsbhy2r14ZN3Uw83C00";
+/// Stripe price ID for the new pricing
+const STRIPE_PRICE_ID: &str = "price_1SgCiB50EObjxaVXszWe9RPN";
+/// Stripe checkout URL with the new price
+const STRIPE_CHECKOUT_URL: &str = "https://buy.stripe.com/00g8CUeTKbJTac1UWW0";
 
 #[component]
 pub fn Packages() -> impl IntoView {
     view! {
         <SeoHead metadata=PageMetadata {
             title: "Website Packages & Pricing | XFTradesmen".to_string(),
-            description: "Professional tradesman website packages. £239 one-time setup + £30/month. SEO-optimized, mobile-responsive websites for electricians, plumbers, and contractors.".to_string(),
+            description: "Professional tradesman website packages. £329 one-time setup + £29/month. SEO-optimized, mobile-responsive websites for electricians, plumbers, and contractors.".to_string(),
             canonical_url: Some("https://xftradesmen.com/packages".to_string()),
             og_image: None,
         }/>
@@ -53,14 +55,14 @@ pub fn Packages() -> impl IntoView {
                             <div class="mb-8">
                                 // One-time setup fee
                                 <div class="flex items-baseline gap-2 mb-4">
-                                    <span class="text-5xl font-black text-white tracking-tighter">"£239"</span>
+                                    <span class="text-5xl font-black text-white tracking-tighter">"£329"</span>
                                     <span class="text-lg text-gray-400">"one-time setup"</span>
                                 </div>
 
                                 // Monthly subscription
                                 <div class="flex items-baseline gap-2 p-4 bg-void-surface/50 rounded-lg border border-void-highlight">
                                     <span class="text-brand text-sm font-mono">"+THEN"</span>
-                                    <span class="text-3xl font-bold text-white">"£30"</span>
+                                    <span class="text-3xl font-bold text-white">"£29"</span>
                                     <span class="text-gray-400">"/ month"</span>
                                 </div>
                             </div>
@@ -151,7 +153,7 @@ pub fn Packages() -> impl IntoView {
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                             </div>
                             <h3 class="text-xl font-bold text-white mb-3">"Simple Pricing"</h3>
-                            <p class="text-gray-400">"No hidden fees. £239 setup then £30/month. Cancel anytime with no penalties."</p>
+                            <p class="text-gray-400">"No hidden fees. £329 setup then £29/month. Cancel anytime with no penalties."</p>
                         </div>
                     </div>
                 </div>
@@ -164,12 +166,12 @@ pub fn Packages() -> impl IntoView {
 
                     <div class="grid gap-6">
                         <div class="border border-void-highlight rounded-xl p-6 bg-void hover:border-brand/30 transition-colors">
-                            <h3 class="text-lg font-bold text-white mb-2">"What's included in the £239 setup?"</h3>
+                            <h3 class="text-lg font-bold text-white mb-2">"What's included in the £329 setup?"</h3>
                             <p class="text-gray-400">"Custom design, domain setup, SEO configuration, contact forms, and full website build. Your site will be live within 48 hours."</p>
                         </div>
 
                         <div class="border border-void-highlight rounded-xl p-6 bg-void hover:border-brand/30 transition-colors">
-                            <h3 class="text-lg font-bold text-white mb-2">"What does the £30/month cover?"</h3>
+                            <h3 class="text-lg font-bold text-white mb-2">"What does the £29/month cover?"</h3>
                             <p class="text-gray-400">"Secure hosting, SSL certificate, ongoing updates, technical support, and SEO maintenance. Everything to keep your site running perfectly."</p>
                         </div>
 
@@ -191,14 +193,14 @@ pub fn Packages() -> impl IntoView {
                   "@type": "FAQPage",
                   "mainEntity": [{
                     "@type": "Question",
-                    "name": "What's included in the £239 setup?",
+                    "name": "What's included in the £329 setup?",
                     "acceptedAnswer": {
                       "@type": "Answer",
                       "text": "Custom design, domain setup, SEO configuration, contact forms, and full website build. Your site will be live within 48 hours."
                     }
                   }, {
                     "@type": "Question",
-                    "name": "What does the £30/month cover?",
+                    "name": "What does the £29/month cover?",
                     "acceptedAnswer": {
                       "@type": "Answer",
                       "text": "Secure hosting, SSL certificate, ongoing updates, technical support, and SEO maintenance."
