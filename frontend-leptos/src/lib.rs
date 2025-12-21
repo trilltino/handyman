@@ -24,6 +24,7 @@ use crate::pages::blog::article::BlogArticle;
 use crate::pages::blog::index::BlogIndex;
 use crate::pages::contact::Contact;
 use crate::pages::coventry::Coventry;
+use crate::pages::examples::handyman::HandymanExample;
 use crate::pages::handyman::Handyman;
 use crate::pages::home::Home;
 use crate::pages::packages::Packages;
@@ -58,6 +59,7 @@ pub fn App() -> impl IntoView {
                     <Route path=path!("/contact") view=Contact/>
                     <Route path=path!("/coventry") view=Coventry/>
                     <Route path=path!("/handyman") view=Handyman/>
+                    <Route path=path!("/handyman-coventry") view=HandymanExample/>
                     <Route path=path!("/blog") view=BlogIndex/>
                     <Route path=path!("/blog/:slug") view=BlogArticle/>
                     <Route path=path!("/industries") view=crate::pages::industries::Industries/>
