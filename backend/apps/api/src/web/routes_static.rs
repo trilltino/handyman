@@ -1,8 +1,8 @@
 //! Static content routes and metrics endpoint.
 //!
-//! Provides health checks, version info, Stripe config, and Prometheus metrics.
+//! Provides version info and Prometheus metrics.
 
-use crate::web::handlers::static_content::{health_handler, version_handler};
+use crate::web::handlers::static_content::version_handler;
 use axum::routing::get;
 use axum::Router;
 use metrics_exporter_prometheus::{Matcher, PrometheusBuilder, PrometheusHandle};
@@ -26,7 +26,6 @@ pub fn routes() -> Router {
     });
 
     Router::new()
-        .route("/health", get(health_handler))
         .route("/status/version", get(version_handler))
         .route(
             "/metrics",
