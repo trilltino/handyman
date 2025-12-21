@@ -24,7 +24,12 @@ use crate::pages::blog::article::BlogArticle;
 use crate::pages::blog::index::BlogIndex;
 use crate::pages::contact::Contact;
 use crate::pages::coventry::Coventry;
-use crate::pages::examples::handyman::HandymanExample;
+use crate::pages::examples::handyman_app::home::HandymanHome;
+use crate::pages::examples::handyman_app::layout::HandymanLayout;
+use crate::pages::examples::handyman_app::other::{HandymanAbout, HandymanContact};
+use crate::pages::examples::handyman_app::service_detail::HandymanServiceDetail;
+use crate::pages::examples::handyman_app::services::HandymanServices;
+
 use crate::pages::handyman::Handyman;
 use crate::pages::home::Home;
 use crate::pages::packages::Packages;
@@ -46,12 +51,15 @@ pub fn App() -> impl IntoView {
         <Link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 
         <Router>
-            // Fixed Navigation
-            <crate::components::layout::Navbar />
-
-            // Main Content (with top padding for fixed nav)
-            <main class="pt-16">
-                <Routes fallback=|| "Page not found.">
+            <Routes fallback=|| "Page not found.">
+                 // Main Site Routes
+                <Route path=path!("/") view=|| view! {
+                    <crate::components::layout::Navbar />
+                     <main class="pt-16">
+                        <Outlet/>
+                    </main>
+                    <crate::components::layout::Footer />
+                }>
                     <Route path=path!("/") view=Home/>
                     <Route path=path!("/pricing") view=Pricing/>
                     <Route path=path!("/packages") view=Packages/>
@@ -59,15 +67,20 @@ pub fn App() -> impl IntoView {
                     <Route path=path!("/contact") view=Contact/>
                     <Route path=path!("/coventry") view=Coventry/>
                     <Route path=path!("/handyman") view=Handyman/>
-                    <Route path=path!("/handyman-coventry") view=HandymanExample/>
                     <Route path=path!("/blog") view=BlogIndex/>
                     <Route path=path!("/blog/:slug") view=BlogArticle/>
                     <Route path=path!("/industries") view=crate::pages::industries::Industries/>
-                </Routes>
-            </main>
+                </Route>
 
-            // Footer
-            <crate::components::layout::Footer />
+                // Handyman Example App Routes
+                <Route path=path!("/handyman-coventry") view=HandymanLayout>
+                    <Route path=path!("/") view=HandymanHome/>
+                    <Route path=path!("/services") view=HandymanServices/>
+                    <Route path=path!("/services/:slug") view=HandymanServiceDetail/>
+                    <Route path=path!("/about") view=HandymanAbout/>
+                    <Route path=path!("/contact") view=HandymanContact/>
+                </Route>
+            </Routes>
         </Router>
     }
 }
