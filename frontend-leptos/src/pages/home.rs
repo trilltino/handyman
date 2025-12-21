@@ -22,11 +22,6 @@ pub fn Home() -> impl IntoView {
                 <div class="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-void-highlight/30 blur-[100px] rounded-full pointer-events-none"></div>
 
                 <div class="relative max-w-7xl mx-auto text-center z-10 animate-fade-in">
-                    <div class="inline-flex items-center gap-2 mb-8 px-4 py-1.5 rounded-full bg-void-surface/80 border border-void-highlight/50 backdrop-blur-md">
-                        <span class="w-2 h-2 rounded-full bg-brand-glow animate-pulse"></span>
-                        <span class="text-gray-300 text-sm font-mono tracking-wider uppercase">"System Online v2.0"</span>
-                    </div>
-
                     <h1 class="text-5xl md:text-7xl lg:text-8xl font-heading font-black tracking-tighter mb-8 leading-[0.9]">
                         "DOMINATE" <br/>
                         <span class="text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-500">
@@ -37,8 +32,6 @@ pub fn Home() -> impl IntoView {
                     <p class="text-xl md:text-2xl text-gray-400 max-w-2xl mx-auto mb-12 leading-relaxed font-light">
                         "High-performance digital infrastructure for tradespeople. <span class='text-brand-light font-semibold'>Zero compromise.</span>"
                     </p>
-
-
 
                     // Stats / Social Proof
                     // Deep Business Features
