@@ -32,7 +32,9 @@ jobs:
         run: |
           # Ignore RUSTSEC-2024-0436 (rsa crate Marvin Attack) - awaiting upstream fix
           # Ignore RUSTSEC-2024-0370 (proc-macro-error unmaintained) - transitive dependency
-          cargo audit --ignore RUSTSEC-2024-0436 --ignore RUSTSEC-2024-0370
+          # Ignore RUSTSEC-2024-0384 (instant/paste unmaintained) - transitive dependency
+          # Ignore RUSTSEC-2023-0071 (rsa crate) - transitive dependency
+          cargo audit --ignore RUSTSEC-2024-0436 --ignore RUSTSEC-2024-0370 --ignore RUSTSEC-2024-0384 --ignore RUSTSEC-2023-0071
 
       # Note: Secret scanning is handled by GitHub's built-in secret scanning feature
       # Manual grep-based scanning causes too many false positives with env var names

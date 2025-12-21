@@ -1,7 +1,6 @@
 //! # Web Extractors
 //!
 //! Custom Axum extractors for common web patterns.
-
 use crate::Error;
 use axum::extract::{FromRequest, Json, Request};
 use serde::de::DeserializeOwned;
@@ -12,7 +11,6 @@ use shared::validation::Validate;
 /// If the payload is invalid, it returns a `400 Bad Request` with the validation error.
 /// This prevents handler logic from executing with invalid data.
 pub struct ValidatedJson<T>(pub T);
-
 impl<S, T> FromRequest<S> for ValidatedJson<T>
 where
     S: Send + Sync,
