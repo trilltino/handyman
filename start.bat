@@ -1,45 +1,68 @@
 @echo off
 setlocal EnableDelayedExpansion
 
-:: Title: XFTradesmen Launcher
+:: Title: XFTradesmen Local Development Launcher
 :: Uses npm for Tailwind CSS v4
 
 echo ========================================================
-echo   XFTRADESMEN: STARTUP
+echo   XFTRADESMEN: LOCAL DEVELOPMENT STARTUP
 echo ========================================================
 echo.
+
+:: Check if .env file exists
+if not exist ".env" (
+    echo [WARNING] .env file not found!
+    echo Please copy .env.example to .env and configure your settings.
+    echo.
+    pause
+    exit /b 1
+)
 
 :: Ensure npm dependencies are installed
 if not exist "node_modules" (
     echo Installing npm dependencies...
     call npm install
+    if errorlevel 1 (
+        echo [ERROR] Failed to install npm dependencies
+        pause
+        exit /b 1
+    )
 )
 
-:: 1. Start Backend API
-echo [1/4] Launching Backend API...
-start "XFTradesmen Backend" cmd /k "cd backend && cargo run -p api --release"
-
-:: 2. Start Frontend (cargo leptos)
-echo [2/4] Launching Frontend...
-timeout /t 2 /nobreak >nul
-start "XFTradesmen Frontend" cmd /k "cargo leptos serve --release"
-
-:: 3. Wait for cargo leptos to initialize, then build CSS
-echo [3/4] Building Tailwind CSS...
-timeout /t 5 /nobreak >nul
+:: Build CSS first (before starting servers)
+echo [1/4] Building Tailwind CSS...
 call npm run build:css
+if errorlevel 1 (
+    echo [ERROR] Failed to build CSS
+    pause
+    exit /b 1
+)
 
-:: 4. Start CSS watch (rebuilds on file changes)
-echo [4/4] Starting CSS watch...
+:: Start CSS watch in background (rebuilds on file changes)
+echo [2/4] Starting CSS watch...
 start "Tailwind Watch" cmd /k "npm run watch:css"
+timeout /t 1 /nobreak >nul
+
+:: Start Backend API (dev mode for faster builds)
+echo [3/4] Launching Backend API (dev mode)...
+start "XFTradesmen Backend" cmd /k "cd backend && cargo run -p api"
+timeout /t 2 /nobreak >nul
+
+:: Start Frontend with cargo leptos (dev mode)
+echo [4/4] Launching Frontend (dev mode)...
+timeout /t 1 /nobreak >nul
+start "XFTradesmen Frontend" cmd /k "cargo leptos serve"
 
 echo.
 echo ========================================================
-echo   SYSTEMS LAUNCHED
+echo   SYSTEMS LAUNCHED (Development Mode)
 echo   Frontend: http://127.0.0.1:3001
 echo   Backend:  http://127.0.0.1:8080
 echo ========================================================
 echo.
+echo Note: Development builds are faster but larger than release builds
 echo CSS will be rebuilt automatically when you edit input.css
+echo.
+echo Press any key to exit (servers will continue running)...
 pause >nul
 
