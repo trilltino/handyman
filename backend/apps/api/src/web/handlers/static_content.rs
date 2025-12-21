@@ -1,29 +1,11 @@
-//! Static content and health check handlers.
+//! Static content handlers.
 //!
 //! This module provides endpoints for:
-//! - Health/readiness checks
 //! - Version information
 //! - Stripe configuration (public keys only)
 
 use axum::Json;
 use serde_json::{json, Value};
-
-#[utoipa::path(
-    get,
-    path = "/health",
-    tag = "health",
-    responses(
-        (status = 200, description = "Service is healthy", body = serde_json::Value)
-    )
-)]
-pub async fn health_handler() -> Json<Value> {
-    Json(json!({
-        "status": "healthy",
-        "service": "handyman-api",
-        "version": env!("CARGO_PKG_VERSION"),
-        "timestamp": chrono::Utc::now().to_rfc3339()
-    }))
-}
 
 #[utoipa::path(
     get,
