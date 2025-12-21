@@ -8,7 +8,7 @@ name = "frontend_leptos"
 crate-type = ["cdylib", "rlib"]
 
 [[bin]]
-name = "xftradesmen-server"
+name = "frontend-leptos"
 path = "src/main.rs"
 
 [dependencies]
