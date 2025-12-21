@@ -42,8 +42,30 @@ pub fn Navbar() -> impl IntoView {
 
                     <a href="/industries" class="navbar-link">"Industries"</a>
                     <a href="/packages" class="navbar-link">"Packages"</a>
-                    <a href="/about" class="navbar-link">"About"</a>
-                    <a href="/blog" class="navbar-link">"Blog"</a>
+
+                    // About Dropdown with Blog
+                    <div class="dropdown">
+                        <button class="navbar-link dropdown-trigger">
+                            "About"
+                            <svg class="w-4 h-4 ml-1 dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="/about" class="dropdown-item">
+                                <svg class="w-5 h-5 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                "About Us"
+                            </a>
+                            <a href="/blog" class="dropdown-item">
+                                <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                                </svg>
+                                "Blog"
+                            </a>
+                        </div>
+                    </div>
 
                     <a href="/contact" class="btn btn-primary btn-sm">
                         "Contact"

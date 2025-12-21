@@ -77,7 +77,39 @@ pub fn Contact() -> impl IntoView {
             <section class="bg-void-surface border-t border-void-highlight py-24 px-4 relative">
                  <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-void-highlight/10 via-transparent to-transparent"></div>
 
-                <div class="max-w-2xl mx-auto relative z-10">
+                <div class="max-w-6xl mx-auto relative z-10">
+                    // Contact Methods
+                    <div class="grid md:grid-cols-2 gap-6 mb-16">
+                        // Phone Call
+                        <a href="tel:+447833263486" class="card-deep p-8 border-void-highlight hover:border-brand/50 transition-all duration-300 group">
+                            <div class="flex items-center gap-4">
+                                <div class="w-14 h-14 rounded-full bg-brand/10 flex items-center justify-center text-brand group-hover:scale-110 transition-transform duration-300">
+                                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-bold text-white group-hover:text-brand-light transition font-heading mb-1">"Call Us Direct"</h3>
+                                    <p class="text-2xl font-mono text-brand-light">"+44 7833 263486"</p>
+                                </div>
+                            </div>
+                        </a>
+
+                        // WhatsApp
+                        <a href="https://wa.me/447833263486" target="_blank" rel="noopener noreferrer" class="card-deep p-8 border-void-highlight hover:border-green-500/50 transition-all duration-300 group">
+                            <div class="flex items-center gap-4">
+                                <div class="w-14 h-14 rounded-full bg-green-500/10 flex items-center justify-center text-green-500 group-hover:scale-110 transition-transform duration-300">
+                                    <img src="/whatsapp-logo.png" alt="WhatsApp" class="w-8 h-8"/>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-bold text-white group-hover:text-green-400 transition font-heading mb-1">"Or WhatsApp"</h3>
+                                    <p class="text-sm text-gray-400">"Message us anytime"</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                <div class="max-w-2xl mx-auto">
                     <div class="card-deep relative overflow-hidden">
                         // Glow
                          <div class="absolute top-0 right-0 w-64 h-64 bg-brand/5 blur-[80px] rounded-full pointer-events-none"></div>
