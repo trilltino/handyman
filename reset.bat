@@ -13,18 +13,31 @@ echo Press Ctrl+C to cancel, or
 pause
 
 :: Stop all running processes
-echo [1/7] Stopping all development processes...
+echo [1/8] Stopping all development processes...
 taskkill /F /FI "WINDOWTITLE eq XFTradesmen*" 2>nul
 taskkill /F /FI "WINDOWTITLE eq Tailwind*" 2>nul
+taskkill /F /IM cargo.exe /T 2>nul
+taskkill /F /IM cargo-leptos.exe /T 2>nul
+taskkill /F /IM rust-analyzer.exe /T 2>nul
+taskkill /F /IM node.exe /T 2>nul
 echo Done.
 
+:: Wait for processes to fully terminate
+echo Waiting for processes to release locks...
+timeout /t 3 /nobreak >nul
+
 :: Clean Rust/Cargo artifacts
-echo [2/7] Cleaning Rust build artifacts...
-cargo clean
+echo [2/8] Cleaning Rust build artifacts...
+cargo clean 2>nul
+if errorlevel 1 (
+    echo Warning: Some files couldn't be deleted (may be locked)
+    echo Attempting manual cleanup...
+    rmdir /s /q target 2>nul
+)
 echo Done.
 
 :: Clean Node modules and lock files
-echo [3/7] Cleaning Node.js artifacts...
+echo [3/8] Cleaning Node.js artifacts...
 if exist "node_modules" (
     echo Removing node_modules...
     rmdir /s /q node_modules
@@ -36,29 +49,30 @@ if exist "package-lock.json" (
 echo Done.
 
 :: Clean Leptos/WASM artifacts
-echo [4/7] Cleaning Leptos artifacts...
+echo [4/8] Cleaning Leptos artifacts...
 if exist "target\site" (
-    rmdir /s /q target\site
+    rmdir /s /q target\site 2>nul
 )
 if exist "target\front" (
-    rmdir /s /q target\front
+    rmdir /s /q target\front 2>nul
 )
 echo Done.
 
 :: Clean CSS build output
-echo [5/7] Cleaning CSS artifacts...
+echo [5/8] Cleaning CSS artifacts...
 if exist "frontend-leptos\public\xftradesmen.css" (
     del /f /q frontend-leptos\public\xftradesmen.css
 )
 echo Done.
 
-:: Clean cargo registry cache (optional - uncomment if needed)
-:: echo [6/7] Cleaning cargo registry cache...
-:: cargo clean --release
-:: echo Done.
+:: Clean any remaining build artifacts
+echo [6/8] Cleaning additional artifacts...
+rmdir /s /q target\debug 2>nul
+rmdir /s /q target\release 2>nul
+echo Done.
 
 :: Reinstall dependencies
-echo [6/7] Reinstalling npm dependencies...
+echo [7/8] Reinstalling npm dependencies...
 call npm install
 if errorlevel 1 (
     echo [ERROR] Failed to install npm dependencies
@@ -68,7 +82,7 @@ if errorlevel 1 (
 echo Done.
 
 :: Build CSS
-echo [7/7] Building CSS...
+echo [8/8] Building CSS...
 call npm run build:css
 if errorlevel 1 (
     echo [ERROR] Failed to build CSS
