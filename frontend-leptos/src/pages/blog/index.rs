@@ -7,8 +7,53 @@ use crate::components::ui::{Button, ButtonVariant};
 use leptos::prelude::*;
 use shared::PageMetadata;
 
+#[derive(Clone)]
+struct BlogPost {
+    title: &'static str,
+    slug: &'static str,
+    category: &'static str,
+    date: &'static str,
+    excerpt: &'static str,
+    image_color: &'static str, // Simple placeholder for now, would be URL in real app
+}
+
 #[component]
 pub fn BlogIndex() -> impl IntoView {
+    let posts = vec![
+        BlogPost {
+            title: "Why Tradesmen with Websites Earn 40% More",
+            slug: "why-tradesmen-need-websites",
+            category: "Revenue Data",
+            date: "2025-10-15",
+            excerpt: "New 2024 statistics show the massive gap in earnings between tradesmen with a professional online presence and those without.",
+            image_color: "brand",
+        },
+        BlogPost {
+            title: "The Ultimate Guide to Local SEO for Plumbers",
+            slug: "local-seo-guide",
+            category: "Local SEO",
+            date: "2025-10-22",
+            excerpt: "Learn how to rank #1 in your local area and get the phone ringing with high-quality leads.",
+            image_color: "blue-500",
+        },
+        BlogPost {
+            title: "How to Build Instant Trust with Potential Clients",
+            slug: "building-trust-online",
+            category: "Trust Protocols",
+            date: "2025-11-01",
+            excerpt: "Your website is your first impression. Make it count with these 5 proven trust signals.",
+            image_color: "green-500",
+        },
+    ];
+
+    let json_ld = r#"{
+      "@context": "https://schema.org",
+      "@type": "Blog",
+      "name": "XF Tradesmen Intelligence",
+      "description": "Tactical guides for tradesmen to dominate their local market.",
+      "url": "https://xftradesmen.com/blog"
+    }"#;
+
     view! {
         <SeoHead metadata=PageMetadata {
             title: "XF Tradesmen Blog - Tips for Tradesmen | XF Tradesmen".to_string(),
@@ -16,6 +61,7 @@ pub fn BlogIndex() -> impl IntoView {
             canonical_url: Some("https://xftradesmen.com/blog".to_string()),
             og_image: None,
         }/>
+        <Script type_="application/ld+json">{json_ld}</Script>
 
         <div class="space-y-0 overflow-x-hidden">
             // Hero
@@ -42,77 +88,50 @@ pub fn BlogIndex() -> impl IntoView {
                     </div>
 
                     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        // Article 1
-                        <div class="card-deep overflow-hidden group p-0 border-void-highlight hover:border-brand/50 transition-all duration-300">
-                            <div class="h-56 bg-void relative overflow-hidden group-hover:opacity-90 transition">
-                                 <div class="absolute inset-0 bg-cyber-grid opacity-30"></div>
-                                 <div class="absolute inset-0 flex items-center justify-center">
-                                    <div class="w-16 h-16 rounded-full bg-brand/10 flex items-center justify-center text-brand group-hover:scale-110 transition-transform duration-500">
-                                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-9 9-4-4-6 6"/></svg>
-                                    </div>
-                                 </div>
-                            </div>
-                            <div class="p-8 relative">
-                                <span class="inline-block px-2 py-1 rounded bg-brand/10 text-brand text-[10px] font-mono font-bold uppercase tracking-wider mb-4">"Revenue Data"</span>
-                                <h3 class="text-xl font-bold text-white mb-4 leading-tight group-hover:text-brand-light transition font-heading">
-                                    <a href="/blog/why-tradesmen-need-websites" class="inset-0">"Why Tradesmen with Websites Earn 40% More"</a>
-                                </h3>
-                                <p class="text-gray-400 text-sm mb-6 line-clamp-3 leading-relaxed">
-                                    "New 2024 statistics show the massive gap in earnings between tradesmen with a professional online presence and those without."
-                                </p>
-                                <a href="/blog/why-tradesmen-need-websites" class="text-white hover:text-brand-light text-xs font-bold uppercase tracking-widest flex items-center gap-2 group/link">
-                                    "Read Analysis" <svg class="w-4 h-4 group-hover/link:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-                                </a>
-                            </div>
-                        </div>
+                        {posts.into_iter().map(|post| {
+                            let category_bg = match post.image_color {
+                                "blue-500" => "bg-blue-500/10 text-blue-400",
+                                "green-500" => "bg-green-500/10 text-green-400",
+                                _ => "bg-brand/10 text-brand",
+                            };
 
-                         // Article 2
-                         <div class="card-deep overflow-hidden group p-0 border-void-highlight hover:border-brand/50 transition-all duration-300">
-                            <div class="h-56 bg-void relative overflow-hidden group-hover:opacity-90 transition">
-                                 <div class="absolute inset-0 bg-cyber-grid opacity-30"></div>
-                                 <div class="absolute inset-0 flex items-center justify-center">
-                                    <div class="w-16 h-16 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-500 group-hover:scale-110 transition-transform duration-500">
-                                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                                    </div>
-                                 </div>
-                            </div>
-                            <div class="p-8 relative">
-                                 <span class="inline-block px-2 py-1 rounded bg-blue-500/10 text-blue-400 text-[10px] font-mono font-bold uppercase tracking-wider mb-4">"Local SEO"</span>
-                                <h3 class="text-xl font-bold text-white mb-4 leading-tight group-hover:text-brand-light transition font-heading">
-                                    <a href="/blog/local-seo-guide">"The Ultimate Guide to Local SEO for Plumbers"</a>
-                                </h3>
-                                <p class="text-gray-400 text-sm mb-6 line-clamp-3 leading-relaxed">
-                                    "Learn how to rank #1 in your local area and get the phone ringing with high-quality leads."
-                                </p>
-                                 <a href="/blog/local-seo-guide" class="text-white hover:text-brand-light text-xs font-bold uppercase tracking-widest flex items-center gap-2 group/link">
-                                    "Read Analysis" <svg class="w-4 h-4 group-hover/link:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-                                </a>
-                            </div>
-                        </div>
+                            let icon_color = match post.image_color {
+                                "blue-500" => "text-blue-500 bg-blue-500/10",
+                                "green-500" => "text-green-500 bg-green-500/10",
+                                _ => "text-brand bg-brand/10",
+                            };
 
-                         // Article 3
-                         <div class="card-deep overflow-hidden group p-0 border-void-highlight hover:border-brand/50 transition-all duration-300">
-                            <div class="h-56 bg-void relative overflow-hidden group-hover:opacity-90 transition">
-                                 <div class="absolute inset-0 bg-cyber-grid opacity-30"></div>
-                                 <div class="absolute inset-0 flex items-center justify-center">
-                                    <div class="w-16 h-16 rounded-full bg-green-500/10 flex items-center justify-center text-green-500 group-hover:scale-110 transition-transform duration-500">
-                                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            view! {
+                                <div class="card-deep overflow-hidden group p-0 border-void-highlight hover:border-brand/50 transition-all duration-300">
+                                    <div class="h-56 bg-void relative overflow-hidden group-hover:opacity-90 transition">
+                                         <div class="absolute inset-0 bg-cyber-grid opacity-30"></div>
+                                         <div class="absolute inset-0 flex items-center justify-center">
+                                            <div class={format!("w-16 h-16 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-500 {}", icon_color)}>
+                                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
+                                            </div>
+                                         </div>
                                     </div>
-                                 </div>
-                            </div>
-                            <div class="p-8 relative">
-                                 <span class="inline-block px-2 py-1 rounded bg-green-500/10 text-green-400 text-[10px] font-mono font-bold uppercase tracking-wider mb-4">"Trust Protocols"</span>
-                                <h3 class="text-xl font-bold text-white mb-4 leading-tight group-hover:text-brand-light transition font-heading">
-                                    <a href="/blog/building-trust-online">"How to Build Instant Trust with Potential Clients"</a>
-                                </h3>
-                                <p class="text-gray-400 text-sm mb-6 line-clamp-3 leading-relaxed">
-                                    "Your website is your first impression. Make it count with these 5 proven trust signals."
-                                </p>
-                                 <a href="/blog/building-trust-online" class="text-white hover:text-brand-light text-xs font-bold uppercase tracking-widest flex items-center gap-2 group/link">
-                                    "Read Analysis" <svg class="w-4 h-4 group-hover/link:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-                                </a>
-                            </div>
-                        </div>
+                                    <div class="p-8 relative">
+                                        <div class="flex justify-between items-center mb-4">
+                                            <span class={format!("inline-block px-2 py-1 rounded text-[10px] font-mono font-bold uppercase tracking-wider {}", category_bg)}>
+                                                {post.category}
+                                            </span>
+                                            <span class="text-gray-500 text-xs font-mono">{post.date}</span>
+                                        </div>
+
+                                        <h3 class="text-xl font-bold text-white mb-4 leading-tight group-hover:text-brand-light transition font-heading">
+                                            <a href=format!("/blog/{}", post.slug) class="inset-0">{post.title}</a>
+                                        </h3>
+                                        <p class="text-gray-400 text-sm mb-6 line-clamp-3 leading-relaxed">
+                                            {post.excerpt}
+                                        </p>
+                                        <a href=format!("/blog/{}", post.slug) class="text-white hover:text-brand-light text-xs font-bold uppercase tracking-widest flex items-center gap-2 group/link">
+                                            "Read Analysis" <svg class="w-4 h-4 group-hover/link:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                                        </a>
+                                    </div>
+                                </div>
+                            }
+                        }).collect::<Vec<_>>()}
                     </div>
                 </div>
             </section>

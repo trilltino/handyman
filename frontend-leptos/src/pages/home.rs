@@ -25,7 +25,7 @@ pub fn Home() -> impl IntoView {
                     <h1 class="text-5xl md:text-7xl lg:text-8xl font-heading font-black tracking-tighter mb-8 leading-[0.9]">
                         "GROW YOUR" <br/>
                         <span class="text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-500">
-                            "BUSINESS IN 2025"
+                            "BUSINESS IN 2026"
                         </span>
                     </h1>
 
@@ -63,7 +63,7 @@ pub fn Home() -> impl IntoView {
                 <div class="max-w-7xl mx-auto">
                      <div class="mb-16">
                         <span class="text-brand font-mono text-sm tracking-widest uppercase mb-2 block">"Core Capabilities"</span>
-                        <h2 class="text-4xl md:text-5xl font-bold text-white tracking-tighter">"SYSTEM SPECIFICATIONS"</h2>
+                        <h2 class="text-4xl md:text-5xl font-bold text-white tracking-tighter">"WEBSITE SPECIFICATIONS"</h2>
                     </div>
 
                     <div class="grid md:grid-cols-2 gap-16 items-center">
