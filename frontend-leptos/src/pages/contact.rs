@@ -188,6 +188,7 @@ pub fn Contact() -> impl IntoView {
                             </div>
                         </form>
                     </div>
+                    </div>
                 </div>
             </section>
         </div>

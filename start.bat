@@ -55,13 +55,16 @@ start "XFTradesmen Frontend" cmd /k "cargo leptos serve"
 
 echo.
 echo ========================================================
-echo   SYSTEMS LAUNCHED (Development Mode)
+echo   SYSTEMS LAUNCHED (Development Mode with Live Reload)
 echo   Frontend: http://127.0.0.1:3001
 echo   Backend:  http://127.0.0.1:8080
+echo   Reload Port: 3002
 echo ========================================================
 echo.
-echo Note: Development builds are faster but larger than release builds
-echo CSS will be rebuilt automatically when you edit input.css
+echo LIVE RELOAD ACTIVE:
+echo   - Rust code changes auto-reload
+echo   - CSS changes auto-rebuild and refresh
+echo   - Browser auto-refreshes on changes
 echo.
 echo Press any key to exit (servers will continue running)...
 pause >nul
