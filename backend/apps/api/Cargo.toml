@@ -21,6 +21,7 @@ tower-http = { workspace = true, features = [
     "fs",
     "request-id",
     "util",
+    "set-header",
 ] }
 tower_governor = { workspace = true }
 tracing = { workspace = true }
