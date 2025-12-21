@@ -11,7 +11,7 @@
 use leptos::prelude::*;
 use leptos_meta::*;
 use leptos_router::{
-    components::{Route, Router, Routes},
+    components::{Outlet, Route, Router, Routes},
     path,
 };
 
@@ -77,6 +77,9 @@ pub fn App() -> impl IntoView {
                     <Route path=path!("/") view=HandymanHome/>
                     <Route path=path!("/services") view=HandymanServices/>
                     <Route path=path!("/services/:slug") view=HandymanServiceDetail/>
+                    <Route path=path!("/features") view=HandymanFeatures/>
+                    <Route path=path!("/testimonials") view=HandymanTestimonials/>
+                    <Route path=path!("/booking") view=HandymanBooking/>
                     <Route path=path!("/about") view=HandymanAbout/>
                     <Route path=path!("/contact") view=HandymanContact/>
                 </Route>

@@ -1,5 +1,9 @@
+pub mod booking;
+pub mod components;
+pub mod features;
 pub mod home;
 pub mod layout;
 pub mod other;
 pub mod service_detail;
 pub mod services;
+pub mod testimonials;
