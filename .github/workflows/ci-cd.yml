@@ -106,6 +106,9 @@ jobs:
           cargo test --verbose
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/xfhandyman_test
+          JWT_SECRET: test_jwt_secret_key_at_least_32_characters_long_for_testing
+          STRIPE_SECRET_KEY: sk_test_fake_key_for_testing_purposes_only
+          STRIPE_WEBHOOK_SECRET: whsec_test_webhook_secret_for_testing
 
   # Frontend Build (Leptos SSR)
   build-frontend:

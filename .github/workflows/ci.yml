@@ -168,12 +168,8 @@ jobs:
             target
           key: ${{ runner.os }}-frontend-${{ hashFiles('**/Cargo.lock') }}
 
-      - name: Build customer frontend
+      - name: Build frontend
         working-directory: frontend-leptos
-        run: cargo leptos build --release
-
-      - name: Build admin frontend
-        working-directory: frontend-admin-leptos
         run: cargo leptos build --release
 
   # Security audit
