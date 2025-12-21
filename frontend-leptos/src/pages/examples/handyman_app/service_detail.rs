@@ -1,17 +1,87 @@
-//! Service Detail Page for Handyman App.
-
-use leptos::prelude::*;
-use leptos_router::hooks::use_params_map;
+use leptos_meta::{Link, Script};
 
 #[component]
 pub fn HandymanServiceDetail() -> impl IntoView {
     let params = use_params_map();
     let service_slug = move || params.get().get("slug").unwrap_or_default();
 
-    // In a real app, you'd fetch data based on the slug.
-    // For this demo, we'll just display static content with a placeholder for the map.
+    // Map initialization script
+    let map_init_script = "
+        function initMap() {
+            if (!window.maplibregl) { setTimeout(initMap, 100); return; }
+            if (!document.getElementById('map')) { setTimeout(initMap, 100); return; }
+            
+            const map = new maplibregl.Map({
+                container: 'map',
+                style: 'https://demotiles.maplibre.org/style.json', // Free open source style
+                center: [-1.5197, 52.4068], // Coventry
+                zoom: 13,
+                pitch: 45,
+                bearing: -17.6,
+                antialias: true
+            });
+
+            map.on('load', () => {
+                // Add 3D buildings
+                const layers = map.getStyle().layers;
+                let labelLayerId;
+                for (let i = 0; i < layers.length; i++) {
+                    if (layers[i].type === 'symbol' && layers[i].layout['text-field']) {
+                        labelLayerId = layers[i].id;
+                        break;
+                    }
+                }
+
+                map.addSource('openmaptiles', {
+                    url: 'https://demotiles.maplibre.org/tiles/v3/tiles.json',
+                    type: 'vector',
+                });
+
+                map.addLayer(
+                    {
+                        'id': '3d-buildings',
+                        'source': 'openmaptiles',
+                        'source-layer': 'building',
+                        'filter': ['==', 'extrude', 'true'],
+                        'type': 'fill-extrusion',
+                        'minzoom': 13,
+                        'paint': {
+                            'fill-extrusion-color': '#aaa',
+                            'fill-extrusion-height': [
+                                'interpolate',
+                                ['linear'],
+                                ['zoom'],
+                                13,
+                                0,
+                                13.05,
+                                ['get', 'height']
+                            ],
+                            'fill-extrusion-base': [
+                                'interpolate',
+                                ['linear'],
+                                ['zoom'],
+                                13,
+                                0,
+                                13.05,
+                                ['get', 'min_height']
+                            ],
+                            'fill-extrusion-opacity': 0.6
+                        }
+                    },
+                    labelLayerId
+                );
+            });
+        }
+        // Start checking for lib/dom
+        initMap();
+    ";
 
     view! {
+        // Load MapLibre Assets
+        <Link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet"/>
+        <Script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"/>
+        <Script>{map_init_script}</Script>
+
         <div class="bg-gray-50 min-h-screen">
             <section class="bg-blue-900 text-white py-12 px-6">
                 <div class="max-w-6xl mx-auto">
@@ -42,12 +112,9 @@ pub fn HandymanServiceDetail() -> impl IntoView {
                          <div class="bg-white p-2 rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                             <div class="bg-gray-100 w-full h-[400px] flex items-center justify-center relative">
                                 <div id="map" class="w-full h-full"></div>
-                                <div class="absolute inset-0 pointer-events-none flex items-center justify-center">
-                                    <span class="bg-white/80 px-4 py-2 rounded text-gray-500 font-mono text-xs">"3D Map Loading..."</span>
-                                </div>
                             </div>
-                            <div class="p-4 bg-gray-50 text-xs text-gray-500 text-center">
-                                "Interactive Service Area Map"
+                            <div class="p-4 bg-white text-xs text-gray-500 text-center border-t border-gray-100 italic">
+                                "Interactive 3D Map of Service Area (Coventry)"
                             </div>
                         </div>
                     </div>
