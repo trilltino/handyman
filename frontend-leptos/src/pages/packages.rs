@@ -7,9 +7,7 @@ use leptos::prelude::*;
 use leptos_meta::Script;
 use shared::PageMetadata;
 
-/// Stripe price ID for the new pricing
-const STRIPE_PRICE_ID: &str = "price_1SgCiB50EObjxaVXszWe9RPN";
-/// Stripe checkout URL with the new price
+/// Stripe checkout URL with the new price (price_1SgCiB50EObjxaVXszWe9RPN)
 const STRIPE_CHECKOUT_URL: &str = "https://buy.stripe.com/00g8CUeTKbJTac1UWW0";
 
 #[component]
