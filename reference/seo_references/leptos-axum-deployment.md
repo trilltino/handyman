@@ -1079,3 +1079,513 @@ Typical build times:
 - API binary: ~2-5 min (first build ~12 min)
 - Leptos WASM + SSR: ~3-5 min
 - **Total: 5-10 min (cached) / 15-25 min (fresh)**
+
+---
+
+## Phase 19: Advanced SEO Implementation (Google Guidelines)
+
+> [!IMPORTANT]
+> This section implements Google's official SEO Starter Guide recommendations for Leptos SSR applications. SSR is crucial because search engines can crawl and index your pre-rendered HTML.
+
+### Why SSR Matters for SEO
+
+| Rendering | SEO Impact |
+|-----------|------------|
+| CSR (Client-Side) | ❌ Search engines see empty HTML, rely on JavaScript execution |
+| SSR (Server-Side) | ✅ Full HTML sent on first request, immediately indexable |
+| Static Generation | ✅ Pre-built HTML, fastest for static content |
+
+Leptos SSR gives you the best of both worlds: full SEO visibility with dynamic hydration.
+
+---
+
+### 1. Title Tags (Most Important SEO Element)
+
+Google recommendation: Each page needs a unique, descriptive title (50-60 chars).
+
+**Leptos Implementation:**
+```rust
+use leptos_meta::*;
+
+#[component]
+pub fn App() -> impl IntoView {
+    provide_meta_context();
+    
+    view! {
+        // Global title formatter - appends site name to all pages
+        <Title formatter=|text| format!("{text} | XFTradesmen")/>
+        
+        // Other meta tags...
+    }
+}
+
+// Per-page title override
+#[component]
+pub fn PricingPage() -> impl IntoView {
+    view! {
+        <Title text="Pricing Plans - Start from £29/month"/>
+        // Page content...
+    }
+}
+```
+
+**Best Practices:**
+- ✅ Unique title per page
+- ✅ Include primary keyword near the beginning
+- ✅ Keep under 60 characters (truncated in search results)
+- ❌ Avoid generic titles like "Home" or "Page 1"
+- ❌ Don't stuff keywords
+
+---
+
+### 2. Meta Descriptions (Drive Click-Through Rate)
+
+Google recommendation: 150-160 characters, compelling summary.
+
+**Leptos Implementation:**
+```rust
+#[component]
+pub fn ContactPage() -> impl IntoView {
+    view! {
+        <Title text="Contact Us"/>
+        <Meta 
+            name="description" 
+            content="Get a free quote for your handyman project. 
+                     Same-day response, fully insured professionals in Coventry. 
+                     Call 07833 263486 or fill in our online form."
+        />
+        // Page content...
+    }
+}
+```
+
+**Best Practices:**
+- ✅ Summarize page content accurately
+- ✅ Include call-to-action ("Get a quote", "Learn more")
+- ✅ Include phone number for local businesses
+- ❌ Don't use same description on multiple pages
+- ❌ Don't just list keywords
+
+---
+
+### 3. URL Structure (Readable & Hierarchical)
+
+Google recommendation: Use descriptive words, create logical hierarchy.
+
+**Leptos Router Implementation:**
+```rust
+use leptos_router::*;
+
+#[component]
+pub fn AppRouter() -> impl IntoView {
+    view! {
+        <Routes fallback=|| "404 Not Found">
+            // Good: Descriptive, hierarchical
+            <Route path="/" view=HomePage/>
+            <Route path="/services" view=ServicesPage/>
+            <Route path="/services/plumbing" view=PlumbingPage/>
+            <Route path="/services/electrical" view=ElectricalPage/>
+            <Route path="/pricing" view=PricingPage/>
+            <Route path="/contact" view=ContactPage/>
+            
+            // Good: Location-based for local SEO
+            <Route path="/handyman-coventry" view=HandymanHome/>
+            <Route path="/handyman-coventry/services" view=HandymanServices/>
+        </Routes>
+    }
+}
+```
+
+**URL Do's and Don'ts:**
+
+| ✅ Good | ❌ Bad |
+|---------|--------|
+| `/services/plumbing` | `/page?id=123&cat=5` |
+| `/handyman-coventry` | `/h1` |
+| `/pricing` | `/pricing-plans-cheap-best-deals` |
+
+---
+
+### 4. Heading Hierarchy (Content Structure)
+
+Google recommendation: One H1 per page, logical H2-H6 hierarchy.
+
+**Leptos Implementation:**
+```rust
+#[component]
+pub fn ServicesPage() -> impl IntoView {
+    view! {
+        <article>
+            // Only ONE h1 per page
+            <h1>"Professional Handyman Services in Coventry"</h1>
+            
+            // Logical hierarchy
+            <section>
+                <h2>"Home Repairs"</h2>
+                <p>"We fix everything from..."</p>
+                
+                <h3>"Minor Repairs"</h3>
+                <p>"Door handles, hinges..."</p>
+                
+                <h3>"Major Repairs"</h3>
+                <p>"Drywall, flooring..."</p>
+            </section>
+            
+            <section>
+                <h2>"Assembly Services"</h2>
+                <p>"Flat-pack furniture..."</p>
+            </section>
+        </article>
+    }
+}
+```
+
+---
+
+### 5. Image Optimization
+
+Google recommendation: Descriptive filenames, alt text, proper formats.
+
+**Leptos Implementation:**
+```rust
+// Good image implementation
+view! {
+    <img 
+        src="/images/plumber-fixing-leak-coventry.webp"  // Descriptive filename
+        alt="Professional plumber fixing kitchen sink leak in Coventry home"  // Descriptive alt
+        width="800"
+        height="600"
+        loading="lazy"  // Lazy load for performance
+    />
+}
+
+// For hero images (LCP - Largest Contentful Paint)
+view! {
+    <img 
+        src="/images/hero-handyman-team.webp"
+        alt="XFTradesmen professional handyman team ready to help"
+        width="1200"
+        height="630"
+        fetchpriority="high"  // Prioritize loading
+    />
+}
+```
+
+**Image Checklist:**
+- ✅ Use descriptive filenames: `plumber-coventry.webp` not `IMG_001.jpg`
+- ✅ Alt text describes the image AND context
+- ✅ Use WebP format for 30% smaller files
+- ✅ Include dimensions to prevent layout shift
+- ✅ Lazy load below-the-fold images
+
+---
+
+### 6. Internal Linking & Anchor Text
+
+Google recommendation: Descriptive anchor text, logical link structure.
+
+**Leptos Implementation:**
+```rust
+// Good: Descriptive anchor text
+view! {
+    <p>
+        "Need help with your bathroom? Check out our "
+        <a href="/services/plumbing">"plumbing services"</a>
+        " or "
+        <a href="/contact">"get a free quote"</a>
+        "."
+    </p>
+}
+
+// Bad: Generic anchor text
+view! {
+    <p>
+        "For plumbing services, "
+        <a href="/services/plumbing">"click here"</a>  // ❌ Not descriptive
+        "."
+    </p>
+}
+```
+
+---
+
+### 7. Structured Data (JSON-LD)
+
+Google recommendation: Schema.org markup for rich snippets.
+
+**Leptos Local Business Schema:**
+```rust
+#[component]
+pub fn LocalBusinessSchema() -> impl IntoView {
+    view! {
+        <script type="application/ld+json">
+            {r#"{
+                "@context": "https://schema.org",
+                "@type": "LocalBusiness",
+                "name": "XFTradesmen",
+                "description": "Professional handyman services in Coventry",
+                "url": "https://xftradesmen.fly.dev",
+                "telephone": "+44-7833-263486",
+                "email": "hello@xftradesmen.com",
+                "address": {
+                    "@type": "PostalAddress",
+                    "addressLocality": "Coventry",
+                    "addressRegion": "West Midlands",
+                    "postalCode": "CV1",
+                    "addressCountry": "GB"
+                },
+                "geo": {
+                    "@type": "GeoCoordinates", 
+                    "latitude": 52.4068,
+                    "longitude": -1.5197
+                },
+                "openingHoursSpecification": {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+                    "opens": "08:00",
+                    "closes": "18:00"
+                },
+                "priceRange": "££",
+                "sameAs": [
+                    "https://facebook.com/xftradesmen",
+                    "https://instagram.com/xftradesmen"
+                ]
+            }"#}
+        </script>
+    }
+}
+```
+
+**Service Schema:**
+```rust
+#[component]
+pub fn ServiceSchema(
+    name: &'static str,
+    description: &'static str,
+    url: &'static str,
+) -> impl IntoView {
+    view! {
+        <script type="application/ld+json">
+            {format!(r#"{{
+                "@context": "https://schema.org",
+                "@type": "Service",
+                "name": "{}",
+                "description": "{}",
+                "url": "{}",
+                "provider": {{
+                    "@type": "LocalBusiness",
+                    "name": "XFTradesmen"
+                }},
+                "areaServed": {{
+                    "@type": "City",
+                    "name": "Coventry"
+                }}
+            }}"#, name, description, url)}
+        </script>
+    }
+}
+```
+
+---
+
+### 8. robots.txt & Sitemap
+
+**robots.txt** (place in `public/` folder):
+```
+User-agent: *
+Allow: /
+
+# Block admin/internal pages
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_internal/
+
+# Sitemap location
+Sitemap: https://xftradesmen.fly.dev/sitemap.xml
+```
+
+**XML Sitemap** (generate dynamically or static):
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://xftradesmen.fly.dev/</loc>
+    <lastmod>2024-12-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://xftradesmen.fly.dev/services</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://xftradesmen.fly.dev/pricing</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://xftradesmen.fly.dev/contact</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+</urlset>
+```
+
+---
+
+### 9. Open Graph & Social Meta
+
+**Leptos Implementation:**
+```rust
+#[component]
+pub fn SocialMeta(
+    title: &'static str,
+    description: &'static str,
+    image: &'static str,
+    url: &'static str,
+) -> impl IntoView {
+    view! {
+        // Open Graph (Facebook, LinkedIn)
+        <Meta property="og:title" content=title/>
+        <Meta property="og:description" content=description/>
+        <Meta property="og:image" content=image/>
+        <Meta property="og:url" content=url/>
+        <Meta property="og:type" content="website"/>
+        <Meta property="og:site_name" content="XFTradesmen"/>
+        
+        // Twitter Cards
+        <Meta name="twitter:card" content="summary_large_image"/>
+        <Meta name="twitter:title" content=title/>
+        <Meta name="twitter:description" content=description/>
+        <Meta name="twitter:image" content=image/>
+    }
+}
+```
+
+---
+
+### 10. Mobile-First & Core Web Vitals
+
+**Viewport Meta (required):**
+```rust
+view! {
+    <Meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+}
+```
+
+**Performance Checklist:**
+
+| Metric | Target | How to Achieve |
+|--------|--------|----------------|
+| LCP (Largest Contentful Paint) | < 2.5s | Optimize hero images, use CDN |
+| FID (First Input Delay) | < 100ms | Minimize JavaScript, use SSR |
+| CLS (Cumulative Layout Shift) | < 0.1 | Set image dimensions, avoid layout shifts |
+
+**Leptos SSR Advantage:**
+- Server renders full HTML first → LCP is fast
+- Hydration is progressive → FID stays low
+- Page structure is stable → CLS is minimal
+
+---
+
+### 11. Complete SEO Component
+
+**Reusable SeoHead Component:**
+```rust
+use leptos::prelude::*;
+use leptos_meta::*;
+
+#[derive(Clone)]
+pub struct PageMetadata {
+    pub title: String,
+    pub description: String,
+    pub canonical_url: Option<String>,
+    pub og_image: Option<String>,
+    pub no_index: bool,
+}
+
+#[component]
+pub fn SeoHead(metadata: PageMetadata) -> impl IntoView {
+    let og_image = metadata.og_image.unwrap_or_else(|| 
+        "https://xftradesmen.fly.dev/og-default.png".to_string()
+    );
+    
+    view! {
+        <Title text=metadata.title.clone()/>
+        <Meta name="description" content=metadata.description.clone()/>
+        
+        // Canonical URL (prevents duplicate content)
+        {metadata.canonical_url.map(|url| view! {
+            <Link rel="canonical" href=url/>
+        })}
+        
+        // Robots directive
+        {if metadata.no_index {
+            Some(view! { <Meta name="robots" content="noindex, nofollow"/> })
+        } else {
+            None
+        }}
+        
+        // Open Graph
+        <Meta property="og:title" content=metadata.title.clone()/>
+        <Meta property="og:description" content=metadata.description.clone()/>
+        <Meta property="og:image" content=og_image.clone()/>
+        <Meta property="og:type" content="website"/>
+        
+        // Twitter
+        <Meta name="twitter:card" content="summary_large_image"/>
+        <Meta name="twitter:title" content=metadata.title/>
+        <Meta name="twitter:description" content=metadata.description/>
+        <Meta name="twitter:image" content=og_image/>
+    }
+}
+```
+
+**Usage:**
+```rust
+#[component]
+pub fn PricingPage() -> impl IntoView {
+    view! {
+        <SeoHead metadata=PageMetadata {
+            title: "Pricing - Affordable Handyman Services".to_string(),
+            description: "Transparent pricing starting at £29/month. No hidden fees.".to_string(),
+            canonical_url: Some("https://xftradesmen.fly.dev/pricing".to_string()),
+            og_image: Some("https://xftradesmen.fly.dev/og-pricing.png".to_string()),
+            no_index: false,
+        }/>
+        
+        // Page content...
+    }
+}
+```
+
+---
+
+### SEO Verification Tools
+
+| Tool | Purpose | URL |
+|------|---------|-----|
+| Google Search Console | Monitor indexing, search performance | https://search.google.com/search-console |
+| Google Rich Results Test | Validate structured data | https://search.google.com/test/rich-results |
+| PageSpeed Insights | Core Web Vitals analysis | https://pagespeed.web.dev |
+| Lighthouse | Full SEO audit in Chrome DevTools | Built into Chrome |
+| Facebook Sharing Debugger | Test Open Graph tags | https://developers.facebook.com/tools/debug |
+
+---
+
+### SEO Quick Wins Checklist
+
+- [ ] Every page has unique `<Title>` with primary keyword
+- [ ] Every page has unique meta description (150-160 chars)
+- [ ] Only ONE `<h1>` per page
+- [ ] All images have descriptive alt text
+- [ ] Internal links use descriptive anchor text
+- [ ] Canonical URLs set on all pages
+- [ ] robots.txt allows crawling important pages
+- [ ] sitemap.xml submitted to Google Search Console
+- [ ] LocalBusiness schema on homepage
+- [ ] Open Graph tags for social sharing
+- [ ] Mobile viewport meta tag set
+- [ ] HTTPS enforced (fly.toml `force_https = true`)
+
