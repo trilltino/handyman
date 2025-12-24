@@ -162,6 +162,103 @@ cargo leptos build --release
 
 ---
 
+## Phase 9: Leptos SEO Best Practices
+
+> [!IMPORTANT]
+> SSR is crucial for SEO. Leptos renders pages to HTML on the server, allowing search engines to index content properly.
+
+### Meta Context Setup
+- [ ] `provide_meta_context()` called in App component:
+  ```rust
+  #[component]
+  pub fn App() -> impl IntoView {
+      provide_meta_context();
+      // ...
+  }
+  ```
+
+### Essential Meta Components
+
+| Component | Purpose | Example |
+|-----------|---------|---------|
+| `<Title/>` | Page title | `<Title text="Home - My Site"/>` |
+| `<Meta/>` | Meta tags | `<Meta name="description" content="..."/>` |
+| `<Link/>` | Canonical URLs, icons | `<Link rel="canonical" href="..."/>` |
+| `<Html/>` | Lang, dir attributes | `<Html attr:lang="en-gb"/>` |
+| `<Stylesheet/>` | CSS links | `<Stylesheet href="/styles.css"/>` |
+
+### Page-Level SEO Checklist
+- [ ] Every page has unique `<Title>` component
+- [ ] Use formatter for consistent title pattern:
+  ```rust
+  <Title formatter=|text| format!("{text} | XFTradesmen")/>
+  ```
+- [ ] Meta description on every page (150-160 chars):
+  ```rust
+  <Meta name="description" content="Professional handyman services..."/>
+  ```
+- [ ] Canonical URL to prevent duplicate content:
+  ```rust
+  <Link rel="canonical" href="https://yoursite.com/page"/>
+  ```
+
+### Social Media / Open Graph
+- [ ] OG tags for rich link previews:
+  ```rust
+  <Meta property="og:title" content="Page Title"/>
+  <Meta property="og:description" content="Description"/>
+  <Meta property="og:image" content="https://site.com/og-image.png"/>
+  <Meta property="og:url" content="https://site.com/page"/>
+  <Meta property="og:type" content="website"/>
+  ```
+- [ ] Twitter Card tags:
+  ```rust
+  <Meta name="twitter:card" content="summary_large_image"/>
+  <Meta name="twitter:title" content="Page Title"/>
+  <Meta name="twitter:description" content="Description"/>
+  <Meta name="twitter:image" content="https://site.com/twitter-image.png"/>
+  ```
+
+### Structured Data (JSON-LD)
+- [ ] LocalBusiness schema for service businesses:
+  ```rust
+  <Script type_="application/ld+json">
+      r#"{
+          "@context": "https://schema.org",
+          "@type": "LocalBusiness",
+          "name": "XFTradesmen",
+          "telephone": "+44..."
+      }"#
+  </Script>
+  ```
+
+### Technical SEO Files
+- [ ] `robots.txt` in public/assets folder:
+  ```
+  User-agent: *
+  Allow: /
+  Sitemap: https://yoursite.com/sitemap.xml
+  ```
+- [ ] `sitemap.xml` with all pages
+- [ ] HTML lang attribute set:
+  ```rust
+  <Html attr:lang="en-gb"/>
+  ```
+
+### Shared PageMetadata Pattern (Recommended)
+Create a reusable struct in your `shared` crate:
+```rust
+pub struct PageMetadata {
+    pub title: String,
+    pub description: String,
+    pub canonical: Option<String>,
+    pub og_image: Option<String>,
+}
+```
+Then create a `<SeoHead>` component that renders all meta tags consistently.
+
+---
+
 ## Quick Verification Commands
 
 ```bash
@@ -180,3 +277,12 @@ npm run build:css && echo "CSS OK"
 # Test full build
 cargo leptos build
 ```
+
+---
+
+## SEO Testing Tools
+
+- [Google Rich Results Test](https://search.google.com/test/rich-results)
+- [Facebook Sharing Debugger](https://developers.facebook.com/tools/debug/)
+- [Twitter Card Validator](https://cards-dev.twitter.com/validator)
+- Lighthouse in Chrome DevTools (SEO audit)
