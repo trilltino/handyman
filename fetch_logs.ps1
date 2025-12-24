@@ -5,11 +5,13 @@
 #   .\fetch_logs.ps1              - Fetch latest failed run logs
 #   .\fetch_logs.ps1 -RunId 12345 - Fetch specific run ID logs  
 #   .\fetch_logs.ps1 -List        - List recent workflow runs
+#   .\fetch_logs.ps1 -Artifacts   - Download artifacts from latest failed run
 
 param(
     [string]$RunId = "",
     [switch]$List,
     [switch]$Latest,
+    [switch]$Artifacts,
     [string]$Repo = "trilltino/handyman"
 )
 
@@ -24,7 +26,8 @@ if (-not (Test-Path $LogDir)) {
 # Check if gh CLI is installed
 try {
     gh --version | Out-Null
-} catch {
+}
+catch {
     Write-Host "[ERROR] GitHub CLI (gh) not installed." -ForegroundColor Red
     Write-Host "Install with: winget install GitHub.cli"
     Write-Host "Or download from: https://cli.github.com/"
@@ -63,17 +66,49 @@ if ([string]::IsNullOrEmpty($RunId)) {
     exit 1
 }
 
-Write-Host "[INFO] Downloading logs for run ID: $RunId" -ForegroundColor Cyan
-$LogFile = Join-Path $LogDir "run_$RunId.log"
+Write-Host "[INFO] Run ID: $RunId" -ForegroundColor Cyan
 
-# Download logs
+# Download artifacts if requested or by default
+$ArtifactDir = Join-Path $LogDir "artifacts_$RunId"
+Write-Host "[INFO] Downloading artifacts..." -ForegroundColor Yellow
+gh run download $RunId --repo $Repo --dir $ArtifactDir 2>$null
+
+if (Test-Path $ArtifactDir) {
+    Write-Host "[INFO] Artifacts saved to: $ArtifactDir" -ForegroundColor Green
+    
+    # Check for errors.txt in artifacts
+    $artifactErrors = Get-ChildItem -Path $ArtifactDir -Recurse -Filter "errors.txt" -ErrorAction SilentlyContinue
+    if ($artifactErrors) {
+        Write-Host ""
+        Write-Host "========================================" -ForegroundColor Cyan
+        Write-Host "  Errors from Artifacts:" -ForegroundColor Cyan
+        Write-Host "========================================" -ForegroundColor Cyan
+        foreach ($errFile in $artifactErrors) {
+            Write-Host "--- $($errFile.FullName) ---" -ForegroundColor Yellow
+            Get-Content $errFile.FullName | ForEach-Object {
+                if ($_ -match "error|failed|cannot") {
+                    Write-Host $_ -ForegroundColor Red
+                }
+                else {
+                    Write-Host $_
+                }
+            }
+        }
+    }
+}
+else {
+    Write-Host "[INFO] No artifacts found. Downloading raw logs..." -ForegroundColor Yellow
+}
+
+# Also download raw logs
+$LogFile = Join-Path $LogDir "run_$RunId.log"
+Write-Host "[INFO] Downloading raw logs..." -ForegroundColor Yellow
 gh run view $RunId --repo $Repo --log 2>&1 | Out-File -FilePath $LogFile -Encoding utf8
 
 Write-Host "[INFO] Logs saved to: $LogFile" -ForegroundColor Green
-Write-Host ""
 
-# Extract errors
-Write-Host "[INFO] Extracting errors..." -ForegroundColor Yellow
+# Extract errors from raw logs
+Write-Host "[INFO] Extracting errors from raw logs..." -ForegroundColor Yellow
 
 $Header = @"
 ========================================
@@ -85,8 +120,8 @@ $Header = @"
 
 $Header | Out-File -FilePath $ErrorsFile -Encoding utf8
 
-# Search for error patterns
 $ErrorPatterns = @(
+    "error\[",
     "error:",
     "Error:",
     "FAIL",
@@ -109,27 +144,16 @@ foreach ($line in $LogContent) {
     }
 }
 
-# Remove duplicates and write to file
 $ErrorLines | Select-Object -Unique | Add-Content -Path $ErrorsFile
 
 Write-Host ""
-Write-Host "[DONE] Errors extracted to: $ErrorsFile" -ForegroundColor Green
+Write-Host "[DONE] Analysis complete!" -ForegroundColor Green
 Write-Host ""
-Write-Host "========================================"  -ForegroundColor Cyan
-Write-Host "  Error Summary (last 50 lines):"  -ForegroundColor Cyan
-Write-Host "========================================"  -ForegroundColor Cyan
-Write-Host ""
-
-# Display errors
-$Errors = Get-Content $ErrorsFile | Select-Object -Last 50
-foreach ($line in $Errors) {
-    if ($line -match "error:|Error:|FAIL|failed|panicked") {
-        Write-Host $line -ForegroundColor Red
-    } else {
-        Write-Host $line
-    }
+Write-Host "Files saved:" -ForegroundColor Cyan
+Write-Host "  - Raw logs: $LogFile"
+Write-Host "  - Errors: $ErrorsFile"
+if (Test-Path $ArtifactDir) {
+    Write-Host "  - Artifacts: $ArtifactDir"
 }
-
 Write-Host ""
-Write-Host "[TIP] Full log at: $LogFile" -ForegroundColor Yellow
-Write-Host "[TIP] To view all runs: .\fetch_logs.ps1 -List" -ForegroundColor Yellow
+Write-Host "[TIP] To list runs: .\fetch_logs.ps1 -List" -ForegroundColor Yellow
