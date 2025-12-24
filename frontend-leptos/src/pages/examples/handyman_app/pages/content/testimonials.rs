@@ -28,7 +28,7 @@ pub fn HandymanTestimonials() -> impl IntoView {
                 // Column 2
                 <div class="space-y-8">
                      <GlassCard class="bg-blue-900 text-white !border-blue-800">
-                        <div class="text-yellow-400 text-4xl mb-4">"★★★★★"</div>
+                        <div class="text-yellow-400 text-4xl mb-4">"*****"</div>
                         <h3 class="text-2xl font-bold mb-4">"Over 500+ Five Star Reviews"</h3>
                         <p class="text-blue-200 mb-6">"We take pride in every job. Check us out on Google and TrustPilot."</p>
                         <div class="flex gap-4 opacity-70">
@@ -76,9 +76,9 @@ fn TestimonialCard(
     view! {
         <GlassCard>
             <div class="flex text-yellow-500 mb-4 text-lg">
-                {(0..rating).map(|_| "★").collect::<String>()}
+                {(0..rating).map(|_| "*").collect::<String>()}
             </div>
-            <p class="text-gray-600 leading-relaxed mb-6 italic">" {text} "</p>
+            <p class="text-gray-600 leading-relaxed mb-6 italic">"\"" {text} "\""</p>
             <div class="flex items-center gap-4">
                 <div class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center font-bold text-gray-500">
                     {name.chars().next().unwrap()}

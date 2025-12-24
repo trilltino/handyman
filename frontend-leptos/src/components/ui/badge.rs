@@ -1,8 +1,8 @@
 //! Badge component for status indicators.
 //!
 //! Displays small label badges with custom styling and color variants.
-
 use leptos::prelude::*;
+
 
 /// Badge color variant for different contexts.
 #[derive(Clone, Copy, PartialEq)]
@@ -17,6 +17,7 @@ pub enum BadgeVariant {
     /// Gray/mono - for tech labels
     Info,
 }
+
 
 impl BadgeVariant {
     /// Get CSS classes for dot, text, and background.
@@ -57,7 +58,6 @@ pub fn Badge(
     variant: BadgeVariant,
 ) -> impl IntoView {
     let (dot_class, text_class, bg_class) = variant.classes();
-
     view! {
         <div class=format!(
             "inline-flex items-center gap-2 px-3 py-1 rounded-full border text-xs font-mono font-bold tracking-widest uppercase {}",

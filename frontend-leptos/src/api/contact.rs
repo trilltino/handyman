@@ -1,6 +1,4 @@
 //! Contact API client for submitting forms to backend.
-
-//! Contact form API client.
 //!
 //! Handles contact form submission to backend.
 

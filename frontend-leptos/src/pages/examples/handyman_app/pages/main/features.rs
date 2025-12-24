@@ -77,11 +77,12 @@ pub fn HandymanFeatures() -> impl IntoView {
 
 #[component]
 fn FeatureRow(icon: &'static str, title: &'static str, desc: &'static str) -> impl IntoView {
+    let _ = icon;
     view! {
         <div class="flex items-start gap-4 p-4 bg-white rounded-xl shadow-sm border border-gray-100">
             <div class="w-12 h-12 bg-blue-100 text-blue-800 rounded-lg flex items-center justify-center shrink-0">
                 // Simulating generic icon placeholder or mapping needed
-                 <span class="font-bold text-xl">"✓"</span>
+                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
             </div>
             <div>
                 <h4 class="font-bold text-gray-900 text-lg">{title}</h4>

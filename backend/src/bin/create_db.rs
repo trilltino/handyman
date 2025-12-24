@@ -53,7 +53,7 @@ async fn main() -> Result<(), Error> {
     // Create fresh database
     client.execute("CREATE DATABASE handyman", &[]).await?;
 
-    println!("✅ Database 'handyman' created successfully!");
+    println!("[OK] Database 'handyman' created successfully!");
 
     Ok(())
 }

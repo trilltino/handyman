@@ -31,12 +31,12 @@ pub fn HandymanBooking() -> impl IntoView {
                             <div class="animate-fade-in space-y-8">
                                 <h3 class="text-2xl font-bold text-center text-blue-900">"What do you need help with?"</h3>
                                 <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                                     <ServiceSelectBox icon="🔧" label="General Repair" onClick=move |_| set_step.set(2) />
-                                     <ServiceSelectBox icon="🚰" label="Plumbing" onClick=move |_| set_step.set(2) />
-                                     <ServiceSelectBox icon="💡" label="Electrical" onClick=move |_| set_step.set(2) />
-                                     <ServiceSelectBox icon="🔨" label="Assembly" onClick=move |_| set_step.set(2) />
-                                     <ServiceSelectBox icon="🎨" label="Painting" onClick=move |_| set_step.set(2) />
-                                     <ServiceSelectBox icon="❓" label="Other" onClick=move |_| set_step.set(2) />
+                                     <ServiceSelectBox icon="[R]" label="General Repair" on_click=move |_| set_step.set(2) />
+                                     <ServiceSelectBox icon="[P]" label="Plumbing" on_click=move |_| set_step.set(2) />
+                                     <ServiceSelectBox icon="[E]" label="Electrical" on_click=move |_| set_step.set(2) />
+                                     <ServiceSelectBox icon="[A]" label="Assembly" on_click=move |_| set_step.set(2) />
+                                     <ServiceSelectBox icon="[D]" label="Painting" on_click=move |_| set_step.set(2) />
+                                     <ServiceSelectBox icon="[?]" label="Other" on_click=move |_| set_step.set(2) />
                                 </div>
                             </div>
                         }.into_any(),

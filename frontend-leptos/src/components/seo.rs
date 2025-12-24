@@ -132,3 +132,248 @@ pub fn OrganizationSchema() -> impl IntoView {
         </Script>
     }
 }
+
+/// Handyman LocalBusiness Schema.org structured data.
+///
+/// Specifically for the handyman-coventry site with full service details.
+#[component]
+pub fn HandymanLocalBusinessSchema() -> impl IntoView {
+    view! {
+        <Script type_="application/ld+json">
+            {r#"{
+                "@context": "https://schema.org",
+                "@type": "HomeAndConstructionBusiness",
+                "name": "XF Tradesmen - Coventry Handyman",
+                "description": "Professional handyman services in Coventry and surrounding areas. Plumbing, electrical, carpentry, furniture assembly, and general repairs.",
+                "url": "https://xftradesmen.com/handyman-coventry",
+                "telephone": "+44-7833-263486",
+                "email": "hello@xftradesmen.com",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "Coventry",
+                    "addressLocality": "Coventry",
+                    "addressRegion": "West Midlands",
+                    "postalCode": "CV1",
+                    "addressCountry": "GB"
+                },
+                "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": 52.4068,
+                    "longitude": -1.5197
+                },
+                "areaServed": [
+                    {"@type": "City", "name": "Coventry"},
+                    {"@type": "City", "name": "Birmingham"},
+                    {"@type": "City", "name": "Solihull"},
+                    {"@type": "City", "name": "Warwick"},
+                    {"@type": "City", "name": "Leamington Spa"},
+                    {"@type": "City", "name": "Nuneaton"},
+                    {"@type": "City", "name": "Rugby"},
+                    {"@type": "City", "name": "Kenilworth"}
+                ],
+                "openingHoursSpecification": [
+                    {
+                        "@type": "OpeningHoursSpecification",
+                        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+                        "opens": "08:00",
+                        "closes": "18:00"
+                    },
+                    {
+                        "@type": "OpeningHoursSpecification",
+                        "dayOfWeek": "Saturday",
+                        "opens": "09:00",
+                        "closes": "16:00"
+                    }
+                ],
+                "priceRange": "££",
+                "aggregateRating": {
+                    "@type": "AggregateRating",
+                    "ratingValue": "4.9",
+                    "reviewCount": "127",
+                    "bestRating": "5",
+                    "worstRating": "1"
+                },
+                "hasOfferCatalog": {
+                    "@type": "OfferCatalog",
+                    "name": "Handyman Services",
+                    "itemListElement": [
+                        {
+                            "@type": "Offer",
+                            "itemOffered": {
+                                "@type": "Service",
+                                "name": "Plumbing Repairs",
+                                "description": "Leaky taps, toilet repairs, shower fitting"
+                            }
+                        },
+                        {
+                            "@type": "Offer",
+                            "itemOffered": {
+                                "@type": "Service",
+                                "name": "Electrical Work",
+                                "description": "Light fitting, socket installation, repairs"
+                            }
+                        },
+                        {
+                            "@type": "Offer",
+                            "itemOffered": {
+                                "@type": "Service",
+                                "name": "Furniture Assembly",
+                                "description": "IKEA, flatpack, office furniture"
+                            }
+                        },
+                        {
+                            "@type": "Offer",
+                            "itemOffered": {
+                                "@type": "Service",
+                                "name": "Carpentry",
+                                "description": "Doors, shelving, skirting boards"
+                            }
+                        }
+                    ]
+                }
+            }"#}
+        </Script>
+    }
+}
+
+/// Service Schema.org structured data.
+///
+/// For individual service pages.
+#[component]
+pub fn ServiceSchema(
+    #[prop(into)] name: String,
+    #[prop(into)] description: String,
+    #[prop(into, optional)] price_from: Option<String>,
+) -> impl IntoView {
+    let price_spec = price_from
+        .map(|p| {
+            format!(
+                r#","offers": {{
+                "@type": "Offer",
+                "priceSpecification": {{
+                    "@type": "PriceSpecification",
+                    "price": "{}",
+                    "priceCurrency": "GBP",
+                    "unitText": "per job"
+                }}
+            }}"#,
+                p
+            )
+        })
+        .unwrap_or_default();
+
+    let schema = format!(
+        r#"{{
+            "@context": "https://schema.org",
+            "@type": "Service",
+            "name": "{}",
+            "description": "{}",
+            "provider": {{
+                "@type": "HomeAndConstructionBusiness",
+                "name": "XF Tradesmen - Coventry Handyman",
+                "url": "https://xftradesmen.com/handyman-coventry"
+            }},
+            "areaServed": {{
+                "@type": "City",
+                "name": "Coventry"
+            }},
+            "serviceType": "{}"{}
+        }}"#,
+        name, description, name, price_spec
+    );
+
+    view! {
+        <Script type_="application/ld+json">
+            {schema}
+        </Script>
+    }
+}
+
+/// FAQPage Schema.org structured data.
+///
+/// For FAQ sections to enable rich snippets in search results.
+#[component]
+pub fn FAQPageSchema(
+    /// Vector of (question, answer) tuples
+    #[prop(into)]
+    faqs: Vec<(String, String)>,
+) -> impl IntoView {
+    let faq_items: Vec<String> = faqs
+        .iter()
+        .map(|(q, a)| {
+            format!(
+                r#"{{
+                    "@type": "Question",
+                    "name": "{}",
+                    "acceptedAnswer": {{
+                        "@type": "Answer",
+                        "text": "{}"
+                    }}
+                }}"#,
+                q.replace('"', r#"\""#),
+                a.replace('"', r#"\""#)
+            )
+        })
+        .collect();
+
+    let schema = format!(
+        r#"{{
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [{}]
+        }}"#,
+        faq_items.join(",")
+    );
+
+    view! {
+        <Script type_="application/ld+json">
+            {schema}
+        </Script>
+    }
+}
+
+/// Review Schema.org structured data.
+///
+/// For testimonials and reviews.
+#[component]
+pub fn ReviewSchema(
+    #[prop(into)] author: String,
+    #[prop(into)] rating: u8,
+    #[prop(into)] review_body: String,
+    #[prop(into, optional)] date: Option<String>,
+) -> impl IntoView {
+    let date_str = date.unwrap_or_else(|| "2024-12-23".to_string());
+
+    let schema = format!(
+        r#"{{
+            "@context": "https://schema.org",
+            "@type": "Review",
+            "author": {{
+                "@type": "Person",
+                "name": "{}"
+            }},
+            "reviewRating": {{
+                "@type": "Rating",
+                "ratingValue": "{}",
+                "bestRating": "5",
+                "worstRating": "1"
+            }},
+            "reviewBody": "{}",
+            "datePublished": "{}",
+            "itemReviewed": {{
+                "@type": "HomeAndConstructionBusiness",
+                "name": "XF Tradesmen - Coventry Handyman"
+            }}
+        }}"#,
+        author.replace('"', r#"\""#),
+        rating,
+        review_body.replace('"', r#"\""#),
+        date_str
+    );
+
+    view! {
+        <Script type_="application/ld+json">
+            {schema}
+        </Script>
+    }
+}

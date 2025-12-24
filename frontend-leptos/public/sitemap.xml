@@ -4,88 +4,161 @@
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 
+  <!-- Main Site -->
   <url>
     <loc>https://xftradesmen.com/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <lastmod>2025-12-17</lastmod>
+    <lastmod>2024-12-23</lastmod>
   </url>
 
   <url>
     <loc>https://xftradesmen.com/pricing</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.95</priority>
-    <lastmod>2025-12-17</lastmod>
+    <priority>0.9</priority>
+    <lastmod>2024-12-23</lastmod>
   </url>
 
   <url>
     <loc>https://xftradesmen.com/packages</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.95</priority>
-    <lastmod>2025-12-17</lastmod>
+    <priority>0.9</priority>
+    <lastmod>2024-12-23</lastmod>
   </url>
 
   <url>
     <loc>https://xftradesmen.com/industries</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-    <lastmod>2025-12-17</lastmod>
-  </url>
-
-  <url>
-    <loc>https://xftradesmen.com/contact</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.8</priority>
-    <lastmod>2025-12-17</lastmod>
+    <priority>0.85</priority>
+    <lastmod>2024-12-23</lastmod>
   </url>
 
   <url>
     <loc>https://xftradesmen.com/about</loc>
     <changefreq>yearly</changefreq>
-    <priority>0.8</priority>
-    <lastmod>2025-12-17</lastmod>
+    <priority>0.7</priority>
+    <lastmod>2024-12-23</lastmod>
   </url>
 
   <url>
-    <loc>https://xftradesmen.com/coventry</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-    <lastmod>2025-12-17</lastmod>
+    <loc>https://xftradesmen.com/contact</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+    <lastmod>2024-12-23</lastmod>
   </url>
 
   <url>
     <loc>https://xftradesmen.com/blog</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
-    <lastmod>2025-12-17</lastmod>
+    <lastmod>2024-12-23</lastmod>
+  </url>
+
+  <!-- Handyman Coventry Site (Priority Pages) -->
+  <url>
+    <loc>https://xftradesmen.com/handyman-coventry</loc>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <lastmod>2024-12-23</lastmod>
   </url>
 
   <url>
-    <loc>https://xftradesmen.com/blog/why-tradesmen-need-websites</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-    <lastmod>2025-12-17</lastmod>
+    <loc>https://xftradesmen.com/handyman-coventry/services</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+    <lastmod>2024-12-23</lastmod>
   </url>
 
   <url>
-    <loc>https://xftradesmen.com/blog/local-seo-guide</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-    <lastmod>2025-12-17</lastmod>
-  </url>
-
-  <url>
-    <loc>https://xftradesmen.com/electrician-coventry</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-    <lastmod>2025-12-17</lastmod>
-  </url>
-
-  <url>
-    <loc>https://xftradesmen.com/plumber-coventry</loc>
+    <loc>https://xftradesmen.com/handyman-coventry/services/plumbing</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
-    <lastmod>2025-12-17</lastmod>
+    <lastmod>2024-12-23</lastmod>
+  </url>
+
+  <url>
+    <loc>https://xftradesmen.com/handyman-coventry/services/electrical</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <lastmod>2024-12-23</lastmod>
+  </url>
+
+  <url>
+    <loc>https://xftradesmen.com/handyman-coventry/services/carpentry</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <lastmod>2024-12-23</lastmod>
+  </url>
+
+  <url>
+    <loc>https://xftradesmen.com/handyman-coventry/services/assembly</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <lastmod>2024-12-23</lastmod>
+  </url>
+
+  <url>
+    <loc>https://xftradesmen.com/handyman-coventry/services/painting</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <lastmod>2024-12-23</lastmod>
+  </url>
+
+  <url>
+    <loc>https://xftradesmen.com/handyman-coventry/booking</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+    <lastmod>2024-12-23</lastmod>
+  </url>
+
+  <url>
+    <loc>https://xftradesmen.com/handyman-coventry/quote</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+    <lastmod>2024-12-23</lastmod>
+  </url>
+
+  <url>
+    <loc>https://xftradesmen.com/handyman-coventry/testimonials</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2024-12-23</lastmod>
+  </url>
+
+  <url>
+    <loc>https://xftradesmen.com/handyman-coventry/features</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <lastmod>2024-12-23</lastmod>
+  </url>
+
+  <url>
+    <loc>https://xftradesmen.com/handyman-coventry/service-area</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2024-12-23</lastmod>
+  </url>
+
+  <url>
+    <loc>https://xftradesmen.com/handyman-coventry/about</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+    <lastmod>2024-12-23</lastmod>
+  </url>
+
+  <url>
+    <loc>https://xftradesmen.com/handyman-coventry/contact</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+    <lastmod>2024-12-23</lastmod>
+  </url>
+
+  <!-- Location Pages (Local SEO) -->
+  <url>
+    <loc>https://xftradesmen.com/coventry</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <lastmod>2024-12-23</lastmod>
   </url>
 
 </urlset>

@@ -1,13 +1,23 @@
 //! Dedicated layout for the Handyman Example Site.
 
-use crate::pages::examples::handyman_app::components::CtaButton;
+// use crate::pages::examples::handyman_app::components::CtaButton;
+use crate::components::seo::HandymanLocalBusinessSchema;
 use leptos::prelude::*;
 use leptos_router::components::Outlet;
 
 #[component]
 pub fn HandymanLayout() -> impl IntoView {
     view! {
+        // SEO structured data for all handyman pages
+        <HandymanLocalBusinessSchema />
+
         <div class="font-sans antialiased text-gray-900 bg-slate-50 min-h-screen flex flex-col selection:bg-yellow-400 selection:text-blue-900">
+            // Demo Site Banner
+            <div class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white py-2 px-4 text-center text-sm">
+                <span class="mr-2">"This is an example site showcasing XFTradesmen capabilities."</span>
+                <a href="/" class="underline font-bold hover:text-purple-200 transition">"Back to XFTradesmen"</a>
+            </div>
+
             // Header
             <header class="bg-blue-900/95 backdrop-blur-md text-white py-4 px-6 md:px-12 flex justify-between items-center sticky top-0 z-50 shadow-xl shadow-blue-900/20 border-b border-white/10">
                 <a href="/handyman-coventry" class="group flex items-center gap-2">
@@ -33,6 +43,14 @@ pub fn HandymanLayout() -> impl IntoView {
                     </a>
                     <a href="/handyman-coventry/testimonials" class="hover:text-yellow-400 transition relative group">
                         "Reviews"
+                         <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-yellow-400 transition-all group-hover:w-full"></span>
+                    </a>
+                    <a href="/handyman-coventry/service-area" class="hover:text-yellow-400 transition relative group">
+                        "Service Area"
+                         <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-yellow-400 transition-all group-hover:w-full"></span>
+                    </a>
+                    <a href="/handyman-coventry/quote" class="hover:text-yellow-400 transition relative group">
+                        "Get Quote"
                          <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-yellow-400 transition-all group-hover:w-full"></span>
                     </a>
                     <a href="/handyman-coventry/booking" class="px-6 py-3 bg-gradient-to-r from-yellow-400 to-yellow-500 text-blue-900 rounded-lg hover:shadow-lg hover:shadow-yellow-500/20 hover:-translate-y-0.5 transition font-bold">
@@ -70,6 +88,7 @@ pub fn HandymanLayout() -> impl IntoView {
                             <li><a href="/handyman-coventry/services" class="hover:text-yellow-400 transition flex items-center gap-2">"All Services"</a></li>
                             <li><a href="/handyman-coventry/features" class="hover:text-yellow-400 transition flex items-center gap-2">"Our Guarantee"</a></li>
                             <li><a href="/handyman-coventry/testimonials" class="hover:text-yellow-400 transition flex items-center gap-2">"Customer Stories"</a></li>
+                            <li><a href="/handyman-coventry/service-area" class="hover:text-yellow-400 transition flex items-center gap-2">"Service Area Map"</a></li>
                             <li><a href="/handyman-coventry/booking" class="hover:text-yellow-400 transition flex items-center gap-2">"Book Online"</a></li>
                         </ul>
                     </div>

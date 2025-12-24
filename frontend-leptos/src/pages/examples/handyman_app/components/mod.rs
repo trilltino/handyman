@@ -36,7 +36,7 @@ pub fn SectionTitle(
 }
 
 #[component]
-pub fn GlassCard(children: Children, #[prop(optional)] class: &'static str) -> impl IntoView {
+pub fn GlassCard(children: Children, #[prop(optional, into)] class: String) -> impl IntoView {
     view! {
         <div class={format!("relative overflow-hidden bg-white/90 backdrop-blur-md border border-white/50 shadow-xl shadow-blue-900/5 rounded-2xl p-8 hover:shadow-2xl hover:shadow-blue-900/10 hover:-translate-y-1 transition-all duration-300 group {}", class)}>
              {children()}
@@ -83,3 +83,8 @@ pub fn TrustBadge(icon_path: &'static str, text: &'static str) -> impl IntoView 
         </div>
     }
 }
+
+pub mod layout;
+pub mod lead_capture;
+pub mod mobile_bar;
+pub mod trust_signals;

@@ -1,0 +1,23 @@
+# Clippy Configuration
+# See https://doc.rust-lang.org/clippy/lint_configuration.html
+
+# Maximum cognitive complexity for functions before warning
+cognitive-complexity-threshold = 30
+
+# Allow these lints in tests
+allow-indexing-slicing = true
+
+# Maximum allowed enum variant size
+enum-variant-size-threshold = 200
+
+# Minimum number of struct fields before warning on single_match_else
+single-char-binding-names-threshold = 4
+
+# Msrv (minimum supported rust version)
+msrv = "1.75"
+
+# Types that are allowed to implement `Copy`
+avoid-breaking-exported-api = true
+
+# Missing doc comments are warnings, not errors
+missing-docs-in-crate-items = false

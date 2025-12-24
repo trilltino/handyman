@@ -55,7 +55,7 @@ async fn main() -> Result<(), Error> {
     // Execute all SQL statements in schema
     client.batch_execute(schema).await?;
 
-    println!("✅ Database initialized successfully!");
+    println!("[OK] Database initialized successfully!");
     println!("Tables created:");
     println!("  - users");
     println!("  - customers");

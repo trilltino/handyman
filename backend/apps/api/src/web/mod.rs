@@ -7,6 +7,7 @@ pub mod openapi;
 pub mod routes_contact;
 pub mod routes_health;
 pub mod routes_payment;
+pub mod routes_quote;
 pub mod routes_seo;
 pub mod routes_static;
 
@@ -16,7 +17,8 @@ use lib_core::model::ModelManager;
 pub fn routes(mm: ModelManager) -> Router {
     let api_routes = Router::new()
         .merge(routes_contact::routes(mm.clone()))
-        .merge(routes_payment::routes(mm.clone()));
+        .merge(routes_payment::routes(mm.clone()))
+        .merge(routes_quote::routes(mm.clone()));
 
     let system_routes = Router::new()
         .merge(routes_static::routes())

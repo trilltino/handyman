@@ -1,43 +1,81 @@
 # Database Migrations
 
-This directory contains SQL migrations managed by `sqlx`.
+Production-ready database schema for XF Tradesmen.
 
-## Running Migrations
+## Quick Start
 
+### Fresh Database (Recommended)
 ```bash
-# Using justfile
-just migrate
+# Run the init schema
+psql $DATABASE_URL -f migrations/20241224000000_init.sql
+```
 
-# Or directly with sqlx
+### Using SQLx Migrations
+```bash
+# Set DATABASE_URL
+export DATABASE_URL="postgres://user:pass@localhost/xftradesmen"
+
+# Run migrations
 sqlx migrate run
 ```
 
-## Creating New Migrations
+## Files
+
+| File | Purpose |
+|------|---------|
+| `20241224000000_init.sql` | **Main schema** - All tables, indexes, triggers |
+| `20241224000001_rollback.sql` | Rollback - Drops everything (destructive!) |
+| `_archive/` | Old individual migrations (kept for history) |
+
+## Schema Overview
+
+```
+users                 - Handymen and admins
+customers             - Service recipients
+contact_submissions   - Website contact form
+bookings              - Job appointments
+quotes                - Itemized quotes
+quote_templates       - Reusable templates
+availability          - Handyman schedule
+job_notes             - Job photos/notes
+orders                - Product orders
+order_items           - Order line items
+blog_posts            - Blog articles
+newsletter_subscribers - Email list
+```
+
+## Key Features
+
+- **ENUMs** for status fields (type-safe)
+- **TIMESTAMPTZ** for all timestamps (timezone-aware)
+- **JSONB** for flexible address/items storage
+- **Proper indexes** on foreign keys and query patterns
+- **Auto-update triggers** for `updated_at` columns
+- **Constraints** for data integrity (prices >= 0, ratings 1-5)
+
+## Rollback
 
 ```bash
-sqlx migrate add <migration_name>
+# WARNING: This destroys all data!
+psql $DATABASE_URL -f migrations/20241224000001_rollback.sql
 ```
 
-This will create a new migration file in the format:
-```
-<timestamp>_<migration_name>.sql
-```
+## Adding New Migrations
 
-## Migration Files
-
-Migrations are applied in order based on their timestamp prefix. Each migration should be:
-- **Idempotent**: Safe to run multiple times
-- **Reversible**: Include a corresponding down migration if needed
-- **Atomic**: Complete successfully or roll back entirely
-
-## Current Migrations
-
-- `20251202104220_create_contact_table.sql` - Initial contact submissions table
-
-## Environment Variables
-
-Migrations require the `SERVICE_DB_URL` environment variable:
+For schema changes after deployment:
 
 ```bash
-SERVICE_DB_URL=postgresql://postgres:password@localhost:5432/handyman
+# Create timestamped migration
+sqlx migrate add <name>
+
+# Example
+sqlx migrate add add_payment_method_to_orders
 ```
+
+## Production Checklist
+
+- [ ] Run on staging first
+- [ ] Backup production database
+- [ ] Run migrations during low-traffic period
+- [ ] Verify schema after migration
+- [ ] Test critical queries

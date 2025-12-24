@@ -26,7 +26,7 @@ pub fn Coventry() -> impl IntoView {
       "addressRegion": "England",
       "addressCountry": "GB"
     },
-    "priceRange": "£29-£200",
+    \"priceRange\": \"£30-£200\",
     "areaServed": [
       {
         "@type": "City",

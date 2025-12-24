@@ -70,6 +70,7 @@
 pub mod error;
 pub mod extractors;
 pub mod middleware;
+pub mod rate_limit;
 
 // Re-export commonly used types
 pub use error::{Error, Result};

@@ -30,7 +30,7 @@ pub fn HandymanHome() -> impl IntoView {
                         <TrustBadge icon_path="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" text="Same Day Service"/>
                     </div>
 
-                    <h1 class="text-5xl md::text-7xl font-black text-white leading-tight mb-8 drop-shadow-2xl">
+                    <h1 class="text-5xl md:text-7xl font-black text-white leading-tight mb-8 drop-shadow-2xl">
                         "Your Home." <br/>
                         <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-yellow-500">
                             "Perfected."
@@ -75,19 +75,19 @@ pub fn HandymanHome() -> impl IntoView {
                         <ServiceCard
                             title="Home Repairs"
                             desc="Drywall patching, door handle replacements, and general wear-and-tear."
-                            icon="🔧"
+                            icon="Repair"
                             delay="0"
                         />
                         <ServiceCard
                             title="Assembly & Install"
                             desc="Flat pack furniture assembly, TV mounting, and shelf installation."
-                            icon="🔨"
+                            icon="Build"
                             delay="100"
                         />
                         <ServiceCard
                             title="Plumbing Basics"
                             desc="Leaky taps, toilet repairs, drain unclogging, and shower heads."
-                            icon="🚰"
+                            icon="Water"
                             delay="200"
                         />
                     </div>
@@ -120,6 +120,7 @@ fn ServiceCard(
     icon: &'static str,
     delay: &'static str,
 ) -> impl IntoView {
+    let _ = delay;
     view! {
         <GlassCard class={format!("h-full flex flex-col items-start")}>
             <div class="w-16 h-16 bg-gradient-to-br from-blue-100 to-white rounded-2xl flex items-center justify-center text-3xl shadow-sm mb-6">

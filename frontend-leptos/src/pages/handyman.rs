@@ -132,7 +132,7 @@ pub fn Handyman() -> impl IntoView {
                                 <div class="text-xs text-gray-500 uppercase">"Service Types"</div>
                             </div>
                              <div class="card-deep text-center py-8 border-orange-500/10">
-                                <div class="text-3xl font-bold text-white mb-2 font-mono">"5★"</div>
+                                <div class="text-3xl font-bold text-white mb-2 font-mono">"5/5"</div>
                                 <div class="text-xs text-gray-500 uppercase">"Reviews Ready"</div>
                             </div>
                              <div class="card-deep text-center py-8 border-orange-500/10">

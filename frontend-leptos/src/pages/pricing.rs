@@ -25,7 +25,7 @@ pub fn Pricing() -> impl IntoView {
     view! {
         <SeoHead metadata=PageMetadata {
             title: "Website Plans & Pricing - Affordable for Handymen | XF Tradesmen".to_string(),
-            description: "Choose your perfect handyman website plan. Simple pricing starting at £29/month. Launch in minutes with our proven templates.".to_string(),
+            description: "Choose your perfect handyman website plan. Simple pricing starting at £30/month. Launch in minutes with our proven templates.".to_string(),
             canonical_url: Some("https://xftradesmen.com/pricing".to_string()),
             og_image: None,
         }/>
@@ -69,7 +69,7 @@ pub fn Pricing() -> impl IntoView {
                                 // Monthly subscription
                                 <div class="flex items-baseline gap-2 p-4 bg-void-surface/50 rounded-lg border border-void-highlight">
                                     <span class="text-brand text-sm font-mono">"+THEN"</span>
-                                    <span class="text-3xl font-bold text-white">"£29"</span>
+                                    <span class="text-3xl font-bold text-white">"£30"</span>
                                     <span class="text-gray-400">"/ month"</span>
                                 </div>
                             </div>
@@ -111,13 +111,14 @@ pub fn Pricing() -> impl IntoView {
                                 {move || {
                                     stripe_config.get().map(|result| match &result {
                                         Ok(config) => {
-                                            let product_id = config.product_id.clone();
+                                            let payment_link_id = config.product_id.clone();
                                             view! {
                                                 <button
                                                     on:click=move |_| {
+                                                        // Use Stripe Payment Links format: https://buy.stripe.com/{payment_link_id}
                                                         let checkout_url = format!(
-                                                            "https://checkout.stripe.com/pay/{}",
-                                                            product_id.clone()
+                                                            "https://buy.stripe.com/{}",
+                                                            payment_link_id.clone()
                                                         );
                                                         if let Some(window) = web_sys::window() {
                                                             let _ = window.location().set_href(&checkout_url);
@@ -173,7 +174,7 @@ pub fn Pricing() -> impl IntoView {
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                             </div>
                             <h3 class="text-xl font-bold text-white mb-3">"Transparent Pricing"</h3>
-                            <p class="text-gray-400">"Clear upfront costs with no hidden fees. Cancel your £29/month subscription anytime without penalty."</p>
+                            <p class="text-gray-400">"Clear upfront costs with no hidden fees. Cancel your £30/month subscription anytime without penalty."</p>
                         </div>
                     </div>
                 </div>
@@ -191,7 +192,7 @@ pub fn Pricing() -> impl IntoView {
                         />
                         <FaqCard
                             question="Is hosting included?"
-                            answer="Yes, fast and secure cloud hosting is included in your £29/month subscription. We handle all the technical maintenance."
+                            answer="Yes, fast and secure cloud hosting is included in your £30/month subscription. We handle all the technical maintenance."
                         />
                         <FaqCard
                             question="Can I use my own domain name?"
@@ -220,7 +221,7 @@ pub fn Pricing() -> impl IntoView {
                     "name": "Is hosting included?",
                     "acceptedAnswer": {
                       "@type": "Answer",
-                      "text": "Yes, fast and secure cloud hosting is included in your £29/month subscription. We handle all the technical maintenance."
+                      "text": "Yes, fast and secure cloud hosting is included in your £30/month subscription. We handle all the technical maintenance."
                     }
                   }, {
                     "@type": "Question",

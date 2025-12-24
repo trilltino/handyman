@@ -1,13 +1,26 @@
 //! Model Layer - Backend Model Controllers (BMCs)
 //!
 //! This module provides the data access layer for the application.
+//!
+//! ## Available BMCs
+//!
+//! - [`contact::ContactBmc`] - Contact form submissions
+//! - [`booking::BookingBmc`] - Job bookings/appointments
+//! - [`customer::CustomerBmc`] - Customer CRM records
+//! - [`quote::QuoteBmc`] - Itemized quotes
 
 // region:    --- Modules
 
 mod base;
+pub mod booking;
 pub mod contact;
+pub mod customer;
 mod error;
+pub mod pagination;
+pub mod query_log;
+pub mod quote;
 mod store;
+pub mod transaction;
 
 pub use self::error::{Error, Result};
 

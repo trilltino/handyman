@@ -45,13 +45,13 @@ timeout /t 1 /nobreak >nul
 
 :: Start Backend API (dev mode for faster builds)
 echo [3/4] Launching Backend API (dev mode)...
-start "XFTradesmen Backend" cmd /k "cd backend && cargo run -p api"
+start "XFTradesmen Backend" cmd /k "cargo run -p api"
 timeout /t 2 /nobreak >nul
 
 :: Start Frontend with cargo leptos (dev mode)
 echo [4/4] Launching Frontend (dev mode)...
 timeout /t 1 /nobreak >nul
-start "XFTradesmen Frontend" cmd /k "cargo leptos serve"
+start "XFTradesmen Frontend" cmd /k "cargo leptos watch"
 
 echo.
 echo ========================================================

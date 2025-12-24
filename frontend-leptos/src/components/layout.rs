@@ -10,7 +10,7 @@ pub fn Navbar() -> impl IntoView {
             <div class="navbar-inner">
                 // Logo
                 <a href="/" class="navbar-logo">
-                    <span class="text-brand">"⚡"</span>
+                    <svg class="w-5 h-5 inline text-brand" fill="currentColor" viewBox="0 0 20 20"><path d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 01.12-.38z"/></svg>
                     " XFTradesmen"
                 </a>
 
@@ -30,7 +30,10 @@ pub fn Navbar() -> impl IntoView {
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                 </svg>
-                                "Handyman"
+                                <div>
+                                    <div class="font-medium">"Handyman Coventry"</div>
+                                    <div class="text-xs text-gray-500">"Local service business demo"</div>
+                                </div>
                             </a>
                         </div>
                     </div>
@@ -88,7 +91,7 @@ pub fn Footer() -> impl IntoView {
                     // Brand
                     <div class="md:col-span-2">
                         <a href="/" class="text-2xl font-bold text-white mb-4 inline-block">
-                            <span class="text-brand">"⚡"</span>" XFTradesmen"
+                            <svg class="w-5 h-5 inline text-brand" fill="currentColor" viewBox="0 0 20 20"><path d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 01.12-.38z"/></svg>" XFTradesmen"
                         </a>
                         <p class="text-gray-500 max-w-sm">
                             "Professional handyman services in Coventry and surrounding areas.
@@ -96,17 +99,6 @@ pub fn Footer() -> impl IntoView {
                         </p>
                     </div>
 
-                    // Services
-                    <div>
-                        <h4 class="text-sm font-semibold text-gray-300 uppercase tracking-wider mb-4">
-                            "Services"
-                        </h4>
-                        <ul class="space-y-2">
-                            <li><a href="/electrician-coventry" class="text-gray-500 hover:text-brand-light text-sm">"Electrical"</a></li>
-                            <li><a href="/plumber-coventry" class="text-gray-500 hover:text-brand-light text-sm">"Plumbing"</a></li>
-                            <li><a href="/packages" class="text-gray-500 hover:text-brand-light text-sm">"Packages"</a></li>
-                        </ul>
-                    </div>
 
                     // Company
                     <div>

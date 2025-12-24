@@ -110,10 +110,12 @@
 
 // region:    --- Modules
 
+pub mod cache;
 pub mod config;
 pub mod ctx;
 pub mod email;
 pub mod model;
+pub mod prelude;
 
 // Re-export commonly used types for convenience
 pub use config::core_config;

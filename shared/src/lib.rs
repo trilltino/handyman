@@ -41,11 +41,13 @@
 
 pub mod error;
 pub mod metadata;
+pub mod newtypes;
 pub mod schema;
 pub mod types;
 pub mod validation;
 
 pub use error::{SharedError, SharedResult};
 pub use metadata::PageMetadata;
+pub use newtypes::{Email, NonEmptyString, PhoneNumber, PositiveInt, PriceCents};
 pub use types::{ApiResponse, ContactForm, Product, ProductImage, ProductWithImages};
 pub use validation::Validate;

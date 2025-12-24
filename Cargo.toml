@@ -61,7 +61,7 @@ tracing-subscriber = { version = "0.3", features = ["env-filter", "json"] }
 
 yew = { version = "0.21", features = ["csr"] }
 yew-router = "0.18"
-wasm-bindgen = "=0.2.105"
+wasm-bindgen = "=0.2.106"
 wasm-bindgen-futures = "0.4"
 web-sys = { version = "0.3", features = [
     "HtmlInputElement",

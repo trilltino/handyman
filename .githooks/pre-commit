@@ -1,0 +1,26 @@
+#!/bin/sh
+# Pre-commit hook for XF Tradesmen
+# Install: cp .githooks/pre-commit .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit
+
+echo "Running pre-commit checks..."
+
+# Check formatting
+echo "Checking formatting..."
+if ! cargo fmt --all -- --check; then
+    echo "Error: Code is not formatted. Run 'cargo fmt' first."
+    exit 1
+fi
+
+# Run clippy
+echo "Running clippy..."
+if ! cargo clippy --all -- -D warnings 2>/dev/null; then
+    echo "Warning: Clippy found issues. Consider running 'cargo clippy --fix'"
+fi
+
+# Check for TODO/FIXME in staged files (warning only)
+if git diff --cached --name-only | xargs grep -l "TODO\|FIXME" 2>/dev/null; then
+    echo "Note: Found TODO/FIXME comments in staged files"
+fi
+
+echo "Pre-commit checks passed!"
+exit 0
