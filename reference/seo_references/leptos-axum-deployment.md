@@ -1589,3 +1589,458 @@ pub fn PricingPage() -> impl IntoView {
 - [ ] Mobile viewport meta tag set
 - [ ] HTTPS enforced (fly.toml `force_https = true`)
 
+---
+
+## Phase 20: Common Bugs & Gotchas
+
+> [!CAUTION]
+> These are the most common issues that trip up Leptos developers. Study these carefully!
+
+### 1. Reactivity Issues
+
+#### Don't write to signals from effects
+
+```rust
+// ❌ BAD: Creates inefficient update chains
+let (a, set_a) = signal(0);
+let (b, set_b) = signal(false);
+
+Effect::new(move |_| {
+    if a.get() > 5 {
+        set_b.set(true);  // ⚠️ Triggers more effects!
+    }
+});
+
+// ✅ GOOD: Derive from signals
+let (a, set_a) = signal(0);
+let b = move || a.get() > 5;  // No signal needed - just derive!
+```
+
+#### Nested signal updates cause panics
+
+```rust
+// ❌ Clicking twice will panic!
+let resources = RwSignal::new(HashMap::new());
+
+let update = move |id: usize| {
+    resources.update(|r| {
+        r.entry(id)
+            .or_insert_with(|| RwSignal::new(0))
+            .update(|v| *v += 1)  // ⚠️ Inner update triggers effect that reads outer!
+    });
+};
+
+// ✅ GOOD: Use batch() to defer effects
+let update = move |id: usize| {
+    batch(move || {
+        resources.update(|r| {
+            r.entry(id)
+                .or_insert_with(|| RwSignal::new(0))
+                .update(|v| *v += 1)
+        });
+    });
+};
+```
+
+---
+
+### 2. Input Value Binding
+
+#### Use `prop:value` NOT `value` for reactive inputs
+
+```rust
+// ❌ BAD: Stops updating after first keystroke
+let (name, set_name) = signal("".to_string());
+view! {
+    <input value=name on:input=move |ev| set_name.set(event_target_value(&ev))/>
+}
+
+// ✅ GOOD: Use prop:value for reactive binding
+let (name, set_name) = signal("".to_string());
+view! {
+    <input prop:value=name on:input=move |ev| set_name.set(event_target_value(&ev))/>
+}
+```
+
+**Why?** `value` sets the HTML attribute (initial default). `prop:value` sets the DOM property (current value).
+
+---
+
+### 3. Workspace Resolver
+
+#### Always set `resolver = "2"` in workspace Cargo.toml
+
+```toml
+# ❌ BAD: Missing resolver causes WASM build failures
+[workspace]
+members = ["frontend", "backend"]
+
+# ✅ GOOD: Explicitly set resolver
+[workspace]
+members = ["frontend", "backend"]
+resolver = "2"  # Required for 2021 edition feature resolution!
+```
+
+**Symptom:** Seeing `mio` fail to build for WASM target.
+
+---
+
+### 4. wasm-bindgen Version Mismatch
+
+```bash
+# Error you'll see:
+# it looks like the Rust project used to create this WASM file 
+# was linked against version 0.2.X of wasm-bindgen
+
+# Fix: Pin version in Cargo.toml AND install matching CLI
+cargo install wasm-bindgen-cli --version 0.2.106
+```
+
+```toml
+# Cargo.toml - pin exact version
+wasm-bindgen = "=0.2.106"
+```
+
+---
+
+### 5. CSS Not Loading
+
+| Symptom | Cause | Fix |
+|---------|-------|-----|
+| Unstyled page | CSS not built | Run `npm run build:css` before cargo-leptos |
+| Partially styled | Wrong href | Check `<Stylesheet href="/correct-path.css"/>` |
+| Tailwind missing | Wrong content paths | Check `tailwind.config.js` content array |
+
+---
+
+### 6. Hydration Mismatch
+
+**Symptom:** Console errors about "hydration mismatch" or page flickering.
+
+**Causes:**
+1. Server and client render different HTML
+2. `Date::now()` or random values used during render
+3. External data differing between SSR and hydration
+
+**Fix:**
+```rust
+// Use Suspense for async data
+view! {
+    <Suspense fallback=|| view! { <p>"Loading..."</p> }>
+        {move || resource.get().map(|data| view! { <p>{data}</p> })}
+    </Suspense>
+}
+```
+
+---
+
+### 7. Server Function Errors
+
+```rust
+// ❌ BAD: Forgetting #[server] annotation or wrong path
+async fn fetch_data() -> Result<String, ServerFnError> { ... }
+
+// ✅ GOOD: Proper server function
+#[server(FetchData)]
+pub async fn fetch_data() -> Result<String, ServerFnError> {
+    // This runs ONLY on the server
+    Ok("data".to_string())
+}
+```
+
+---
+
+## Phase 21: Complete Project Template
+
+### Cargo.toml Template (Frontend)
+
+```toml
+[package]
+name = "your-app"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[[bin]]
+name = "your-app"
+path = "src/main.rs"
+
+[dependencies]
+# Core Leptos
+leptos = { version = "0.7", features = ["tracing"] }
+leptos_meta = { version = "0.7" }
+leptos_router = { version = "0.7" }
+leptos_axum = { version = "0.7", optional = true }
+
+# SSR dependencies (only with ssr feature)
+axum = { version = "0.8", optional = true }
+tokio = { version = "1", features = ["rt-multi-thread", "macros"], optional = true }
+tower = { version = "0.4", optional = true }
+tower-http = { version = "0.5", features = ["fs"], optional = true }
+tracing = { version = "0.1", optional = true }
+
+# WASM dependencies
+console_error_panic_hook = "0.1"
+wasm-bindgen = "=0.2.106"
+
+# Shared
+serde = { version = "1", features = ["derive"] }
+thiserror = "2"
+http = "1"
+
+[features]
+default = ["ssr"]
+hydrate = ["leptos/hydrate"]
+ssr = [
+    "dep:axum",
+    "dep:tokio",
+    "dep:tower",
+    "dep:tower-http",
+    "dep:leptos_axum",
+    "dep:tracing",
+    "leptos/ssr",
+    "leptos_meta/ssr",
+    "leptos_router/ssr",
+]
+
+[package.metadata.leptos]
+output-name = "your-app"
+site-root = "target/site"
+site-pkg-dir = "pkg"
+assets-dir = "public"
+site-addr = "127.0.0.1:3000"
+reload-port = 3001
+tailwind-input-file = "input.css"
+browserquery = "defaults"
+watch = false
+env = "DEV"
+bin-features = ["ssr"]
+bin-default-features = false
+lib-features = ["hydrate"]
+lib-default-features = false
+```
+
+---
+
+### lib.rs Template
+
+```rust
+//! Your App - Frontend Library
+#![recursion_limit = "1024"]
+
+use leptos::prelude::*;
+use leptos_meta::*;
+use leptos_router::*;
+use leptos_router::components::*;
+
+pub mod components;
+pub mod pages;
+
+#[component]
+pub fn App() -> impl IntoView {
+    provide_meta_context();
+    
+    view! {
+        <Html attr:lang="en-gb"/>
+        <Meta charset="utf-8"/>
+        <Meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <Stylesheet id="leptos" href="/pkg/your-app.css"/>
+        <Title formatter=|text| format!("{text} | Your App")/>
+        
+        <Router>
+            <Routes fallback=|| view! { <NotFound/> }>
+                <Route path=path!("/") view=pages::Home/>
+                <Route path=path!("/about") view=pages::About/>
+                <Route path=path!("/contact") view=pages::Contact/>
+            </Routes>
+        </Router>
+    }
+}
+
+#[component]
+fn NotFound() -> impl IntoView {
+    view! {
+        <Title text="404 - Not Found"/>
+        <main class="container">
+            <h1>"Page Not Found"</h1>
+            <a href="/">"Go Home"</a>
+        </main>
+    }
+}
+
+#[cfg(feature = "hydrate")]
+#[wasm_bindgen::prelude::wasm_bindgen]
+pub fn hydrate() {
+    console_error_panic_hook::set_once();
+    leptos::mount::hydrate_body(App);
+}
+```
+
+---
+
+### main.rs Template (SSR)
+
+```rust
+//! Your App - SSR Entry Point
+#![recursion_limit = "1024"]
+
+#[cfg(feature = "ssr")]
+#[tokio::main]
+async fn main() {
+    use axum::Router;
+    use leptos::prelude::*;
+    use leptos_axum::{generate_route_list, LeptosRoutes};
+    use your_app::App;
+
+    // Load configuration
+    let conf = get_configuration(None).unwrap();
+    let leptos_options = conf.leptos_options;
+    let addr = leptos_options.site_addr;
+
+    // Generate routes
+    let routes = generate_route_list(App);
+
+    // Build Axum router
+    let app = Router::new()
+        .leptos_routes(&leptos_options, routes, {
+            let leptos_options = leptos_options.clone();
+            move || shell(leptos_options.clone())
+        })
+        .fallback(leptos_axum::file_and_error_handler(shell))
+        .with_state(leptos_options);
+
+    // Start server
+    let listener = tokio::net::TcpListener::bind(&addr).await.unwrap();
+    println!("Listening on http://{}", addr);
+    axum::serve(listener, app.into_make_service()).await.unwrap();
+}
+
+#[cfg(feature = "ssr")]
+fn shell(options: LeptosOptions) -> impl IntoView {
+    use leptos::prelude::*;
+    use leptos_meta::*;
+    use your_app::App;
+    
+    view! {
+        <!DOCTYPE html>
+        <html lang="en">
+            <head>
+                <meta charset="utf-8"/>
+                <meta name="viewport" content="width=device-width, initial-scale=1"/>
+                <AutoReload options=options.clone()/>
+                <HydrationScripts options/>
+            </head>
+            <body>
+                <App/>
+            </body>
+        </html>
+    }
+}
+
+#[cfg(not(feature = "ssr"))]
+fn main() {}
+```
+
+---
+
+### Directory Structure
+
+```
+your-app/
+├── Cargo.toml              # Dependencies and Leptos config
+├── Leptos.toml             # (Optional) Alternative config location
+├── Dockerfile.production   # Multi-stage production build
+├── fly.toml                # Fly.io deployment config
+├── start_fly.sh            # Startup script for Fly.io
+├── package.json            # CSS build scripts
+├── input.css               # Tailwind input
+├── public/                 # Static assets
+│   ├── favicon.ico
+│   ├── robots.txt
+│   └── sitemap.xml
+└── src/
+    ├── lib.rs              # App component, hydrate function
+    ├── main.rs             # SSR server entry point
+    ├── components/         # Reusable UI components
+    │   ├── mod.rs
+    │   ├── layout.rs       # Navbar, Footer
+    │   ├── seo.rs          # SeoHead component
+    │   └── design_system.rs
+    └── pages/              # Route pages
+        ├── mod.rs
+        ├── home.rs
+        ├── about.rs
+        └── contact.rs
+```
+
+---
+
+### Quick Start Commands
+
+```bash
+# 1. Create new project (from template)
+cargo leptos new --git leptos-rs/start
+
+# 2. Install dependencies
+npm install
+
+# 3. Build CSS
+npm run build:css
+
+# 4. Run development server
+cargo leptos watch
+
+# 5. Build for production
+cargo leptos build --release
+
+# 6. Deploy to Fly.io
+fly deploy
+```
+
+---
+
+## Final Checklist: Production-Ready Leptos App
+
+### Code Quality
+- [ ] `#![recursion_limit = "1024"]` in lib.rs AND main.rs
+- [ ] `resolver = "2"` in workspace Cargo.toml
+- [ ] `wasm-bindgen` version pinned and matching CLI
+- [ ] No signals written from effects
+- [ ] `prop:value` used for all input binding
+- [ ] All `#[server]` functions properly annotated
+
+### Configuration
+- [ ] Leptos.toml configured with correct paths
+- [ ] Feature flags properly split (ssr vs hydrate)
+- [ ] CSS build integrated (Tailwind or vanilla)
+
+### SEO
+- [ ] Unique `<Title>` per page
+- [ ] Meta descriptions on all pages
+- [ ] Structured data (JSON-LD) on homepage
+- [ ] Open Graph tags for social sharing
+- [ ] robots.txt and sitemap.xml in public folder
+
+### Deployment
+- [ ] Dockerfile.production with cargo-chef
+- [ ] fly.toml configured with health checks
+- [ ] start_fly.sh using `exec` for main process
+- [ ] Environment secrets set in Fly.io
+- [ ] HTTPS enforced
+
+### Performance
+- [ ] Images optimized (WebP, lazy loading)
+- [ ] CSS minified
+- [ ] `<Suspense>` for async data
+- [ ] Core Web Vitals passing
+
+---
+
+> **This guide was created from:**
+> - Leptos official repository examples (tailwind_axum, todo_app_sqlite_axum)
+> - Leptos ARCHITECTURE.md and COMMON_BUGS.md
+> - Axum ECOSYSTEM.md and examples
+> - Google SEO Starter Guide
+> - Real deployment debugging experience on Fly.io
