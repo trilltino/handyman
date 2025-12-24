@@ -14,8 +14,8 @@ pub fn routes(mm: ModelManager) -> Router {
     Router::new()
         // Quote CRUD
         .route("/quotes", post(quote::create_quote))
-        .route("/quotes/:id", get(quote::get_quote))
-        .route("/quotes/:id/accept", post(quote::accept_quote))
+        .route("/quotes/{id}", get(quote::get_quote))
+        .route("/quotes/{id}/accept", post(quote::accept_quote))
         // Templates
         .route("/quotes/templates", get(quote::get_quote_templates))
         // Public instant quote
