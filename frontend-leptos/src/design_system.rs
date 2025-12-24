@@ -11,6 +11,9 @@
 //! let space = spacing::MD;
 //! ```
 
+// These are intentional API exports for future use
+#![allow(dead_code)]
+
 /// Color palette - Tailwind-compatible hex values
 pub mod colors {
     // Primary brand colors

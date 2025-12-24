@@ -12,6 +12,8 @@ pub mod seo;
 pub mod service_map;
 pub mod ui;
 
-// Re-exports for convenience
+// Re-exports for convenience (intentional public API)
+#[allow(unused_imports)]
 pub use error_boundary::{ErrorBoundary, LoadingPlaceholder, LoadingSpinner};
+#[allow(unused_imports)]
 pub use service_map::CoventryServiceMap;

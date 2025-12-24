@@ -3,6 +3,9 @@
 //! Provides components for injecting SEO metadata into page `<head>`.
 //! Uses `PageMetadata` from shared crate for consistency.
 
+// Props are used by Leptos component macro but analyzer doesn't see it
+#![allow(dead_code)]
+
 use leptos::prelude::*;
 use leptos_meta::{Meta, Script, Title};
 use shared::PageMetadata;

@@ -14,6 +14,9 @@
 //! }
 //! ```
 
+// Props are used by Leptos component macro but analyzer doesn't see it
+#![allow(dead_code)]
+
 use leptos::prelude::*;
 
 /// Error boundary wrapper for graceful error handling.
