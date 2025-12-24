@@ -3,7 +3,6 @@
 //! Displays small label badges with custom styling and color variants.
 use leptos::prelude::*;
 
-
 /// Badge color variant for different contexts.
 #[derive(Clone, Copy, PartialEq)]
 #[allow(dead_code)]
@@ -17,7 +16,6 @@ pub enum BadgeVariant {
     /// Gray/mono - for tech labels
     Info,
 }
-
 
 impl BadgeVariant {
     /// Get CSS classes for dot, text, and background.
