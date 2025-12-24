@@ -2,6 +2,9 @@
 //!
 //! Handles SSR server setup (when `ssr` feature is enabled).
 
+// Increase recursion limit for complex Leptos view hierarchies in SSR
+#![recursion_limit = "1024"]
+
 #[cfg(feature = "ssr")]
 #[tokio::main]
 async fn main() {

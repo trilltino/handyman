@@ -9,7 +9,7 @@
 //! - `api`: Backend API client functions
 
 // Increase recursion limit for complex Leptos view hierarchies
-#![recursion_limit = "512"]
+#![recursion_limit = "1024"]
 
 use leptos::prelude::*;
 use leptos_meta::*;
