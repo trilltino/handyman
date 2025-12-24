@@ -1,5 +1,6 @@
 # Deploy to Fly.io
 # Triggers on push to main or manual dispatch
+# Saves build logs on failure for debugging
 
 name: Deploy to Fly.io
 
@@ -24,11 +25,45 @@ jobs:
       - uses: superfly/flyctl-actions/setup-flyctl@master
 
       - name: Deploy to Fly.io
-        run: flyctl deploy --remote-only --ha=false
+        id: deploy
+        run: |
+          # Save full output to log file
+          flyctl deploy --remote-only --ha=false 2>&1 | tee deploy.log
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 
       - name: Verify Health
+        if: success()
         run: |
           sleep 20
           curl -sf https://xftradesmen.fly.dev/health || echo "Health check pending..."
+
+      - name: Extract errors on failure
+        if: failure()
+        run: |
+          echo "========================================" > errors.txt
+          echo "  Deployment Failed - Error Summary" >> errors.txt
+          echo "  $(date)" >> errors.txt
+          echo "========================================" >> errors.txt
+          echo "" >> errors.txt
+          
+          # Extract error lines from deploy log
+          if [ -f deploy.log ]; then
+            grep -i -E "error|failed|cannot|not found|exit code" deploy.log >> errors.txt || true
+            echo "" >> errors.txt
+            echo "--- Last 100 lines of deploy.log ---" >> errors.txt
+            tail -100 deploy.log >> errors.txt
+          fi
+          
+          cat errors.txt
+
+      - name: Upload build logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: deploy-logs-${{ github.run_id }}
+          path: |
+            deploy.log
+            errors.txt
+          retention-days: 7
+          if-no-files-found: ignore
