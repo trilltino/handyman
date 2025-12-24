@@ -766,3 +766,184 @@ b {
 .font-mono {
     font-family: var(--font-mono);
 }
+
+/* ----------------------------------------
+   MOBILE HAMBURGER MENU
+   Styles for both main site and handyman site
+   ---------------------------------------- */
+
+/* Hamburger button base */
+.hamburger-btn {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 8px;
+    z-index: 50;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+}
+
+.hamburger-btn span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background-color: white;
+    transition: all 0.3s ease;
+    transform-origin: center;
+}
+
+/* Hamburger to X animation */
+.hamburger-btn.open span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger-btn.open span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger-btn.open span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* Mobile menu overlay */
+.mobile-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 40;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.mobile-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Mobile menu panel - Main Site (dark theme) */
+.mobile-menu {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 280px;
+    background-color: var(--color-void-surface);
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    padding-top: 80px;
+    padding-left: 24px;
+    padding-right: 24px;
+    gap: 16px;
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.3);
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    border-left: 1px solid var(--color-void-highlight);
+}
+
+.mobile-menu.open {
+    transform: translateX(0);
+}
+
+.mobile-menu a {
+    display: block;
+    color: white;
+    font-weight: 500;
+    font-size: 1.125rem;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--color-void-highlight);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.mobile-menu a:hover {
+    color: var(--color-brand-light);
+}
+
+.mobile-menu .btn {
+    margin-top: 16px;
+    text-align: center;
+}
+
+/* Mobile menu panel - Handyman Site (blue theme) */
+.handyman-mobile-menu {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 280px;
+    background-color: #1e3a5f;
+    /* Blue-900 */
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    padding-top: 80px;
+    padding-left: 24px;
+    padding-right: 24px;
+    gap: 16px;
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.3);
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+}
+
+.handyman-mobile-menu.open {
+    transform: translateX(0);
+}
+
+.handyman-mobile-menu a {
+    display: block;
+    color: white;
+    font-weight: 600;
+    font-size: 1.125rem;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.handyman-mobile-menu a:hover {
+    color: #fbbf24;
+    /* Yellow-400 */
+}
+
+.handyman-mobile-menu .cta-btn {
+    margin-top: 16px;
+    padding: 12px 24px;
+    background: linear-gradient(to right, #fbbf24, #f59e0b);
+    color: #1e3a5f;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+/* Hide mobile menu elements on desktop */
+@media (min-width: 768px) {
+
+    .hamburger-btn,
+    .mobile-overlay,
+    .mobile-menu,
+    .handyman-mobile-menu {
+        display: none !important;
+    }
+}
+
+/* Ensure mobile hamburger button is visible on mobile */
+@media (max-width: 767px) {
+    .hamburger-btn {
+        display: flex;
+    }
+
+    /* Hide desktop nav on mobile */
+    .navbar-nav,
+    .desktop-nav {
+        display: none;
+    }
+}
+
+/* Smooth scroll lock when menu is open */
+body.menu-open {
+    overflow: hidden;
+}
