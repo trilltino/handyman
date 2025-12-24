@@ -8,6 +8,9 @@
 //! - `components`: Reusable UI components  
 //! - `api`: Backend API client functions
 
+// Increase recursion limit for complex Leptos view hierarchies
+#![recursion_limit = "512"]
+
 use leptos::prelude::*;
 use leptos_meta::*;
 use leptos_router::{
