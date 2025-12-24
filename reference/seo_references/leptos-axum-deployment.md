@@ -286,3 +286,335 @@ cargo leptos build
 - [Facebook Sharing Debugger](https://developers.facebook.com/tools/debug/)
 - [Twitter Card Validator](https://cards-dev.twitter.com/validator)
 - Lighthouse in Chrome DevTools (SEO audit)
+
+---
+
+## Phase 10: Mobile Responsiveness
+
+> [!IMPORTANT]
+> Your SSR site works on mobile browsers without any app. Just ensure responsive CSS.
+
+### Viewport Meta Tag
+- [ ] Viewport meta in App component:
+  ```rust
+  <Meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  ```
+
+### Tailwind Breakpoint Strategy
+```css
+/* Mobile-first approach */
+.container { @apply px-4; }           /* Mobile default */
+.container { @apply sm:px-6; }        /* ≥640px */
+.container { @apply md:px-8; }        /* ≥768px */
+.container { @apply lg:px-12; }       /* ≥1024px */
+```
+
+### Touch-Friendly Checklist
+- [ ] Minimum tap target size: 48x48px
+- [ ] No hover-only interactions (touch devices can't hover)
+- [ ] Adequate spacing between clickable elements
+- [ ] Form inputs sized for thumb typing
+
+### iOS Safe Area
+```css
+/* Handle iPhone notch and home indicator */
+body {
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+```
+
+### Testing
+- [ ] Chrome DevTools → Toggle device toolbar (Ctrl+Shift+M)
+- [ ] Test on real devices when possible
+- [ ] Lighthouse mobile score ≥90
+
+---
+
+## Phase 11: Project Structure Best Practices
+
+### Recommended Workspace Layout
+```
+xfhandyman/
+├── backend/
+│   ├── apps/api/              # Main API server
+│   │   └── src/
+│   │       ├── main.rs        # Entry point
+│   │       ├── config.rs      # Environment config
+│   │       └── web/           # Routes and handlers
+│   └── libs/                  # Shared backend libraries
+│       ├── lib-core/          # Models, database, business logic
+│       ├── lib-web/           # Web utilities, extractors
+│       └── lib-utils/         # Common utilities
+├── frontend-leptos/
+│   └── src/
+│       ├── lib.rs             # App component, routes
+│       ├── main.rs            # SSR server entry
+│       ├── pages/             # Route page components
+│       ├── components/        # Reusable UI components
+│       └── api/               # Backend API clients
+├── shared/                    # Types shared between FE & BE
+│   └── src/
+│       ├── lib.rs
+│       ├── types/             # Request/Response DTOs
+│       └── validation.rs      # Validation rules
+├── migrations/                # SQL migrations
+├── Leptos.toml               # Leptos config
+├── Cargo.toml                # Workspace root
+└── package.json              # CSS build scripts
+```
+
+### Workspace Cargo.toml Pattern
+```toml
+[workspace]
+members = ["frontend-leptos", "backend/apps/api", "backend/libs/*", "shared"]
+resolver = "2"
+
+[workspace.dependencies]
+serde = { version = "1.0", features = ["derive"] }
+# ... shared dependency versions
+```
+
+---
+
+## Phase 12: Backend Patterns (Axum)
+
+### Route Organization
+```rust
+// web/mod.rs
+pub fn routes(mm: ModelManager) -> Router {
+    let api_routes = Router::new()
+        .merge(routes_contact::routes(mm.clone()))
+        .merge(routes_quote::routes(mm.clone()));
+
+    Router::new()
+        .nest("/api", api_routes)
+        .merge(routes_health::routes(mm))
+}
+```
+
+### Axum 0.8 Path Parameters
+```rust
+// OLD (0.7): .route("/quotes/:id", ...)
+// NEW (0.8): .route("/quotes/{id}", ...)
+.route("/quotes/{id}", get(get_quote))
+```
+
+### Handler Pattern
+```rust
+pub async fn create_quote(
+    State(mm): State<ModelManager>,
+    Json(payload): Json<CreateQuoteRequest>,
+) -> Result<Json<Quote>, AppError> {
+    let quote = QuoteBmc::create(&mm, payload).await?;
+    Ok(Json(quote))
+}
+```
+
+### Error Handling
+```rust
+pub struct AppError(anyhow::Error);
+
+impl IntoResponse for AppError {
+    fn into_response(self) -> Response {
+        (StatusCode::INTERNAL_SERVER_ERROR, self.0.to_string()).into_response()
+    }
+}
+```
+
+---
+
+## Phase 13: Shared Crate Usage
+
+### Purpose
+Types that need to be identical on frontend and backend:
+- API request/response DTOs
+- Form validation
+- Error types
+
+### Example: ContactForm
+```rust
+// shared/src/types/contact.rs
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ContactForm {
+    pub name: String,
+    pub email: String,
+    pub message: String,
+}
+```
+
+### Usage in Backend
+```rust
+use shared::ContactForm;
+
+pub async fn handle_contact(Json(form): Json<ContactForm>) -> impl IntoResponse {
+    // form.name, form.email, form.message available
+}
+```
+
+### Usage in Frontend
+```rust
+use shared::ContactForm;
+
+let form = ContactForm {
+    name: name.get(),
+    email: email.get(),
+    message: message.get(),
+};
+// Send to backend
+```
+
+---
+
+## Phase 14: Email with Lettre
+
+### Dependencies (backend)
+```toml
+lettre = { version = "0.11", features = ["smtp-transport"] }
+```
+
+### SMTP Configuration
+```rust
+pub fn send_email(to: &str, subject: &str, body: &str) -> Result<()> {
+    let email = Message::builder()
+        .from("noreply@xftradesmen.com".parse()?)
+        .to(to.parse()?)
+        .subject(subject)
+        .body(body.to_string())?;
+
+    let creds = Credentials::new(
+        std::env::var("SMTP_USERNAME")?,
+        std::env::var("SMTP_PASSWORD")?,
+    );
+
+    let mailer = SmtpTransport::relay("smtp.gmail.com")?
+        .credentials(creds)
+        .build();
+
+    mailer.send(&email)?;
+    Ok(())
+}
+```
+
+### Environment Variables
+```bash
+SMTP_USERNAME=your@email.com
+SMTP_PASSWORD=app-specific-password
+```
+
+---
+
+## Phase 15: Database Patterns (SQLx)
+
+### ModelManager Pattern
+```rust
+pub struct ModelManager {
+    db: sqlx::PgPool,
+}
+
+impl ModelManager {
+    pub async fn new() -> Result<Self> {
+        let db = PgPoolOptions::new()
+            .max_connections(5)
+            .connect(&std::env::var("DATABASE_URL")?)
+            .await?;
+        Ok(Self { db })
+    }
+
+    pub fn db(&self) -> &PgPool { &self.db }
+}
+```
+
+### BMC (Backend Model Controller) Pattern
+```rust
+pub struct QuoteBmc;
+
+impl QuoteBmc {
+    pub async fn create(mm: &ModelManager, data: CreateQuote) -> Result<Quote> {
+        sqlx::query_as!(
+            Quote,
+            "INSERT INTO quotes (customer_id, amount) VALUES ($1, $2) RETURNING *",
+            data.customer_id,
+            data.amount
+        )
+        .fetch_one(mm.db())
+        .await
+        .map_err(Into::into)
+    }
+}
+```
+
+### Migration Commands
+```bash
+# Create migration
+sqlx migrate add create_quotes_table
+
+# Run migrations
+sqlx migrate run
+
+# Or via cargo
+cargo run -p api -- --migrate
+```
+
+---
+
+## Phase 16: Fly.io Deployment
+
+### fly.toml Essentials
+```toml
+app = "xftradesmen"
+primary_region = "lhr"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+
+[[http_service.checks]]
+  path = "/api/health"
+  interval = "30s"
+  timeout = "5s"
+```
+
+### Environment Secrets
+```bash
+fly secrets set DATABASE_URL="postgres://..."
+fly secrets set JWT_SECRET="..."
+fly secrets set SMTP_USERNAME="..."
+fly secrets set SMTP_PASSWORD="..."
+```
+
+### Deploy Command
+```bash
+fly deploy
+```
+
+---
+
+## Full Verification Checklist
+
+```bash
+# 1. Check Rust toolchain
+rustup show
+rustup target add wasm32-unknown-unknown
+
+# 2. Check CLI tools
+wasm-bindgen --version
+cargo leptos --version
+
+# 3. Build CSS
+npm run build:css
+
+# 4. Build Leptos (full test)
+cargo leptos build
+
+# 5. Run locally
+cargo run -p api &
+cargo leptos watch
+
+# 6. Test endpoints
+curl http://127.0.0.1:8080/api/health
+curl http://127.0.0.1:3001/
+```
+
