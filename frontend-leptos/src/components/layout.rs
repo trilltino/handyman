@@ -5,6 +5,8 @@ use leptos::prelude::*;
 /// Fixed navigation bar with blur effect.
 #[component]
 pub fn Navbar() -> impl IntoView {
+    let (mobile_open, set_mobile_open) = signal(false);
+
     view! {
         <nav class="navbar">
             <div class="navbar-inner">
@@ -70,13 +72,47 @@ pub fn Navbar() -> impl IntoView {
                     </a>
                 </div>
 
-                // Mobile Menu Button
-                <button class="md:hidden btn-ghost" aria-label="Menu">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-                    </svg>
+                // Mobile Menu Button (Hamburger)
+                <button
+                    class="md:hidden flex flex-col gap-1.5 p-2 z-50"
+                    on:click=move |_| set_mobile_open.update(|v| *v = !*v)
+                    aria-label="Toggle menu"
+                >
+                    <span class={move || format!("w-6 h-0.5 bg-white transition-all duration-300 {}",
+                        if mobile_open.get() { "rotate-45 translate-y-2" } else { "" })}></span>
+                    <span class={move || format!("w-6 h-0.5 bg-white transition-all duration-300 {}",
+                        if mobile_open.get() { "opacity-0" } else { "" })}></span>
+                    <span class={move || format!("w-6 h-0.5 bg-white transition-all duration-300 {}",
+                        if mobile_open.get() { "-rotate-45 -translate-y-2" } else { "" })}></span>
                 </button>
             </div>
+        </nav>
+
+        // Mobile Menu Overlay
+        <div
+            class={move || format!("md:hidden fixed inset-0 bg-black/50 z-40 transition-opacity duration-300 {}",
+                if mobile_open.get() { "opacity-100 pointer-events-auto" } else { "opacity-0 pointer-events-none" })}
+            on:click=move |_| set_mobile_open.set(false)
+        ></div>
+
+        // Mobile Menu Panel
+        <nav
+            class={move || format!("md:hidden fixed top-0 right-0 h-full w-72 bg-void-surface z-50 flex flex-col pt-20 px-6 gap-4 shadow-2xl transition-transform duration-300 border-l border-void-highlight {}",
+                if mobile_open.get() { "translate-x-0" } else { "translate-x-full" })}
+        >
+            <a href="/handyman-coventry" class="text-white font-medium text-lg py-3 border-b border-void-highlight hover:text-brand-light"
+               on:click=move |_| set_mobile_open.set(false)>"Handyman Coventry"</a>
+            <a href="/industries" class="text-white font-medium text-lg py-3 border-b border-void-highlight hover:text-brand-light"
+               on:click=move |_| set_mobile_open.set(false)>"Industries"</a>
+            <a href="/packages" class="text-white font-medium text-lg py-3 border-b border-void-highlight hover:text-brand-light"
+               on:click=move |_| set_mobile_open.set(false)>"Packages"</a>
+            <a href="/about" class="text-white font-medium text-lg py-3 border-b border-void-highlight hover:text-brand-light"
+               on:click=move |_| set_mobile_open.set(false)>"About Us"</a>
+            <a href="/blog" class="text-white font-medium text-lg py-3 border-b border-void-highlight hover:text-brand-light"
+               on:click=move |_| set_mobile_open.set(false)>"Blog"</a>
+            <a href="/contact"
+               class="mt-4 btn btn-primary text-center"
+               on:click=move |_| set_mobile_open.set(false)>"Contact"</a>
         </nav>
     }
 }

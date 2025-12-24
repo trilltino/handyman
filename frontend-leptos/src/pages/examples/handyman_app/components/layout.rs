@@ -11,12 +11,13 @@ pub fn HandymanLayout() -> impl IntoView {
         // SEO structured data for all handyman pages
         <HandymanLocalBusinessSchema />
 
-        <div class="font-sans antialiased text-gray-900 bg-slate-50 min-h-screen flex flex-col selection:bg-yellow-400 selection:text-blue-900">
+        <div class="handyman-theme font-sans antialiased text-gray-900 bg-slate-50 min-h-screen flex flex-col selection:bg-yellow-400 selection:text-blue-900">
             // Demo Site Banner
             <div class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white py-2 px-4 text-center text-sm">
                 <span class="mr-2">"This is an example site showcasing XFTradesmen capabilities."</span>
                 <a href="/" class="underline font-bold hover:text-purple-200 transition">"Back to XFTradesmen"</a>
             </div>
+
 
             // Header
             <header class="bg-blue-900/95 backdrop-blur-md text-white py-4 px-6 md:px-12 flex justify-between items-center sticky top-0 z-50 shadow-xl shadow-blue-900/20 border-b border-white/10">
@@ -27,6 +28,9 @@ pub fn HandymanLayout() -> impl IntoView {
                         <span class="text-xs font-medium text-blue-200 tracking-[0.2em] uppercase">"Handyman Services"</span>
                      </div>
                 </a>
+
+                // Mobile Menu Button
+                <MobileMenuButton />
 
                 <nav class="hidden md:flex items-center gap-8 text-sm font-bold uppercase tracking-wide">
                     <a href="/handyman-coventry" class="hover:text-yellow-400 transition relative group">
@@ -119,5 +123,56 @@ pub fn HandymanLayout() -> impl IntoView {
                 </div>
             </footer>
         </div>
+    }
+}
+
+/// Mobile menu button with hamburger icon and slide-out menu
+#[component]
+fn MobileMenuButton() -> impl IntoView {
+    let (is_open, set_is_open) = signal(false);
+
+    view! {
+        // Hamburger Button (visible on mobile only)
+        <button
+            class="md:hidden flex flex-col gap-1.5 p-2 z-50"
+            on:click=move |_| set_is_open.update(|v| *v = !*v)
+            aria-label="Toggle menu"
+        >
+            <span class={move || format!("w-6 h-0.5 bg-white transition-all duration-300 {}",
+                if is_open.get() { "rotate-45 translate-y-2" } else { "" })}></span>
+            <span class={move || format!("w-6 h-0.5 bg-white transition-all duration-300 {}",
+                if is_open.get() { "opacity-0" } else { "" })}></span>
+            <span class={move || format!("w-6 h-0.5 bg-white transition-all duration-300 {}",
+                if is_open.get() { "-rotate-45 -translate-y-2" } else { "" })}></span>
+        </button>
+
+        // Mobile Menu Overlay
+        <div
+            class={move || format!("md:hidden fixed inset-0 bg-black/50 z-40 transition-opacity duration-300 {}",
+                if is_open.get() { "opacity-100 pointer-events-auto" } else { "opacity-0 pointer-events-none" })}
+            on:click=move |_| set_is_open.set(false)
+        ></div>
+
+        // Mobile Menu Panel
+        <nav
+            class={move || format!("md:hidden fixed top-0 right-0 h-full w-72 bg-blue-900 z-50 flex flex-col pt-20 px-6 gap-4 shadow-2xl transition-transform duration-300 {}",
+                if is_open.get() { "translate-x-0" } else { "translate-x-full" })}
+        >
+            <a href="/handyman-coventry" class="text-white font-bold text-lg py-3 border-b border-white/10 hover:text-yellow-400"
+               on:click=move |_| set_is_open.set(false)>"Home"</a>
+            <a href="/handyman-coventry/services" class="text-white font-bold text-lg py-3 border-b border-white/10 hover:text-yellow-400"
+               on:click=move |_| set_is_open.set(false)>"Services"</a>
+            <a href="/handyman-coventry/features" class="text-white font-bold text-lg py-3 border-b border-white/10 hover:text-yellow-400"
+               on:click=move |_| set_is_open.set(false)>"Why Us"</a>
+            <a href="/handyman-coventry/testimonials" class="text-white font-bold text-lg py-3 border-b border-white/10 hover:text-yellow-400"
+               on:click=move |_| set_is_open.set(false)>"Reviews"</a>
+            <a href="/handyman-coventry/service-area" class="text-white font-bold text-lg py-3 border-b border-white/10 hover:text-yellow-400"
+               on:click=move |_| set_is_open.set(false)>"Service Area"</a>
+            <a href="/handyman-coventry/quote" class="text-white font-bold text-lg py-3 border-b border-white/10 hover:text-yellow-400"
+               on:click=move |_| set_is_open.set(false)>"Get Quote"</a>
+            <a href="/handyman-coventry/booking"
+               class="mt-4 px-6 py-3 bg-gradient-to-r from-yellow-400 to-yellow-500 text-blue-900 rounded-lg text-center font-bold"
+               on:click=move |_| set_is_open.set(false)>"Book Now"</a>
+        </nav>
     }
 }

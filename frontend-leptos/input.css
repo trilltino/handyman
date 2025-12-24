@@ -146,6 +146,36 @@ h6 {
     letter-spacing: -0.02em;
 }
 
+/* ----------------------------------------
+   HANDYMAN LIGHT THEME OVERRIDES
+   Scoped styles for handyman example pages
+   ---------------------------------------- */
+
+.handyman-theme {
+    color-scheme: light;
+}
+
+.handyman-theme h1,
+.handyman-theme h2,
+.handyman-theme h3,
+.handyman-theme h4,
+.handyman-theme h5,
+.handyman-theme h6 {
+    color: inherit;
+}
+
+.handyman-theme p {
+    color: inherit;
+}
+
+.handyman-theme a {
+    color: inherit;
+}
+
+.handyman-theme::before {
+    display: none;
+}
+
 h1 {
     font-size: clamp(2.5rem, 8vw, 4.5rem);
 }
