@@ -558,36 +558,149 @@ sqlx migrate run
 cargo run -p api -- --migrate
 ```
 
----
+## Phase 16: Fly.io Deployment (Comprehensive)
 
-## Phase 16: Fly.io Deployment
+> [!IMPORTANT]
+> Your app must listen on `0.0.0.0` (not `127.0.0.1`) to be accessible from outside the container.
 
-### fly.toml Essentials
+### fly.toml Configuration
 ```toml
 app = "xftradesmen"
-primary_region = "lhr"
+primary_region = "lhr"  # London, UK
+
+[build]
+dockerfile = "Dockerfile.production"
+
+[env]
+LEPTOS_SITE_ROOT = "site"
+LEPTOS_SITE_ADDR = "0.0.0.0:3000"
+RUST_LOG = "info"
 
 [http_service]
-  internal_port = 8080
+  internal_port = 3000
   force_https = true
+  auto_stop_machines = false
+  auto_start_machines = true
+  min_machines_running = 1
 
 [[http_service.checks]]
-  path = "/api/health"
+  path = "/health"
   interval = "30s"
   timeout = "5s"
+
+[[vm]]
+  memory = "1gb"
+  cpu_kind = "shared"
+  cpus = 1
 ```
 
-### Environment Secrets
-```bash
-fly secrets set DATABASE_URL="postgres://..."
-fly secrets set JWT_SECRET="..."
-fly secrets set SMTP_USERNAME="..."
-fly secrets set SMTP_PASSWORD="..."
+### Cargo Chef Dockerfile Pattern
+Fly.io recommends cargo-chef for fast rebuilds:
+```dockerfile
+# Stage 1: Chef (Planner)
+FROM lukemathwalker/cargo-chef:latest-rust-1 AS chef
+WORKDIR /app
+
+FROM chef AS planner
+COPY . .
+RUN cargo chef prepare --recipe-path recipe.json
+
+# Stage 2: Builder
+FROM chef AS builder
+COPY --from=planner /app/recipe.json recipe.json
+# Build dependencies - THIS IS THE CACHED LAYER!
+RUN cargo chef cook --release --recipe-path recipe.json
+COPY . .
+RUN cargo build --release --bin app
+
+# Stage 3: Runtime (minimal)
+FROM debian:bookworm-slim AS runtime
+RUN apt-get update && apt-get install -y ca-certificates openssl && rm -rf /var/lib/apt/lists/*
+COPY --from=builder /app/target/release/app /usr/local/bin
+ENTRYPOINT ["/usr/local/bin/app"]
 ```
 
-### Deploy Command
+### Environment Secrets (Never commit these!)
 ```bash
+fly secrets set DATABASE_URL="postgres://user:pass@host:5432/db"
+fly secrets set JWT_SECRET="your-super-secret-key"
+fly secrets set SMTP_USERNAME="your@email.com"
+fly secrets set SMTP_PASSWORD="app-specific-password"
+fly secrets set STRIPE_SECRET_KEY="sk_live_..."
+```
+
+### Deployment Commands
+```bash
+# Install flyctl (Windows)
+powershell -Command "iwr https://fly.io/install.ps1 -useb | iex"
+
+# First time setup
+fly launch
+
+# Deploy
 fly deploy
+
+# View logs
+fly logs
+
+# SSH into container
+fly ssh console
+
+# Check status
+fly status
+```
+
+### Common Gotchas & Fixes
+
+| Issue | Cause | Fix |
+|-------|-------|-----|
+| App not accessible | Listening on 127.0.0.1 | Change to `0.0.0.0` |
+| HTTPS errors | Missing ca-certificates | `apt-get install ca-certificates` in Dockerfile |
+| TLS handshake failures | Missing openssl | `apt-get install openssl` in Dockerfile |
+| Large binary size | Debug symbols included | Use `strip` or `opt-level = "z"` |
+| Slow cold starts | Machine sleeping | Set `min_machines_running = 1` |
+| DB connection failures | Fly Postgres waking | Add retry logic to connection |
+
+### Axum-Specific Requirements
+```rust
+// Correct: Listen on all interfaces
+let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await?;
+
+// Wrong: Only localhost (won't work on Fly.io)
+let listener = tokio::net::TcpListener::bind("127.0.0.1:3000").await?;
+```
+
+### Graceful Shutdown
+```rust
+use tokio::signal;
+
+async fn shutdown_signal() {
+    signal::ctrl_c().await.expect("Failed to install CTRL+C handler");
+}
+
+axum::serve(listener, app)
+    .with_graceful_shutdown(shutdown_signal())
+    .await?;
+```
+
+---
+
+## Phase 17: Fly.io with Postgres
+
+### Attach Fly Postgres
+```bash
+# Create Postgres cluster
+fly postgres create
+
+# Attach to app (sets DATABASE_URL automatically)
+fly postgres attach --app xftradesmen <postgres-app-name>
+```
+
+### Connection String
+Fly.io sets `DATABASE_URL` automatically. In your app:
+```rust
+let database_url = std::env::var("DATABASE_URL")
+    .expect("DATABASE_URL must be set");
 ```
 
 ---
@@ -602,6 +715,7 @@ rustup target add wasm32-unknown-unknown
 # 2. Check CLI tools
 wasm-bindgen --version
 cargo leptos --version
+flyctl version
 
 # 3. Build CSS
 npm run build:css
@@ -616,5 +730,14 @@ cargo leptos watch
 # 6. Test endpoints
 curl http://127.0.0.1:8080/api/health
 curl http://127.0.0.1:3001/
+
+# 7. Deploy to Fly.io
+fly deploy
+
+# 8. Verify deployment
+fly status
+fly logs
+curl https://xftradesmen.fly.dev/health
 ```
+
 
