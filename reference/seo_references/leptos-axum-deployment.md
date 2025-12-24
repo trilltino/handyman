@@ -740,4 +740,342 @@ fly logs
 curl https://xftradesmen.fly.dev/health
 ```
 
+---
 
+## Phase 18: FOOLPROOF Fly.io Deployment (Lessons Learned)
+
+> [!CAUTION]
+> This section documents every issue encountered and fixed during deployment. Follow this exactly.
+
+### Critical Issues We Fixed (December 2024)
+
+| Issue | Error Message | Root Cause | Fix |
+|-------|---------------|------------|-----|
+| Recursion overflow | `queries overflow the depth limit!` | Complex Leptos view hierarchies | Add `#![recursion_limit = "1024"]` to BOTH `lib.rs` AND `main.rs` |
+| App not listening | `not listening on expected address` | Startup script failing silently | Simplify `start_fly.sh`, remove broken commands |
+| 82 compiler warnings | `field X is never read` | Unused Leptos component props | Add `#![allow(dead_code)]` to component modules |
+| CSS not applying | White text on white background | Global dark theme override | Add `.handyman-theme` CSS scope class |
+
+---
+
+### Step-by-Step Foolproof Deployment
+
+#### Step 1: Recursion Limit (CRITICAL)
+
+Add this to the TOP of **both** files:
+
+**`frontend-leptos/src/lib.rs`:**
+```rust
+//! Frontend library
+#![recursion_limit = "1024"]  // <-- ADD THIS
+use leptos::prelude::*;
+```
+
+**`frontend-leptos/src/main.rs`:**
+```rust
+//! Frontend entry point
+#![recursion_limit = "1024"]  // <-- ADD THIS
+#[cfg(feature = "ssr")]
+#[tokio::main]
+async fn main() {
+```
+
+> [!WARNING]
+> You MUST add this to BOTH files. The lib.rs handles WASM, main.rs handles SSR.
+
+---
+
+#### Step 2: Startup Script
+
+Use this simple, bulletproof `start_fly.sh`:
+
+```bash
+#!/bin/bash
+set -e
+
+# Environment
+export LEPTOS_SITE_ADDR="${LEPTOS_SITE_ADDR:-0.0.0.0:3000}"
+export LEPTOS_SITE_ROOT="${LEPTOS_SITE_ROOT:-site}"
+export API_PORT="${API_PORT:-3001}"
+export API_URL="http://127.0.0.1:${API_PORT}"
+
+echo "=== Starting XFTradesmen ==="
+echo "LEPTOS_SITE_ADDR: $LEPTOS_SITE_ADDR"
+
+# Start backend (if exists)
+if [ -f "/app/api" ]; then
+    PORT=$API_PORT /app/api &
+    sleep 2
+fi
+
+# Start frontend (foreground, with exec for signal handling)
+exec /app/frontend-leptos
+```
+
+> [!IMPORTANT]
+> Use `exec` for the main process - this ensures proper signal handling for graceful shutdown.
+
+---
+
+#### Step 3: Suppress Warning Clutter
+
+Add these to prevent false-positive warnings from blocking your view of real errors:
+
+**Component modules with Leptos props:**
+```rust
+// At top of file (after doc comments)
+#![allow(dead_code)]
+```
+
+Apply to:
+- `design_system.rs` (intentional API exports)
+- `error_boundary.rs` (Leptos props used by macro)
+- `seo.rs` (Leptos props used by macro)
+
+**Re-export modules:**
+```rust
+#[allow(unused_imports)]
+pub use error_boundary::*;
+```
+
+---
+
+#### Step 4: Dockerfile.production Checklist
+
+```dockerfile
+# Stage 1: Chef - prepare dependencies
+FROM rust:1.83-slim-bookworm AS chef
+WORKDIR /app
+RUN apt-get update && apt-get install -y pkg-config libssl-dev curl && rm -rf /var/lib/apt/lists/*
+RUN curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash \
+    && cargo binstall cargo-chef -y --force
+
+FROM chef AS planner
+COPY . .
+RUN cargo chef prepare --recipe-path recipe.json
+
+# Stage 2: Builder
+FROM chef AS builder
+COPY --from=planner /app/recipe.json recipe.json
+RUN cargo chef cook --release --recipe-path recipe.json
+
+# Install Node.js for CSS build
+RUN apt-get update && apt-get install -y curl git build-essential \
+    && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install WASM target and cargo-leptos
+RUN rustup toolchain install nightly \
+    && rustup default nightly \
+    && rustup target add wasm32-unknown-unknown
+RUN cargo binstall cargo-leptos -y --force
+
+COPY . .
+
+# Build CSS first, then Leptos
+RUN npm ci
+RUN npm run build:css
+RUN cargo build --release --bin api
+RUN cargo leptos build --release
+
+# Stage 3: Runtime (minimal)
+FROM debian:bookworm-slim AS runtime
+WORKDIR /app
+RUN apt-get update && apt-get install -y ca-certificates openssl postgresql-client && rm -rf /var/lib/apt/lists/*
+RUN useradd -r -s /bin/false appuser
+RUN mkdir -p /app/site && chown -R appuser:appuser /app
+
+COPY --from=builder /app/target/release/api /app/api
+COPY --from=builder /app/target/release/frontend-leptos /app/frontend-leptos
+COPY --from=builder /app/target/site /app/site
+COPY start_fly.sh /app/start_fly.sh
+RUN chmod +x /app/start_fly.sh && chown -R appuser:appuser /app
+
+EXPOSE 3000
+USER appuser
+CMD ["/app/start_fly.sh"]
+```
+
+---
+
+#### Step 5: fly.toml Checklist
+
+```toml
+app = "xftradesmen"
+primary_region = "lhr"
+kill_signal = "SIGINT"
+kill_timeout = "5s"
+
+[build]
+dockerfile = "Dockerfile.production"
+
+[env]
+LEPTOS_SITE_ROOT = "site"
+LEPTOS_SITE_ADDR = "0.0.0.0:3000"
+RUST_LOG = "info"
+
+[http_service]
+internal_port = 3000
+force_https = true
+auto_stop_machines = false
+auto_start_machines = true
+min_machines_running = 1
+
+[[http_service.checks]]
+path = "/health"
+grace_period = "15s"
+interval = "30s"
+timeout = "5s"
+
+[[vm]]
+memory = "1gb"
+cpu_kind = "shared"
+cpus = 1
+```
+
+---
+
+#### Step 6: GitHub Actions Workflow
+
+`.github/workflows/fly-deploy.yml`:
+```yaml
+name: Deploy to Fly.io
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Fly.io CLI
+        uses: superfly/flyctl-actions/setup-flyctl@master
+      
+      - name: Deploy to Fly.io
+        run: |
+          flyctl deploy --remote-only --ha=false 2>&1 | tee deploy.log
+          exit ${PIPESTATUS[0]}
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+      
+      - name: Save logs on failure
+        if: failure()
+        run: |
+          grep -i "error\|failed\|fatal\|panic" deploy.log > errors.txt || true
+      
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: deploy-logs
+          path: |
+            deploy.log
+            errors.txt
+```
+
+---
+
+#### Step 7: Pre-Deployment Verification Script
+
+Create `test_deploy.bat`:
+```batch
+@echo off
+echo === PRE-DEPLOYMENT CHECK ===
+
+echo [1/5] Rust toolchain...
+rustc --version || (echo FAIL: Rust not found && exit /b 1)
+rustup target list --installed | findstr wasm32 >nul || (echo FAIL: WASM target missing && exit /b 1)
+echo OK
+
+echo [2/5] cargo-leptos...
+cargo leptos --version >nul 2>&1 || (echo FAIL: cargo-leptos not installed && exit /b 1)
+echo OK
+
+echo [3/5] Node.js...
+node --version || (echo FAIL: Node.js not found && exit /b 1)
+echo OK
+
+echo [4/5] Building CSS...
+call npm run build:css || (echo FAIL: CSS build failed && exit /b 1)
+echo OK
+
+echo [5/5] Checking Leptos build (SSR)...
+cargo check -p frontend-leptos --features ssr || (echo FAIL: SSR check failed && exit /b 1)
+echo OK
+
+echo.
+echo === ALL CHECKS PASSED ===
+echo Ready to deploy!
+```
+
+---
+
+### Debugging Failed Deployments
+
+#### 1. Check GitHub Actions Logs
+```powershell
+# List recent runs
+gh run list --repo <owner>/<repo> --limit 5
+
+# Download logs from failed run
+gh run download <run-id> --name deploy-logs
+```
+
+#### 2. Check Fly.io Logs
+```bash
+# Live logs
+fly logs
+
+# SSH into running container
+fly ssh console
+
+# Check what's listening
+fly ssh console -C "netstat -tlnp"
+```
+
+#### 3. Common Error Patterns
+
+| Log Pattern | Meaning | Fix |
+|-------------|---------|-----|
+| `queries overflow the depth limit` | Recursion limit too low | Increase `#![recursion_limit]` |
+| `not listening on expected address` | App crashed on startup | Check `start_fly.sh`, remove failing commands |
+| `wasm-bindgen version mismatch` | CLI != Cargo.toml version | Pin versions: `wasm-bindgen = "=0.2.106"` |
+| `health check failed` | `/health` endpoint not responding | Verify health route exists, app is listening |
+
+---
+
+### Quick Deploy Commands
+
+```bash
+# Full clean deploy
+git add -A && git commit -m "Deploy" && git push origin main
+
+# Monitor deployment
+gh run list --repo trilltino/handyman --limit 3
+
+# Check site health
+curl https://xftradesmen.fly.dev/health
+
+# View Fly.io status
+fly status
+
+# Restart machines
+fly machines restart
+```
+
+---
+
+### Deployment Timeline
+
+Typical build times:
+- Docker context transfer: ~2 min
+- Cargo chef (cached deps): ~1 min (first build ~8 min)
+- CSS build: ~30 sec
+- API binary: ~2-5 min (first build ~12 min)
+- Leptos WASM + SSR: ~3-5 min
+- **Total: 5-10 min (cached) / 15-25 min (fresh)**
