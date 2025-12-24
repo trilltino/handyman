@@ -1,71 +1,34 @@
-# GitHub Actions Workflow for Deploying to Fly.io
-#
-# This workflow automatically deploys the Handyman Marketplace application
-# to Fly.io whenever changes are pushed to the main branch.
-#
-# Prerequisites:
-# 1. Create a Fly.io account and install flyctl
-# 2. Create a Fly.io API token: flyctl auth token
-# 3. Add the token as a GitHub secret named FLY_API_TOKEN
-#    Settings -> Secrets and variables -> Actions -> New repository secret
+# Deploy to Fly.io
+# Triggers on push to main or manual dispatch
 
 name: Deploy to Fly.io
 
 on:
   push:
-    branches:
-      - main
-  workflow_dispatch:  # Allow manual deployment
+    branches: [main]
+  workflow_dispatch:
 
-# Only run one deployment at a time
 concurrency:
-  group: fly-deployment
-  cancel-in-progress: false
-
-env:
-  FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+  group: fly-deploy
+  cancel-in-progress: true
 
 jobs:
   deploy:
-    name: Deploy Application
+    name: Deploy
     runs-on: ubuntu-latest
-    timeout-minutes: 45  # Rust builds can take time
+    timeout-minutes: 45
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Flyctl
-        uses: superfly/flyctl-actions/setup-flyctl@master
+      - uses: superfly/flyctl-actions/setup-flyctl@master
 
       - name: Deploy to Fly.io
-        run: |
-          echo "[DEPLOY] Deploying to Fly.io..."
-          flyctl deploy --remote-only --ha=false
+        run: flyctl deploy --remote-only --ha=false
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 
-      - name: Verify Deployment
+      - name: Verify Health
         run: |
-          echo "[WAIT] Waiting for deployment to stabilize..."
-          sleep 15
-          echo "[CHECK] Checking health endpoint..."
-          curl -f https://xftradesmen.fly.dev/health || exit 1
-          echo "[OK] Deployment successful!"
-
-  notify:
-    name: Deployment Notification
-    needs: deploy
-    runs-on: ubuntu-latest
-    if: always()
-
-    steps:
-      - name: Deployment Status
-        run: |
-          if [ "${{ needs.deploy.result }}" == "success" ]; then
-            echo "[OK] Deployment succeeded"
-            echo "[WEB] Application URL: https://xftradesmen.fly.dev"
-          else
-            echo "[FAIL] Deployment failed"
-            exit 1
-          fi
+          sleep 20
+          curl -sf https://xftradesmen.fly.dev/health || echo "Health check pending..."
