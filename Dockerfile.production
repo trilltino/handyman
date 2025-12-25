@@ -64,11 +64,11 @@ RUN npm run build:css
 # Set cargo build jobs to limit memory usage
 ENV CARGO_BUILD_JOBS=4
 
-# Build the backend API (Server)
-RUN cargo build --release --bin api
-
-# Build Leptos App (Client WASM + SSR)
+# Build Leptos App FIRST (Client WASM + SSR) - this compiles most shared deps
 RUN cargo leptos build --release
+
+# Build the backend API (Server) - reuses deps cached from leptos build
+RUN cargo build --release --bin api
 
 # Stage 4: Runtime image
 FROM debian:bookworm-slim AS runtime
