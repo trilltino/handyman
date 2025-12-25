@@ -200,7 +200,7 @@ pub fn Pricing() -> impl IntoView {
                         />
                         <FaqCard
                             question="How long does it take to launch?"
-                            answer="Most sites are live within 24-48 hours. Once you choose a template and send us your details, we get to work immediately."
+                            answer="Most sites are live within 24-72 hours. Once you choose a template and send us your details, we get to work immediately."
                         />
                     </div>
                 </div>
@@ -235,7 +235,7 @@ pub fn Pricing() -> impl IntoView {
                     "name": "How long does it take to launch?",
                     "acceptedAnswer": {
                       "@type": "Answer",
-                      "text": "Most sites are live within 24-48 hours. Once you choose a template and send us your details, we get to work immediately."
+                      "text": "Most sites are live within 24-72 hours. Once you choose a template and send us your details, we get to work immediately."
                     }
                   }]
                 }"#}

@@ -191,7 +191,7 @@ pub fn Packages() -> impl IntoView {
                     <div class="grid gap-6">
                         <div class="border border-void-highlight rounded-xl p-6 bg-void hover:border-brand/30 transition-colors">
                             <h3 class="text-lg font-bold text-white mb-2">"What's included in the £329 setup?"</h3>
-                            <p class="text-gray-400">"Custom design, domain setup, SEO configuration, contact forms, and full website build. Your site will be live within 48 hours."</p>
+                            <p class="text-gray-400">"Custom design, domain setup, SEO configuration, contact forms, and full website build. Your site will be live within 72 hours."</p>
                         </div>
 
                         <div class="border border-void-highlight rounded-xl p-6 bg-void hover:border-brand/30 transition-colors">
@@ -220,7 +220,7 @@ pub fn Packages() -> impl IntoView {
                     "name": "What's included in the £329 setup?",
                     "acceptedAnswer": {
                       "@type": "Answer",
-                      "text": "Custom design, domain setup, SEO configuration, contact forms, and full website build. Your site will be live within 48 hours."
+                      "text": "Custom design, domain setup, SEO configuration, contact forms, and full website build. Your site will be live within 72 hours."
                     }
                   }, {
                     "@type": "Question",
