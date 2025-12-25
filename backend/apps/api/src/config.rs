@@ -97,7 +97,7 @@ impl AppConfig {
             .set_default("server.port", 8080)?
             .set_default(
                 "db.url",
-                "postgres://postgres:Ab13cba46def79_@localhost:5432/handyman",
+                "postgres://postgres:YOUR_PASSWORD_HERE@localhost:5432/handyman",
             )?
             .set_default("stripe.public_key", "")?
             .set_default("stripe.secret_key", "")?
