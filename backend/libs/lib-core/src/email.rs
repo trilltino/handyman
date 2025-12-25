@@ -22,10 +22,10 @@
 //! The service is configured via environment variables:
 //! - `SMTP_HOST` - SMTP server hostname (default: smtp.gmail.com)
 //! - `SMTP_PORT` - SMTP port (default: 587)
-//! - `SMTP_USERNAME` - SMTP authentication username (required)
+//! - `SMTP_USER` - SMTP authentication username (required)
 //! - `SMTP_PASSWORD` - SMTP authentication password (required)
 //! - `FROM_EMAIL` - Sender email address (default: noreply@xftradesmen.com)
-//! - `CONTACT_NOTIFICATION_EMAIL` - Recipient for contact form submissions
+//! - `CONTACT_EMAIL` - Recipient for contact form submissions
 //!
 //! ## Usage
 //!
@@ -138,7 +138,7 @@ impl EmailService {
             .parse()
             .map_err(|_| EmailError::ConfigError("Invalid SMTP port".to_string()))?;
 
-        let smtp_username = env::var("SMTP_USERNAME").ok();
+        let smtp_username = env::var("SMTP_USER").ok();
         let smtp_password = env::var("SMTP_PASSWORD").ok();
 
         if smtp_username.is_none() || smtp_password.is_none() {
@@ -300,8 +300,8 @@ impl EmailService {
         subject: Option<&str>,
         message: &str,
     ) -> Result<(), EmailError> {
-        let notification_email = env::var("CONTACT_NOTIFICATION_EMAIL")
-            .unwrap_or_else(|_| "admin@xftradesmen.com".to_string());
+        let notification_email =
+            env::var("CONTACT_EMAIL").unwrap_or_else(|_| "admin@xftradesmen.com".to_string());
 
         let email_subject = subject
             .map(|s| format!("Contact Form: {}", s))
