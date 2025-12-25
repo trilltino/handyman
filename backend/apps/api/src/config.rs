@@ -114,6 +114,9 @@ impl AppConfig {
                 "stripe.webhook_secret",
                 env::var("STRIPE_WEBHOOK_SECRET").ok(),
             )?
+            // Explicitly map PORT and API_PORT to server.port to ensure Fly.io config works
+            .set_override_option("server.port", env::var("API_PORT").ok())?
+            .set_override_option("server.port", env::var("PORT").ok())?
             .build()?;
 
         s.try_deserialize()
