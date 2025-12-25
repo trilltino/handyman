@@ -1,0 +1,2 @@
+-- No-op migration to resolve conflict with production database state
+-- This migration was previously applied but the file was missing in the codebase.
