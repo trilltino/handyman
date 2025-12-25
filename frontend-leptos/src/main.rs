@@ -57,7 +57,7 @@ async fn proxy_handler(req: axum::extract::Request) -> axum::response::Response 
 
     // The backend API URL - usually running on localhost:3001 in production
     // or defined via environment variable
-    let api_url = std::env::var("API_URL").unwrap_or_else(|_| "http://127.0.0.1:3001".to_string());
+    let api_url = std::env::var("API_URL").unwrap_or_else(|_| "http://127.0.0.1:8080".to_string());
 
     let path = req.uri().path();
     let path_query = req
