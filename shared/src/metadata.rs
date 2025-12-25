@@ -8,6 +8,9 @@ use serde::{Deserialize, Serialize};
 ///
 /// Contains title, description, and other metadata used for
 /// Open Graph, Twitter Cards, and search engine optimization.
+/// Full business description for Google Business Profile and SEO (approx 750 chars)
+pub const FULL_BUSINESS_DESCRIPTION: &str = "XF Tradesmen provides premium, SEO-optimized website solutions exclusively for UK tradespeople. We help electricians, plumbers, and handyman professionals establish a powerful online presence tailored to attract local clients. Our custom-built websites highlight your expertise, build trust, and drive direct enquiries without commission fees. Whether you need a simple portfolio or a complete business platform, XF Tradesmen delivers digital excellence to help your trade business grow.";
+
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[must_use = "PageMetadata should be used for SEO"]
 pub struct PageMetadata {
@@ -28,9 +31,7 @@ impl PageMetadata {
     pub fn for_homepage() -> Self {
         Self {
             title: "XF Tradesmen - Connect with UK Tradesmen".to_string(),
-            description:
-                "Find professional handymen, electricians, plumbers, and tradesmen in your area. Get quality services, competitive quotes, and verified reviews."
-                    .to_string(),
+            description: FULL_BUSINESS_DESCRIPTION.to_string(),
             og_image: Some("https://xftradesmen.com/og-image.jpg".to_string()),
             canonical_url: Some("https://xftradesmen.com/".to_string()),
         }

@@ -38,8 +38,9 @@ pub async fn sitemap_xml_handler() -> impl IntoResponse {
             "/pricing",
             "/blog",
             "/coventry",
-            "/electrician-coventry",
-            "/plumber-coventry",
+            "/packages",
+            "/handyman",
+            "/industries",
         ];
 
         // List of dynamic blog posts (hardcoded for now as they are static in frontend)

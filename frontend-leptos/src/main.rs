@@ -33,6 +33,8 @@ async fn main() {
     // Build Axum router with Leptos integration
     let app = Router::new()
         .route("/health", get(|| async { "OK" })) // Health check for Fly.io
+        .route("/sitemap.xml", get(proxy_handler))
+        .route("/robots.txt", get(proxy_handler))
         .route("/api/{*fn_name}", any(proxy_handler)) // Proxy API requests
         .leptos_routes(&leptos_options, routes, {
             let leptos_options = leptos_options.clone();
