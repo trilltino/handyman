@@ -33,18 +33,30 @@ pub fn Home() -> impl IntoView {
                         "Get more customers with a professional website. <span class='text-brand-light font-semibold'>Start booking jobs online today.</span>"
                     </p>
 
-                    // Promo Video
-                    <div class="max-w-4xl mx-auto mb-12 rounded-2xl overflow-hidden shadow-2xl border border-void-highlight/50">
+                    // Promo Video with Play Button Overlay
+                    <div class="max-w-4xl mx-auto mb-12 rounded-2xl overflow-hidden shadow-2xl border border-void-highlight/50 relative group">
                         <video
+                            id="promo-video"
                             class="w-full h-auto"
-                            controls
                             loop
                             playsinline
-                            poster="/promo-poster.jpg"
+                            preload="auto"
                         >
                             <source src="/promo-video.mp4" type="video/mp4"/>
                             "Your browser does not support the video tag."
                         </video>
+                        // Play Button Overlay
+                        <div
+                            id="play-overlay"
+                            class="absolute inset-0 flex items-center justify-center bg-black/40 cursor-pointer transition-opacity duration-300"
+                            onclick="document.getElementById('promo-video').play(); document.getElementById('play-overlay').style.display='none';"
+                        >
+                            <div class="w-24 h-24 rounded-full bg-brand/90 flex items-center justify-center shadow-lg hover:bg-brand hover:scale-110 transition-all duration-300">
+                                <svg class="w-12 h-12 text-white ml-2" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M8 5v14l11-7z"/>
+                                </svg>
+                            </div>
+                        </div>
                     </div>
 
                     // Stats / Social Proof
