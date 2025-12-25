@@ -8,7 +8,7 @@ use leptos_meta::Title;
 /// Mock job data for demonstration
 #[derive(Clone, Debug)]
 struct Job {
-    id: String,
+    _id: String,
     customer_name: String,
     location: String,
     service: String,
@@ -22,7 +22,7 @@ struct DashboardStats {
     today_jobs_completed: i32,
     week_jobs: i32,
     week_revenue: i32,
-    month_revenue: i32,
+    _month_revenue: i32,
     pending_quotes: i32,
 }
 
@@ -32,7 +32,7 @@ fn get_mock_stats() -> DashboardStats {
         today_jobs_completed: 1,
         week_jobs: 12,
         week_revenue: 1245,
-        month_revenue: 4850,
+        _month_revenue: 4850,
         pending_quotes: 4,
     }
 }
@@ -40,7 +40,7 @@ fn get_mock_stats() -> DashboardStats {
 fn get_mock_jobs() -> Vec<Job> {
     vec![
         Job {
-            id: "1".to_string(),
+            _id: "1".to_string(),
             customer_name: "John Smith".to_string(),
             location: "CV6 2AB".to_string(),
             service: "Leaky kitchen tap".to_string(),
@@ -48,7 +48,7 @@ fn get_mock_jobs() -> Vec<Job> {
             status: "confirmed".to_string(),
         },
         Job {
-            id: "2".to_string(),
+            _id: "2".to_string(),
             customer_name: "Sarah Jones".to_string(),
             location: "CV5 8PQ".to_string(),
             service: "TV wall mount".to_string(),
@@ -56,7 +56,7 @@ fn get_mock_jobs() -> Vec<Job> {
             status: "confirmed".to_string(),
         },
         Job {
-            id: "3".to_string(),
+            _id: "3".to_string(),
             customer_name: "David Williams".to_string(),
             location: "B92 7QP".to_string(),
             service: "Door repair".to_string(),
