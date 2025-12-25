@@ -50,7 +50,7 @@ pub async fn submit_contact_form(
         let mut opts = RequestInit::new();
         opts.set_method("POST");
         opts.set_mode(RequestMode::Cors);
-        opts.set_body(Some(&wasm_bindgen::JsValue::from_str(&body)));
+        opts.set_body(&wasm_bindgen::JsValue::from_str(&body));
 
         let request = Request::new_with_str_and_init("/api/contact", &opts)
             .map_err(|_| "Failed to create request".to_string())?;
