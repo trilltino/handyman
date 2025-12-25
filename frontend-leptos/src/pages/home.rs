@@ -33,6 +33,21 @@ pub fn Home() -> impl IntoView {
                         "Get more customers with a professional website. <span class='text-brand-light font-semibold'>Start booking jobs online today.</span>"
                     </p>
 
+                    // Promo Video
+                    <div class="max-w-4xl mx-auto mb-12 rounded-2xl overflow-hidden shadow-2xl border border-void-highlight/50">
+                        <video
+                            class="w-full h-auto"
+                            autoplay
+                            muted
+                            loop
+                            playsinline
+                            poster="/promo-poster.jpg"
+                        >
+                            <source src="/promo-video.mp4" type="video/mp4"/>
+                            "Your browser does not support the video tag."
+                        </video>
+                    </div>
+
                     // Stats / Social Proof
                     // Deep Business Features
                     <div class="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8 border-t border-void-highlight/30 pt-10 opacity-90">
