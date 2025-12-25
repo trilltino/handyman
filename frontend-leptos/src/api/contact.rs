@@ -38,14 +38,6 @@ pub async fn submit_contact_form(
 
     #[cfg(not(feature = "ssr"))]
     {
-        use gloo_net::http::Request;
-        Request::post("/api/contact")
-            .json(&form)
-            .map_err(|e| format!("Failed to send: {}", e))?
-            .send()
-            .await
-            .map_err(|e| format!("Network error: {}", e))?;
-
-        Ok("Message sent successfully! We'll get back to you soon.".to_string())
+        Err("Contact form submission requires server-side rendering".to_string())
     }
 }

@@ -27,13 +27,6 @@ pub async fn get_stripe_config() -> Result<StripeConfig, String> {
 
     #[cfg(not(feature = "ssr"))]
     {
-        use gloo_net::http::Request;
-        Request::get("/api/stripe-config")
-            .send()
-            .await
-            .map_err(|e| format!("Fetch error: {}", e))?
-            .json()
-            .await
-            .map_err(|e| format!("Parse error: {}", e))
+        Err("Stripe config requires server-side rendering".to_string())
     }
 }
