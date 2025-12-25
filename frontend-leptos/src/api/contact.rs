@@ -48,9 +48,9 @@ pub async fn submit_contact_form(
             serde_json::to_string(&form).map_err(|e| format!("Serialization error: {}", e))?;
 
         let mut opts = RequestInit::new();
-        opts.method("POST");
-        opts.mode(RequestMode::Cors);
-        opts.body(Some(&wasm_bindgen::JsValue::from_str(&body)));
+        opts.set_method("POST");
+        opts.set_mode(RequestMode::Cors);
+        opts.set_body(Some(&wasm_bindgen::JsValue::from_str(&body)));
 
         let request = Request::new_with_str_and_init("/api/contact", &opts)
             .map_err(|_| "Failed to create request".to_string())?;
