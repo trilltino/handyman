@@ -97,7 +97,7 @@ pub struct EmailService {
 /// Email message to be sent.
 ///
 /// This struct represents a complete email message ready for delivery.
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EmailMessage {
     /// Recipient email address
     pub to: String,
@@ -431,4 +431,187 @@ pub fn email_service() -> &'static Result<EmailService, EmailError> {
     static INSTANCE: std::sync::OnceLock<Result<EmailService, EmailError>> =
         std::sync::OnceLock::new();
     INSTANCE.get_or_init(EmailService::new)
+}
+
+/// Mock email service for testing.
+///
+/// This service records all emails "sent" without actually sending them,
+/// allowing tests to verify email content and behavior.
+#[cfg(any(test, feature = "testing"))]
+pub mod mock {
+    use super::*;
+    use std::sync::{Arc, Mutex};
+
+    /// Mock email service that records emails instead of sending them.
+    #[derive(Clone, Default)]
+    pub struct MockEmailService {
+        sent_emails: Arc<Mutex<Vec<EmailMessage>>>,
+        should_fail: Arc<Mutex<bool>>,
+    }
+
+    impl MockEmailService {
+        /// Creates a new mock email service.
+        pub fn new() -> Self {
+            Self::default()
+        }
+
+        /// Creates a mock service that fails on send.
+        pub fn failing() -> Self {
+            Self {
+                sent_emails: Arc::new(Mutex::new(Vec::new())),
+                should_fail: Arc::new(Mutex::new(true)),
+            }
+        }
+
+        /// Sends an email (records it in the mock) - sync version for testing.
+        pub fn send_email_sync(&self, message: EmailMessage) -> Result<(), EmailError> {
+            if *self.should_fail.lock().unwrap() {
+                return Err(EmailError::SendError("Mock failure".to_string()));
+            }
+            self.sent_emails.lock().unwrap().push(message);
+            Ok(())
+        }
+
+        /// Sends a contact notification (mock version) - sync version.
+        pub fn send_contact_notification_sync(
+            &self,
+            contact_name: &str,
+            contact_email: &str,
+            subject: Option<&str>,
+            message: &str,
+        ) -> Result<(), EmailError> {
+            let email_subject = subject
+                .map(|s| format!("Contact Form: {}", s))
+                .unwrap_or_else(|| "New Contact Form Submission".to_string());
+
+            let email_message = EmailMessage {
+                to: "admin@test.com".to_string(),
+                subject: email_subject,
+                body: format!(
+                    "From: {}\nEmail: {}\nMessage: {}",
+                    contact_name, contact_email, message
+                ),
+                content_type: "text/plain; charset=utf-8".to_string(),
+            };
+
+            self.send_email_sync(email_message)
+        }
+
+        /// Returns the number of emails sent.
+        pub fn sent_count(&self) -> usize {
+            self.sent_emails.lock().unwrap().len()
+        }
+
+        /// Returns the last email sent.
+        pub fn last_email(&self) -> Option<EmailMessage> {
+            self.sent_emails.lock().unwrap().last().cloned()
+        }
+
+        /// Returns all sent emails.
+        pub fn all_emails(&self) -> Vec<EmailMessage> {
+            self.sent_emails.lock().unwrap().clone()
+        }
+
+        /// Clears all recorded emails.
+        pub fn clear(&self) {
+            self.sent_emails.lock().unwrap().clear();
+        }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_email_message_creation() {
+        let msg = EmailMessage {
+            to: "test@example.com".to_string(),
+            subject: "Test Subject".to_string(),
+            body: "Test body content".to_string(),
+            content_type: "text/plain; charset=utf-8".to_string(),
+        };
+
+        assert_eq!(msg.to, "test@example.com");
+        assert_eq!(msg.subject, "Test Subject");
+        assert!(msg.body.contains("Test body"));
+    }
+
+    #[test]
+    fn test_email_error_display() {
+        let config_err = EmailError::ConfigError("Missing credentials".to_string());
+        assert!(config_err.to_string().contains("credentials"));
+
+        let send_err = EmailError::SendError("Connection failed".to_string());
+        assert!(send_err.to_string().contains("Connection"));
+
+        let msg_err = EmailError::MessageError("Invalid email".to_string());
+        assert!(msg_err.to_string().contains("Invalid"));
+    }
+
+    mod mock_tests {
+        use super::super::mock::MockEmailService;
+        use super::*;
+
+        #[test]
+        fn test_mock_email_service_records_emails() {
+            let mock = MockEmailService::new();
+
+            let msg = EmailMessage {
+                to: "test@example.com".to_string(),
+                subject: "Test".to_string(),
+                body: "Body".to_string(),
+                content_type: "text/plain".to_string(),
+            };
+
+            mock.send_email_sync(msg).unwrap();
+
+            assert_eq!(mock.sent_count(), 1);
+            let last = mock.last_email().unwrap();
+            assert_eq!(last.to, "test@example.com");
+        }
+
+        #[test]
+        fn test_mock_email_service_contact_notification() {
+            let mock = MockEmailService::new();
+
+            mock.send_contact_notification_sync(
+                "John Doe",
+                "john@example.com",
+                Some("Hello"),
+                "I need help!",
+            )
+            .unwrap();
+
+            assert_eq!(mock.sent_count(), 1);
+            let last = mock.last_email().unwrap();
+            assert!(last.subject.contains("Contact Form"));
+            assert!(last.body.contains("John Doe"));
+            assert!(last.body.contains("john@example.com"));
+        }
+
+        #[test]
+        fn test_mock_email_failure() {
+            let mock = MockEmailService::failing();
+
+            let result = mock.send_contact_notification_sync("Test", "test@test.com", None, "Test");
+
+            assert!(result.is_err());
+            assert_eq!(mock.sent_count(), 0);
+        }
+
+        #[test]
+        fn test_mock_clear() {
+            let mock = MockEmailService::new();
+
+            mock.send_contact_notification_sync("A", "a@a.com", None, "msg")
+                .unwrap();
+            mock.send_contact_notification_sync("B", "b@b.com", None, "msg")
+                .unwrap();
+
+            assert_eq!(mock.sent_count(), 2);
+            mock.clear();
+            assert_eq!(mock.sent_count(), 0);
+        }
+    }
 }
