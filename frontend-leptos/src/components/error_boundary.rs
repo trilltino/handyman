@@ -4,7 +4,7 @@
 //!
 //! ## Usage
 //!
-//! ```rust
+//! ```rust,ignore
 //! use crate::components::error_boundary::ErrorBoundary;
 //!
 //! view! {
@@ -18,6 +18,12 @@
 #![allow(dead_code)]
 
 use leptos::prelude::*;
+
+/// Default spinner size class.
+const DEFAULT_SPINNER_SIZE: &str = "w-8 h-8";
+
+/// Default loading message.
+const DEFAULT_LOADING_MESSAGE: &str = "Loading...";
 
 /// Error boundary wrapper for graceful error handling.
 ///
@@ -41,8 +47,10 @@ pub fn ErrorBoundary(children: Children) -> impl IntoView {
                         <button
                             class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition"
                             on:click=move |_| {
-                                // Reload the page
-                                let _ = web_sys::window().map(|w| w.location().reload());
+                                // Reload the page safely
+                                if let Some(window) = web_sys::window() {
+                                    let _ = window.location().reload();
+                                }
                             }
                         >
                             "Refresh Page"
@@ -80,11 +88,14 @@ pub fn ErrorFallbackSmall(#[prop(into)] message: String) -> impl IntoView {
 
 /// Loading fallback with spinner.
 #[component]
-pub fn LoadingSpinner(#[prop(optional)] size: Option<&'static str>) -> impl IntoView {
-    let size_class = size.unwrap_or("w-8 h-8");
+pub fn LoadingSpinner(
+    /// CSS size classes (e.g., "w-8 h-8"). Defaults to "w-8 h-8".
+    #[prop(default = DEFAULT_SPINNER_SIZE)]
+    size: &'static str,
+) -> impl IntoView {
     view! {
         <div class="flex items-center justify-center p-4">
-            <svg class=format!("{} animate-spin text-blue-600", size_class) fill="none" viewBox="0 0 24 24">
+            <svg class=format!("{} animate-spin text-blue-600", size) fill="none" viewBox="0 0 24 24">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>
@@ -94,12 +105,15 @@ pub fn LoadingSpinner(#[prop(optional)] size: Option<&'static str>) -> impl Into
 
 /// Suspense-style loading placeholder.
 #[component]
-pub fn LoadingPlaceholder(#[prop(optional)] message: Option<&'static str>) -> impl IntoView {
-    let msg = message.unwrap_or("Loading...");
+pub fn LoadingPlaceholder(
+    /// Message to display below spinner. Defaults to "Loading...".
+    #[prop(default = DEFAULT_LOADING_MESSAGE)]
+    message: &'static str,
+) -> impl IntoView {
     view! {
         <div class="flex flex-col items-center justify-center p-8 text-gray-500">
             <LoadingSpinner />
-            <p class="mt-4 text-sm">{msg}</p>
+            <p class="mt-4 text-sm">{message}</p>
         </div>
     }
 }

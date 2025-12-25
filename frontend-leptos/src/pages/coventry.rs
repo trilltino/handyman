@@ -17,8 +17,8 @@ pub fn Coventry() -> impl IntoView {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     "name": "XF Tradesmen - Coventry",
-    "url": "https://xftradesmen.com/coventry",
-    "image": "https://xftradesmen.com/coventry-office.jpg",
+    "url": "https://xftradesman.com/coventry",
+    "image": "https://xftradesman.com/coventry-office.jpg",
     "description": "Professional website builder for Coventry tradesmen",
     "address": {
       "@type": "PostalAddress",
@@ -47,7 +47,7 @@ pub fn Coventry() -> impl IntoView {
         <SeoHead metadata=PageMetadata {
             title: "Website Builder for Coventry Tradesmen | XF Tradesmen".to_string(),
             description: "Coventry's #1 website builder for plumbers, electricians, and handymen. Get found in Coventry & Warwickshire. Start free.".to_string(),
-            canonical_url: Some("https://xftradesmen.com/coventry".to_string()),
+            canonical_url: Some("https://xftradesman.com/coventry".to_string()),
             og_image: None,
         }/>
         <Script type_="application/ld+json">{schema}</Script>

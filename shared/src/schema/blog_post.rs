@@ -38,7 +38,7 @@ pub fn create_blog_post_schema(
             "name": "XF Tradesmen",
             "logo": {
                 "@type": "ImageObject",
-                "url": "https://xftradesmen.com/logo.png"
+                "url": "https://xftradesman.com/logo.png"
             }
         }
     })
@@ -96,8 +96,8 @@ mod tests {
     fn test_blog_post_schema_with_custom_values() {
         let title = "How to Market Your Handyman Business";
         let description = "Learn the best strategies...";
-        let url = "https://xftradesmen.com/blog/marketing-tips";
-        let image = "https://xftradesmen.com/blog/marketing.jpg";
+        let url = "https://xftradesman.com/blog/marketing-tips";
+        let image = "https://xftradesman.com/blog/marketing.jpg";
 
         let schema = create_blog_post_schema(
             title.to_string(),

@@ -45,7 +45,7 @@ pub fn PrivacyPolicy() -> impl IntoView {
                 <h2>"Contact Us"</h2>
                 <p>"For any privacy-related queries, please contact us at:"</p>
                 <p>
-                    <strong>"Email: "</strong>"hello@xftradesmen.com"<br/>
+                    <strong>"Email: "</strong>"hello@xftradesman.com"<br/>
                     <strong>"Phone: "</strong>"07833 263486"
                 </p>
             </article>

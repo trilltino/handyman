@@ -16,7 +16,7 @@
 ///   "@context": "https://schema.org",
 ///   "@type": "Organization",
 ///   "name": "XF Tradesmen",
-///   "url": "https://xftradesmen.com",
+///   "url": "https://xftradesman.com",
 ///   ...
 /// }
 /// ```
@@ -27,8 +27,8 @@ pub fn create_organization_schema() -> serde_json::Value {
         "@type": "Organization",
         "name": "XF Tradesmen",
         "description": "Professional website building service specializing in handyman and contractor websites",
-        "url": "https://xftradesmen.com",
-        "logo": "https://xftradesmen.com/logo.png",
+        "url": "https://xftradesman.com",
+        "logo": "https://xftradesman.com/logo.png",
         "contactPoint": {
             "@type": "ContactPoint",
             "telephone": "+44-123-456-7890",

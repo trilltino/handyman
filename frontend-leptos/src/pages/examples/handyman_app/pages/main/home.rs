@@ -11,7 +11,7 @@ pub fn HandymanHome() -> impl IntoView {
         <SeoHead metadata=PageMetadata {
             title: "Coventry Handyman Services | Reliable & Local Examples".to_string(),
             description: "Example site for a local handyman business. Shows how XFTradesmen builds high-converting websites.".to_string(),
-            canonical_url: Some("https://xftradesmen.com/handyman-coventry".to_string()),
+            canonical_url: Some("https://xftradesman.com/handyman-coventry".to_string()),
             og_image: None,
         }/>
         <LocalBusinessSchema />

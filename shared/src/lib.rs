@@ -47,7 +47,7 @@ pub mod types;
 pub mod validation;
 
 pub use error::{SharedError, SharedResult};
-pub use metadata::PageMetadata;
+pub use metadata::{PageMetadata, FULL_BUSINESS_DESCRIPTION};
 pub use newtypes::{Email, NonEmptyString, PhoneNumber, PositiveInt, PriceCents};
 pub use types::{ApiResponse, ContactForm, Product, ProductImage, ProductWithImages};
 pub use validation::Validate;

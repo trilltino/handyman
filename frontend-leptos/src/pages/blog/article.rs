@@ -44,7 +44,7 @@ pub fn BlogArticle() -> impl IntoView {
         <SeoHead metadata=PageMetadata {
             title: title(),
             description: "Read our latest expert guide for tradesmen. Learn how to grow your business with digital tools.".to_string(),
-            canonical_url: Some(format!("https://xftradesmen.com/blog/{}", slug())),
+            canonical_url: Some(format!("https://xftradesman.com/blog/{}", slug())),
             og_image: None,
         }/>
 

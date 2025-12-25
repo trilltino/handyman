@@ -35,7 +35,7 @@ pub fn Handyman() -> impl IntoView {
         <SeoHead metadata=PageMetadata {
             title: "Handyman Website Design - Get More Local Jobs | XF Tradesmen".to_string(),
             description: "Professional website builder for handymen. Rank locally for repairs, maintenance, and home improvement jobs.".to_string(),
-            canonical_url: Some("https://xftradesmen.com/handyman".to_string()),
+            canonical_url: Some("https://xftradesman.com/handyman".to_string()),
             og_image: None,
         }/>
         <Script type_="application/ld+json">{schema}</Script>

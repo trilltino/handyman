@@ -24,7 +24,7 @@
 //! - `SMTP_PORT` - SMTP port (default: 587)
 //! - `SMTP_USER` - SMTP authentication username (required)
 //! - `SMTP_PASSWORD` - SMTP authentication password (required)
-//! - `FROM_EMAIL` - Sender email address (default: noreply@xftradesmen.com)
+//! - `FROM_EMAIL` - Sender email address (default: noreply@xftradesman.com)
 //! - `CONTACT_EMAIL` - Recipient for contact form submissions
 //!
 //! ## Usage
@@ -156,7 +156,7 @@ impl EmailService {
             .build();
 
         let from_email =
-            env::var("FROM_EMAIL").unwrap_or_else(|_| "noreply@xftradesmen.com".to_string());
+            env::var("FROM_EMAIL").unwrap_or_else(|_| "noreply@xftradesman.com".to_string());
 
         Ok(EmailService { mailer, from_email })
     }
@@ -278,7 +278,7 @@ impl EmailService {
     /// # Configuration
     ///
     /// Sends to the email address specified in `CONTACT_NOTIFICATION_EMAIL`
-    /// environment variable (defaults to admin@xftradesmen.com).
+    /// environment variable (defaults to admin@xftradesman.com).
     ///
     /// # Example
     ///
@@ -301,7 +301,7 @@ impl EmailService {
         message: &str,
     ) -> Result<(), EmailError> {
         let notification_email =
-            env::var("CONTACT_EMAIL").unwrap_or_else(|_| "admin@xftradesmen.com".to_string());
+            env::var("CONTACT_EMAIL").unwrap_or_else(|_| "admin@xftradesman.com".to_string());
 
         let email_subject = subject
             .map(|s| format!("Contact Form: {}", s))

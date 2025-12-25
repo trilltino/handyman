@@ -13,7 +13,7 @@ pub fn About() -> impl IntoView {
         <SeoHead metadata=PageMetadata {
             title: "About XF Tradesmen - Built by Tradespeople | XF Tradesmen".to_string(),
             description: "Learn our story. We help handymen, plumbers, electricians get found online with professional, SEO-optimized websites.".to_string(),
-            canonical_url: Some("https://xftradesmen.com/about".to_string()),
+            canonical_url: Some("https://xftradesman.com/about".to_string()),
             og_image: None,
         }/>
 

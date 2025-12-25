@@ -52,14 +52,14 @@ pub fn BlogIndex() -> impl IntoView {
       "@type": "Blog",
       "name": "XF Tradesmen Intelligence",
       "description": "Tactical guides for tradesmen to dominate their local market.",
-      "url": "https://xftradesmen.com/blog"
+      "url": "https://xftradesman.com/blog"
     }"#;
 
     view! {
         <SeoHead metadata=PageMetadata {
             title: "XF Tradesmen Blog - Tips for Tradesmen | XF Tradesmen".to_string(),
             description: "Expert advice for plumbers, electricians, and handymen on growing their business online. Marketing tips, SEO guides, and website best practices.".to_string(),
-            canonical_url: Some("https://xftradesmen.com/blog".to_string()),
+            canonical_url: Some("https://xftradesman.com/blog".to_string()),
             og_image: None,
         }/>
         <Script type_="application/ld+json">{json_ld}</Script>

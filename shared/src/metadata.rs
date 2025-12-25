@@ -32,8 +32,8 @@ impl PageMetadata {
         Self {
             title: "XF Tradesmen - Connect with UK Tradesmen".to_string(),
             description: FULL_BUSINESS_DESCRIPTION.to_string(),
-            og_image: Some("https://xftradesmen.com/og-image.jpg".to_string()),
-            canonical_url: Some("https://xftradesmen.com/".to_string()),
+            og_image: Some("https://xftradesman.com/og-image.jpg".to_string()),
+            canonical_url: Some("https://xftradesman.com/".to_string()),
         }
     }
 
@@ -50,9 +50,9 @@ impl PageMetadata {
                 "Find qualified {} in {}. Professional services, verified tradesmen, competitive pricing. Get quotes from local {} today.",
                 service_name, location, service_name
             ),
-            og_image: Some("https://xftradesmen.com/og-image.jpg".to_string()),
+            og_image: Some("https://xftradesman.com/og-image.jpg".to_string()),
             canonical_url: Some(format!(
-                "https://xftradesmen.com/{}-{}",
+                "https://xftradesman.com/{}-{}",
                 service_name.to_lowercase().replace(' ', "-"),
                 location.to_lowercase().replace(' ', "-")
             )),
@@ -64,7 +64,7 @@ impl PageMetadata {
         Self {
             title: format!("{} | Blog | XF Tradesmen", title),
             description: description.to_string(),
-            og_image: Some("https://xftradesmen.com/og-image.jpg".to_string()),
+            og_image: Some("https://xftradesman.com/og-image.jpg".to_string()),
             canonical_url: None,
         }
     }

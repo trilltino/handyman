@@ -14,7 +14,7 @@ pub async fn robots_txt_handler() -> impl IntoResponse {
     let robots = ROBOTS_TXT.get_or_init(|| {
         r#"User-agent: *
 Allow: /
-Sitemap: https://xftradesmen.com/sitemap.xml
+Sitemap: https://xftradesman.com/sitemap.xml
 "#
         .to_string()
     });
@@ -28,7 +28,7 @@ Sitemap: https://xftradesmen.com/sitemap.xml
 /// Handler for /sitemap.xml
 pub async fn sitemap_xml_handler() -> impl IntoResponse {
     let sitemap = SITEMAP_XML.get_or_init(|| {
-        let base_url = "https://xftradesmen.com";
+        let base_url = "https://xftradesman.com";
 
         // List of all static routes
         let static_routes = [

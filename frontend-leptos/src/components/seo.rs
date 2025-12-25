@@ -21,10 +21,10 @@ pub fn SeoHead(
     let description = metadata.description;
     let image = metadata
         .og_image
-        .unwrap_or_else(|| "https://xftradesmen.com/og-image.jpg".to_string());
+        .unwrap_or_else(|| "https://xftradesman.com/og-image.jpg".to_string());
     let url = metadata
         .canonical_url
-        .unwrap_or_else(|| "https://xftradesmen.com".to_string());
+        .unwrap_or_else(|| "https://xftradesman.com".to_string());
 
     view! {
         <Title text=title.clone()/>
@@ -58,9 +58,9 @@ pub fn LocalBusinessSchema() -> impl IntoView {
                 "@type": "LocalBusiness",
                 "name": "XF Tradesmen",
                 "description": "{}",
-                "url": "https://xftradesmen.com",
+                "url": "https://xftradesman.com",
                 "telephone": "+44-123-456-7890",
-                "email": "info@xftradesmen.com",
+                "email": "info@xftradesman.com",
                 "address": {{
                     "@type": "PostalAddress",
                     "addressLocality": "Coventry",
@@ -102,9 +102,9 @@ pub fn HandymanLocalBusinessSchema() -> impl IntoView {
                 "@type": "HomeAndConstructionBusiness",
                 "name": "XF Tradesmen - Coventry Handyman",
                 "description": "Professional handyman services in Coventry and surrounding areas. Plumbing, electrical, carpentry, furniture assembly, and general repairs.",
-                "url": "https://xftradesmen.com/handyman-coventry",
+                "url": "https://xftradesman.com/handyman-coventry",
                 "telephone": "+44-7833-263486",
-                "email": "hello@xftradesmen.com",
+                "email": "hello@xftradesman.com",
                 "address": {
                     "@type": "PostalAddress",
                     "streetAddress": "Coventry",

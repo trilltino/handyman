@@ -1,6 +1,6 @@
 # Fly.io Application Configuration for XF Tradesmen
 # https://fly.io/docs/reference/configuration/
-# Domain: xftradesmen.com
+# Domain: xftradesman.com
 
 app = "xftradesmen"
 primary_region = "lhr" # London, UK - Close to target customers
@@ -47,25 +47,6 @@ path = "/health"
 memory = "1gb"      # 1GB RAM recommended for Rust applications
 cpu_kind = "shared"
 cpus = 1
-
-# Metrics endpoint (optional - for Prometheus monitoring)
-[[services]]
-protocol = "tcp"
-internal_port = 3000
-
-[[services.ports]]
-port = 80
-handlers = ["http"]
-force_https = true
-
-[[services.ports]]
-port = 443
-handlers = ["tls", "http"]
-
-[services.concurrency]
-type = "connections"
-hard_limit = 1000
-soft_limit = 500
 
 # Persistent storage (optional - for logs or generated files)
 # Uncomment if you need persistent storage

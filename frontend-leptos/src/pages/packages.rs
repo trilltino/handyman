@@ -16,7 +16,7 @@ pub fn Packages() -> impl IntoView {
         <SeoHead metadata=PageMetadata {
             title: "Website Packages & Pricing | XFTradesmen".to_string(),
             description: "Professional tradesman website packages. £329 one-time setup + £30/month. SEO-optimized, mobile-responsive websites for electricians, plumbers, and contractors.".to_string(),
-            canonical_url: Some("https://xftradesmen.com/packages".to_string()),
+            canonical_url: Some("https://xftradesman.com/packages".to_string()),
             og_image: None,
         }/>
 
