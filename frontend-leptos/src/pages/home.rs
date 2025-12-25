@@ -37,8 +37,7 @@ pub fn Home() -> impl IntoView {
                     <div class="max-w-4xl mx-auto mb-12 rounded-2xl overflow-hidden shadow-2xl border border-void-highlight/50">
                         <video
                             class="w-full h-auto"
-                            autoplay
-                            muted
+                            controls
                             loop
                             playsinline
                             poster="/promo-poster.jpg"
