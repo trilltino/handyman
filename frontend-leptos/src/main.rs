@@ -73,7 +73,7 @@ async fn proxy_handler(req: axum::extract::Request) -> axum::response::Response 
     // Reconstruct the request to the backend
     let (parts, body) = req.into_parts();
 
-    let req_builder = client.request(parts.method, uri).headers(parts.headers);
+    let req_builder = client.request(parts.method, &uri).headers(parts.headers);
 
     // Axum body to Reqwest body conversion is complex, simpler to stream bytes
     // For now, let's just forward as is if possible, or read bytes
@@ -100,10 +100,10 @@ async fn proxy_handler(req: axum::extract::Request) -> axum::response::Response 
                 .unwrap()
         }
         Err(e) => {
-            log::error!("Proxy error: {}", e);
+            log::error!("Proxy error for url ({}): {}", uri, e);
             (
                 axum::http::StatusCode::BAD_GATEWAY,
-                format!("Proxy error: {}", e),
+                format!("Proxy error: error sending request for url ({})", uri),
             )
                 .into_response()
         }

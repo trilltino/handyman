@@ -60,6 +60,9 @@ RUN npm ci
 # We need to run this before leptos build because leptos might need the css
 RUN npm run build:css
 
+# Set cargo build jobs to limit memory usage
+ENV CARGO_BUILD_JOBS=4
+
 # Build the backend API (Server)
 RUN cargo build --release --bin api
 

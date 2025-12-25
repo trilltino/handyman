@@ -22,7 +22,7 @@
 -- CASCADE ensures dependent objects (foreign keys, triggers) are dropped too
 DROP TABLE IF EXISTS bookings CASCADE;         -- Has foreign keys to users and customers
 DROP TABLE IF EXISTS customers CASCADE;        -- Referenced by bookings
-DROP TABLE IF EXISTS contact_messages CASCADE; -- Standalone table
+DROP TABLE IF EXISTS contact_submissions CASCADE; -- Standalone table
 DROP TABLE IF EXISTS users CASCADE;            -- Referenced by bookings
 
 -- ============================================================================
@@ -97,8 +97,9 @@ CREATE TABLE IF NOT EXISTS bookings (
 );
 
 -- ============================================================================
--- Contact Messages Table - Contact form submissions
+-- Contact Submissions Table - Contact form submissions
 -- ============================================================================
+COMMENT ON TABLE contact_submissions IS 'Website contact form submissions';
 -- Stores messages submitted through the contact form.
 -- No authentication required - anyone can submit a contact message.
 --
@@ -106,12 +107,16 @@ CREATE TABLE IF NOT EXISTS bookings (
 -- - Add status field (new, read, responded, archived)
 -- - Add response tracking
 -- - Add email notification system
-CREATE TABLE IF NOT EXISTS contact_messages (
+CREATE TABLE IF NOT EXISTS contact_submissions (
     id SERIAL PRIMARY KEY,                                   -- Auto-incrementing message ID
     name VARCHAR(255) NOT NULL,                              -- Sender's name
     email VARCHAR(255) NOT NULL,                             -- Sender's email (for replies)
+    subject VARCHAR(255),                                    -- Optional subject
     message TEXT NOT NULL,                                   -- Message content
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP  -- Submission timestamp
+    ip_address VARCHAR(45),                                  -- IP address
+    user_agent TEXT,                                         -- User agent
+    submitted_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP, -- Submission timestamp
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP  -- Legacy timestamp
 );
 
 -- ============================================================================
