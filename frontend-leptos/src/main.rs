@@ -85,9 +85,9 @@ async fn proxy_handler(req: axum::extract::Request) -> axum::response::Response 
     let resp = req_builder.body(bytes).send().await;
     match resp {
         Ok(resp) => {
+            log::info!("Proxy success: {} -> {}", uri, resp.status());
             let mut response_builder = axum::response::Response::builder().status(resp.status());
             // Forward headers
-
             if let Some(headers) = response_builder.headers_mut() {
                 for (key, value) in resp.headers() {
                     headers.insert(key, value.clone());
@@ -100,10 +100,13 @@ async fn proxy_handler(req: axum::extract::Request) -> axum::response::Response 
                 .unwrap()
         }
         Err(e) => {
-            log::error!("Proxy error for url ({}): {}", uri, e);
+            log::error!("Proxy error for url ({}): {:#?}", uri, e);
             (
                 axum::http::StatusCode::BAD_GATEWAY,
-                format!("Proxy error: error sending request for url ({})", uri),
+                format!(
+                    "Proxy error: error sending request for url ({}): {}",
+                    uri, e
+                ),
             )
                 .into_response()
         }
@@ -113,8 +116,6 @@ async fn proxy_handler(req: axum::extract::Request) -> axum::response::Response 
 #[cfg(not(feature = "ssr"))]
 pub fn main() {
     // no client-side main function
-    // unless we want this to work with e.g., Trunk for pure client-side testing
-    // see lib.rs for hydration function
 }
 
 #[cfg(feature = "ssr")]
@@ -129,6 +130,7 @@ fn shell(options: leptos::prelude::LeptosOptions) -> impl leptos::prelude::IntoV
             <head>
                 <meta charset="utf-8"/>
                 <meta name="viewport" content="width=device-width, initial-scale=1"/>
+                <link rel="icon" type="image/x-icon" href="/whatsapp-logo.png"/>
                 <AutoReload options=options.clone() />
                 <HydrationScripts options=options.clone() />
                 <MetaTags/>

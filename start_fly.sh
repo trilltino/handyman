@@ -15,7 +15,7 @@ echo "API_URL: $API_URL"
 if [ -f "/app/api" ]; then
     echo "Starting Backend API on port $API_PORT..."
     # API uses APP_SERVER__HOST and APP_SERVER__PORT env vars
-    APP_SERVER__HOST=127.0.0.1 APP_SERVER__PORT=$API_PORT /app/api &
+    APP_SERVER__HOST=0.0.0.0 APP_SERVER__PORT=$API_PORT /app/api &
     BACKEND_PID=$!
     echo "Backend PID: $BACKEND_PID"
     sleep 2
