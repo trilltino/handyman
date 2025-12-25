@@ -79,18 +79,6 @@ struct Args {
 async fn main() -> anyhow::Result<()> {
     dotenvy::dotenv().ok();
 
-    let args = Args::parse();
-
-    // Handle --test-db flag
-    if args.test_db {
-        return test_database_connection().await;
-    }
-
-    // Handle --migrate flag
-    if args.migrate {
-        return run_migrations().await;
-    }
-
     // Initialize tracing with JSON logs for production, pretty for dev
     use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
@@ -107,6 +95,18 @@ async fn main() -> anyhow::Result<()> {
         registry
             .with(tracing_subscriber::fmt::layer().json())
             .init();
+    }
+
+    let args = Args::parse();
+
+    // Handle --test-db flag
+    if args.test_db {
+        return test_database_connection().await;
+    }
+
+    // Handle --migrate flag
+    if args.migrate {
+        return run_migrations().await;
     }
 
     let config = app_config();
