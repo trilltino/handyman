@@ -30,9 +30,13 @@ docs/
 *~
 
 # Build artifacts (keep Cargo.lock for reproducible builds)
+# Use ** glob to match nested target directories
+**/target/
+**/target
 target/
 target
 .cargo/
+**/.cargo/
 
 # SQLx offline data
 .sqlx/
