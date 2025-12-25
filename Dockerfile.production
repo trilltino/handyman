@@ -9,9 +9,9 @@ RUN apt-get update && apt-get install -y \
     libssl-dev \
     curl \
     && rm -rf /var/lib/apt/lists/*
-# Install cargo-binstall first, then use it for cargo-chef (avoids edition2024 compile issues)
+# Install cargo-binstall first, then use it for cargo-chef AND cargo-leptos (cached for all builds)
 RUN curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash \
-    && cargo binstall cargo-chef -y --force
+    && cargo binstall cargo-chef cargo-leptos -y --force
 
 # Stage 2: Planner - Creates the recipe
 FROM chef AS planner
@@ -38,9 +38,7 @@ RUN rustup toolchain install nightly \
     && rustup default nightly \
     && rustup target add wasm32-unknown-unknown 
 
-# Install cargo-binstall for faster tool installation
-RUN curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash \
-    && cargo binstall cargo-leptos -y --force
+# cargo-leptos already installed in chef stage, inherited here
 
 # Copy recipe from planner
 COPY --from=planner /app/recipe.json recipe.json
@@ -50,11 +48,14 @@ COPY --from=planner /app/recipe.json recipe.json
 # because the recipe includes server deps (mio, tokio) that don't compile to wasm32
 RUN cargo chef cook --release --recipe-path recipe.json
 
+# Copy package files first for npm layer caching
+COPY package.json package-lock.json ./
+
+# Install Node dependencies (cached when package*.json unchanged)
+RUN npm ci
+
 # Copy source code
 COPY . .
-
-# Install Node dependencies (for Tailwind)
-RUN npm ci
 
 # Build CSS (Tailwind)
 # We need to run this before leptos build because leptos might need the css
