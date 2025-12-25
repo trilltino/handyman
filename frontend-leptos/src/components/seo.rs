@@ -3,32 +3,9 @@
 //! Provides components for injecting SEO metadata into page `<head>`.
 //! Uses `PageMetadata` from shared crate for consistency.
 
-// Props are used by Leptos component macro but analyzer doesn't see it
-#![allow(dead_code)]
-
 use leptos::prelude::*;
 use leptos_meta::{Meta, Script, Title};
 use shared::PageMetadata;
-
-/// Returns the canonical base URL for the site.
-/// Controlled via CANONICAL_BASE env var. Defaults to production domain.
-#[allow(dead_code)]
-pub fn canonical_base() -> String {
-    std::env::var("CANONICAL_BASE").unwrap_or_else(|_| "https://xftradesmen.com".to_string())
-}
-
-/// Build an absolute URL from a path using the canonical base.
-#[allow(dead_code)]
-pub fn build_url(path: &str) -> String {
-    let base = canonical_base();
-    let base = base.trim_end_matches('/');
-    let path = if path.starts_with('/') {
-        path
-    } else {
-        &format!("/{}", path)
-    };
-    format!("{}{}", base, path)
-}
 
 /// SEO Head component.
 ///
@@ -73,65 +50,42 @@ pub fn SeoHead(
 /// Adds JSON-LD markup for local business SEO rich snippets.
 #[component]
 pub fn LocalBusinessSchema() -> impl IntoView {
+    let description = shared::FULL_BUSINESS_DESCRIPTION;
     view! {
         <Script type_="application/ld+json">
-            {r#"{
+            {format!(r#"{{
                 "@context": "https://schema.org",
                 "@type": "LocalBusiness",
                 "name": "XF Tradesmen",
-                "description": "Professional handyman website solutions for tradespeople. SEO-optimized websites for electricians, plumbers, and general contractors.",
+                "description": "{}",
                 "url": "https://xftradesmen.com",
                 "telephone": "+44-123-456-7890",
                 "email": "info@xftradesmen.com",
-                "address": {
+                "address": {{
                     "@type": "PostalAddress",
                     "addressLocality": "Coventry",
                     "addressRegion": "West Midlands",
                     "addressCountry": "UK"
-                },
-                "geo": {
+                }},
+                "geo": {{
                     "@type": "GeoCoordinates",
                     "latitude": "52.4081",
                     "longitude": "-1.5106"
-                },
+                }},
                 "openingHoursSpecification": [
-                    {
+                    {{
                         "@type": "OpeningHoursSpecification",
                         "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
                         "opens": "09:00",
                         "closes": "17:00"
-                    }
+                    }}
                 ],
                 "priceRange": "$$",
                 "sameAs": [
                     "https://www.facebook.com/handymanmarketplace",
                     "https://www.twitter.com/handymanmarket"
                 ]
-            }"#}
-        </Script>
-    }
-}
-
-/// Organization Schema.org structured data.
-///
-/// Adds JSON-LD markup for organization SEO.
-#[component]
-pub fn OrganizationSchema() -> impl IntoView {
-    view! {
-        <Script type_="application/ld+json">
-            {r#"{
-                "@context": "https://schema.org",
-                "@type": "Organization",
-                "name": "XF Tradesmen",
-                "url": "https://xftradesmen.com",
-                "logo": "https://xftradesmen.com/logo.png",
-                "contactPoint": {
-                    "@type": "ContactPoint",
-                    "telephone": "+44-123-456-7890",
-                    "contactType": "customer service",
-                    "availableLanguage": "English"
-                }
-            }"#}
+            }}"#, description)}
         </Script>
     }
 }
@@ -235,148 +189,6 @@ pub fn HandymanLocalBusinessSchema() -> impl IntoView {
                     ]
                 }
             }"#}
-        </Script>
-    }
-}
-
-/// Service Schema.org structured data.
-///
-/// For individual service pages.
-#[component]
-pub fn ServiceSchema(
-    #[prop(into)] name: String,
-    #[prop(into)] description: String,
-    #[prop(into, optional)] price_from: Option<String>,
-) -> impl IntoView {
-    let price_spec = price_from
-        .map(|p| {
-            format!(
-                r#","offers": {{
-                "@type": "Offer",
-                "priceSpecification": {{
-                    "@type": "PriceSpecification",
-                    "price": "{}",
-                    "priceCurrency": "GBP",
-                    "unitText": "per job"
-                }}
-            }}"#,
-                p
-            )
-        })
-        .unwrap_or_default();
-
-    let schema = format!(
-        r#"{{
-            "@context": "https://schema.org",
-            "@type": "Service",
-            "name": "{}",
-            "description": "{}",
-            "provider": {{
-                "@type": "HomeAndConstructionBusiness",
-                "name": "XF Tradesmen - Coventry Handyman",
-                "url": "https://xftradesmen.com/handyman-coventry"
-            }},
-            "areaServed": {{
-                "@type": "City",
-                "name": "Coventry"
-            }},
-            "serviceType": "{}"{}
-        }}"#,
-        name, description, name, price_spec
-    );
-
-    view! {
-        <Script type_="application/ld+json">
-            {schema}
-        </Script>
-    }
-}
-
-/// FAQPage Schema.org structured data.
-///
-/// For FAQ sections to enable rich snippets in search results.
-#[component]
-pub fn FAQPageSchema(
-    /// Vector of (question, answer) tuples
-    #[prop(into)]
-    faqs: Vec<(String, String)>,
-) -> impl IntoView {
-    let faq_items: Vec<String> = faqs
-        .iter()
-        .map(|(q, a)| {
-            format!(
-                r#"{{
-                    "@type": "Question",
-                    "name": "{}",
-                    "acceptedAnswer": {{
-                        "@type": "Answer",
-                        "text": "{}"
-                    }}
-                }}"#,
-                q.replace('"', r#"\""#),
-                a.replace('"', r#"\""#)
-            )
-        })
-        .collect();
-
-    let schema = format!(
-        r#"{{
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            "mainEntity": [{}]
-        }}"#,
-        faq_items.join(",")
-    );
-
-    view! {
-        <Script type_="application/ld+json">
-            {schema}
-        </Script>
-    }
-}
-
-/// Review Schema.org structured data.
-///
-/// For testimonials and reviews.
-#[component]
-pub fn ReviewSchema(
-    #[prop(into)] author: String,
-    #[prop(into)] rating: u8,
-    #[prop(into)] review_body: String,
-    #[prop(into, optional)] date: Option<String>,
-) -> impl IntoView {
-    let date_str = date.unwrap_or_else(|| "2024-12-23".to_string());
-
-    let schema = format!(
-        r#"{{
-            "@context": "https://schema.org",
-            "@type": "Review",
-            "author": {{
-                "@type": "Person",
-                "name": "{}"
-            }},
-            "reviewRating": {{
-                "@type": "Rating",
-                "ratingValue": "{}",
-                "bestRating": "5",
-                "worstRating": "1"
-            }},
-            "reviewBody": "{}",
-            "datePublished": "{}",
-            "itemReviewed": {{
-                "@type": "HomeAndConstructionBusiness",
-                "name": "XF Tradesmen - Coventry Handyman"
-            }}
-        }}"#,
-        author.replace('"', r#"\""#),
-        rating,
-        review_body.replace('"', r#"\""#),
-        date_str
-    );
-
-    view! {
-        <Script type_="application/ld+json">
-            {schema}
         </Script>
     }
 }
