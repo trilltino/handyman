@@ -1,0 +1,15 @@
+# Video 10: 72 Hours Launch
+# Duration: 8 seconds
+
+## VEO PROMPT:
+Calendar pages flipping rapidly Monday Tuesday Wednesday, website appearing on screen, confetti celebration, timer showing 72:00:00, modern clean animation
+
+## ON-SCREEN TEXT (appears in sequence):
+[0-2s] "Monday: You message us"
+[2-5s] "Wednesday: You're LIVE"
+[5-8s] "72 hours → xftradesman.com"
+
+## VISUAL DIRECTION:
+- Calendar flipping Mon-Tue-Wed
+- Website going live animation
+- Celebration confetti, end card

@@ -1,0 +1,15 @@
+# Video 09: Biggest Mistake
+# Duration: 8 seconds
+
+## VEO PROMPT:
+Split screen Facebook page on left with likes, Google search results on right showing websites ranking, Facebook fading out, website side glowing brighter
+
+## ON-SCREEN TEXT (appears in sequence):
+[0-2s] "Facebook gets likes"
+[2-5s] "Websites get LEADS"
+[5-8s] "Get leads → xftradesman.com"
+
+## VISUAL DIRECTION:
+- Facebook page with hearts/likes
+- Google showing websites (not Facebook)
+- Website side wins, glows

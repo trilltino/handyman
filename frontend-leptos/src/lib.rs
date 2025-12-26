@@ -51,6 +51,7 @@ use crate::pages::examples::handyman_app::pages::content::{PrivacyPolicy, TermsO
 
 use crate::pages::handyman::Handyman;
 use crate::pages::home::Home;
+use crate::pages::not_found::NotFound;
 use crate::pages::packages::Packages;
 use crate::pages::pricing::Pricing;
 
@@ -81,7 +82,7 @@ pub fn App() -> impl IntoView {
         <Link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 
         <Router>
-            <Routes fallback=|| "Page not found.">
+            <Routes fallback=NotFound>
                 // Main Site Routes
                 <ParentRoute path=path!("/") view=MainLayout>
                     <Route path=path!("/") view=Home/>

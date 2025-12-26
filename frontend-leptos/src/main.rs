@@ -9,12 +9,14 @@
 #[tokio::main]
 async fn main() {
     use axum::{
+        http::header::HeaderValue,
         routing::{any, get},
         Router,
     };
     use frontend_leptos::App;
     use leptos::prelude::*;
     use leptos_axum::{generate_route_list, LeptosRoutes};
+    use tower_http::set_header::SetResponseHeaderLayer;
 
     // Initialize logging
     simple_logger::SimpleLogger::new()
@@ -41,7 +43,12 @@ async fn main() {
             move || shell(leptos_options.clone())
         })
         .fallback(leptos_axum::file_and_error_handler(shell))
-        .with_state(leptos_options);
+        .with_state(leptos_options)
+        // Security headers - HSTS
+        .layer(SetResponseHeaderLayer::if_not_present(
+            axum::http::header::STRICT_TRANSPORT_SECURITY,
+            HeaderValue::from_static("max-age=31536000; includeSubDomains"),
+        ));
 
     // Start the server
     log::info!("listening on http://{}", &addr);
@@ -224,6 +231,16 @@ fn shell(options: leptos::prelude::LeptosOptions) -> impl leptos::prelude::IntoV
                         ttq.load('D56V23RC77U4D2G7TO00');
                         ttq.page();
                     }(window, document, 'ttq');
+                    "#}
+                </script>
+                // Google Analytics 4 - Replace G-XXXXXXXXXX with your GA4 Measurement ID
+                <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+                <script>
+                    {r#"
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag(){dataLayer.push(arguments);}
+                    gtag('js', new Date());
+                    gtag('config', 'G-XXXXXXXXXX');
                     "#}
                 </script>
             </head>

@@ -10,5 +10,6 @@ pub mod examples;
 pub mod handyman;
 pub mod home;
 pub mod industries;
+pub mod not_found;
 pub mod packages;
 pub mod pricing;

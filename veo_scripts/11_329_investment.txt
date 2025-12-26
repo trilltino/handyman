@@ -1,0 +1,15 @@
+# Video 11: £329 Investment
+# Duration: 8 seconds
+
+## VEO PROMPT:
+Price tag showing £329 transforming into website mockup, then showing phone with booking notifications, profit chart going up, clean financial style graphics
+
+## ON-SCREEN TEXT (appears in sequence):
+[0-2s] "£329 setup + £30/month"
+[2-5s] "1 customer covers the whole year"
+[5-8s] "Best ROI → xftradesman.com"
+
+## VISUAL DIRECTION:
+- Price appearing, transforms to website
+- Customer booking = money back
+- Profit chart rising
