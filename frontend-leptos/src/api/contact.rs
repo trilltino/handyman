@@ -69,10 +69,18 @@ pub async fn submit_contact_form(
             .dyn_into()
             .map_err(|_| "Invalid response".to_string())?;
 
-        if resp.ok() {
+        let status = resp.status();
+        // Log to browser console for debugging
+        web_sys::console::log_1(&format!("Contact form response status: {}", status).into());
+
+        // Consider 200-299 as success
+        if status >= 200 && status < 300 {
             Ok("Message sent successfully! We'll get back to you soon.".to_string())
         } else {
-            Err("Failed to send message. Please try again.".to_string())
+            Err(format!(
+                "Failed to send message (status: {}). Please try again.",
+                status
+            ))
         }
     }
 }
