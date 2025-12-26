@@ -24,8 +24,8 @@ pub fn Pricing() -> impl IntoView {
 
     view! {
         <SeoHead metadata=PageMetadata {
-            title: "Website Plans & Pricing - Affordable for Handymen | XF Tradesmen".to_string(),
-            description: "Choose your perfect handyman website plan. Simple pricing starting at £30/month. Launch in minutes with our proven templates.".to_string(),
+            title: "Affordable Tradesman Website Pricing | No Hidden Fees | XF Tradesmen".to_string(),
+            description: "Simple £30/month pricing for a professional tradesman website. Includes hosting, SEO, and support. No contracts, cancel anytime.".to_string(),
             canonical_url: Some("https://xftradesman.com/pricing".to_string()),
             og_image: None,
         }/>

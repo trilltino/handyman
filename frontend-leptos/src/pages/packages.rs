@@ -14,8 +14,8 @@ const STRIPE_CHECKOUT_URL: &str = "https://buy.stripe.com/00w4gsfxO8Pp4ZNdv683C0
 pub fn Packages() -> impl IntoView {
     view! {
         <SeoHead metadata=PageMetadata {
-            title: "Website Packages & Pricing | XFTradesmen".to_string(),
-            description: "Professional tradesman website packages. £329 one-time setup + £30/month. SEO-optimized, mobile-responsive websites for electricians, plumbers, and contractors.".to_string(),
+            title: "All-in-One Website Packages for Trades | Lead Gen Ready | XF Tradesmen".to_string(),
+            description: "Complete website packages for electricians, plumbers, and builders. Includes custom design, local SEO, and booking system. Get started for £329.".to_string(),
             canonical_url: Some("https://xftradesman.com/packages".to_string()),
             og_image: None,
         }/>

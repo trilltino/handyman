@@ -30,8 +30,8 @@ impl PageMetadata {
     /// Create metadata for the homepage
     pub fn for_homepage() -> Self {
         Self {
-            title: "XF Tradesmen - Connect with UK Tradesmen".to_string(),
-            description: FULL_BUSINESS_DESCRIPTION.to_string(),
+            title: "Handyman Website Builder | High-Converting Sites for Trades | XF Tradesmen".to_string(),
+            description: "Get a high-performance website built for UK trades. SEO-optimized, zero downtime, and lead-focused. Launch your handyman or construction business online today.".to_string(),
             og_image: Some("https://xftradesman.com/og-image.jpg".to_string()),
             canonical_url: Some("https://xftradesman.com/".to_string()),
         }

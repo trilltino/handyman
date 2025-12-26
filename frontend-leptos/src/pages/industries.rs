@@ -1,8 +1,17 @@
+use crate::components::seo::SeoHead;
 use leptos::prelude::*;
+use shared::PageMetadata;
 
 #[component]
 pub fn Industries() -> impl IntoView {
     view! {
+        <SeoHead metadata=PageMetadata {
+            title: "Websites for Tradesmen | Electricians, Plumbers & More | XF Tradesmen".to_string(),
+            description: "Specialized website designs for every trade. From electricians to roofers, get a site that ranks for your specific industry keywords.".to_string(),
+            canonical_url: Some("https://xftradesman.com/industries".to_string()),
+            og_image: None,
+        }/>
+
         <section class="hero bg-deep-black text-white py-20">
             <div class="container mx-auto px-4 text-center">
                 <h1 class="text-5xl font-bold mb-6">
