@@ -20,6 +20,7 @@ SERVER_ADDR = "0.0.0.0:3000"
 RUST_LOG = "info,frontend_leptos_lib=info"
 LEPTOS_SITE_ROOT = "site"
 LEPTOS_SITE_ADDR = "0.0.0.0:3000"
+API_URL = "http://127.0.0.1:3001"
 
 # HTTP service configuration
 [http_service]
