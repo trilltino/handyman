@@ -33,8 +33,8 @@ async fn main() {
     // Build Axum router with Leptos integration
     let app = Router::new()
         .route("/health", get(|| async { "OK" })) // Health check for Fly.io
-        .route("/sitemap.xml", get(proxy_handler))
-        .route("/robots.txt", get(proxy_handler))
+        .route("/sitemap.xml", get(sitemap_handler))
+        .route("/robots.txt", get(robots_handler))
         .route("/api/{*fn_name}", any(proxy_handler)) // Proxy API requests
         .leptos_routes(&leptos_options, routes, {
             let leptos_options = leptos_options.clone();
@@ -49,6 +49,86 @@ async fn main() {
     axum::serve(listener, app.into_make_service())
         .await
         .unwrap();
+}
+
+/// Handler for /robots.txt - served directly from frontend
+#[cfg(feature = "ssr")]
+async fn robots_handler() -> axum::response::Response {
+    use axum::http::header;
+
+    let robots = r#"User-agent: *
+Allow: /
+Sitemap: https://xftradesman.com/sitemap.xml
+"#;
+
+    axum::response::Response::builder()
+        .header(header::CONTENT_TYPE, "text/plain")
+        .body(axum::body::Body::from(robots))
+        .unwrap_or_else(|_| axum::response::Response::default())
+}
+
+/// Handler for /sitemap.xml - served directly from frontend
+#[cfg(feature = "ssr")]
+async fn sitemap_handler() -> axum::response::Response {
+    use axum::http::header;
+
+    let base_url = "https://xftradesman.com";
+
+    let static_routes = [
+        ("", "1.0"),
+        ("/about", "0.8"),
+        ("/contact", "0.8"),
+        ("/pricing", "0.8"),
+        ("/blog", "0.8"),
+        ("/coventry", "0.9"),
+        ("/packages", "0.8"),
+        ("/handyman", "0.9"),
+        ("/industries", "0.8"),
+    ];
+
+    let blog_posts = [
+        "/blog/why-tradesmen-need-websites",
+        "/blog/local-seo-guide",
+        "/blog/building-trust-online",
+    ];
+
+    let mut url_entries = String::new();
+
+    for (route, priority) in static_routes {
+        url_entries.push_str(&format!(
+            r#"  <url>
+    <loc>{}{}</loc>
+    <changefreq>weekly</changefreq>
+    <priority>{}</priority>
+  </url>
+"#,
+            base_url, route, priority
+        ));
+    }
+
+    for post in blog_posts {
+        url_entries.push_str(&format!(
+            r#"  <url>
+    <loc>{}{}</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+"#,
+            base_url, post
+        ));
+    }
+
+    let sitemap = format!(
+        r#"<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+{}</urlset>"#,
+        url_entries
+    );
+
+    axum::response::Response::builder()
+        .header(header::CONTENT_TYPE, "application/xml")
+        .body(axum::body::Body::from(sitemap))
+        .unwrap_or_else(|_| axum::response::Response::default())
 }
 
 #[cfg(feature = "ssr")]
@@ -134,6 +214,18 @@ fn shell(options: leptos::prelude::LeptosOptions) -> impl leptos::prelude::IntoV
                 <AutoReload options=options.clone() />
                 <HydrationScripts options=options.clone() />
                 <MetaTags/>
+                // TikTok Pixel Code
+                <script>
+                    {r#"
+                    !function (w, d, t) {
+                        w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie","holdConsent","revokeConsent","grantConsent"],ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(
+                        var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var r="https://analytics.tiktok.com/i18n/pixel/events.js",o=n&&n.partner;ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=r,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};n=document.createElement("script")
+                        ;n.type="text/javascript",n.async=!0,n.src=r+"?sdkid="+e+"&lib="+t;e=document.getElementsByTagName("script")[0];e.parentNode.insertBefore(n,e)};
+                        ttq.load('D56V23RC77U4D2G7TO00');
+                        ttq.page();
+                    }(window, document, 'ttq');
+                    "#}
+                </script>
             </head>
             <body>
                 <App/>
