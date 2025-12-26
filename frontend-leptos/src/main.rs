@@ -219,7 +219,7 @@ fn shell(options: leptos::prelude::LeptosOptions) -> impl leptos::prelude::IntoV
             <head>
                 <meta charset="utf-8"/>
                 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-                <link rel="icon" type="image/x-icon" href="/whatsapp-logo.png"/>
+                <link rel="icon" type="image/png" href="/favicon.png"/>
                 <AutoReload options=options.clone() />
                 <HydrationScripts options=options.clone() />
                 <MetaTags/>

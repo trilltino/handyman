@@ -38,7 +38,7 @@ dev:
 	@echo "  Terminal 2: make watch"
 
 watch:
-	cargo leptos watch
+	export API_URL=http://127.0.0.1:8080 && cargo leptos watch
 
 css:
 	npm run build:css
