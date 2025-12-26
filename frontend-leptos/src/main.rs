@@ -48,7 +48,9 @@ async fn main() {
         .layer(SetResponseHeaderLayer::if_not_present(
             axum::http::header::STRICT_TRANSPORT_SECURITY,
             HeaderValue::from_static("max-age=31536000; includeSubDomains"),
-        ));
+        ))
+        // Canonical Redirect (www -> non-www)
+        .layer(axum::middleware::from_fn(canonical_redirect_middleware));
 
     // Start the server
     log::info!("listening on http://{}", &addr);
@@ -249,4 +251,35 @@ fn shell(options: leptos::prelude::LeptosOptions) -> impl leptos::prelude::IntoV
             </body>
         </html>
     }
+}
+
+/// Middleware to strictly redirect www to non-www
+#[cfg(feature = "ssr")]
+async fn canonical_redirect_middleware(
+    req: axum::extract::Request,
+    next: axum::middleware::Next,
+) -> axum::response::Response {
+    use axum::http::header;
+    use axum::response::IntoResponse;
+
+    let host = req
+        .headers()
+        .get(header::HOST)
+        .and_then(|h| h.to_str().ok())
+        .unwrap_or_default();
+
+    if host.starts_with("www.") {
+        let new_host = host.trim_start_matches("www.");
+        let uri = req.uri();
+        let path = uri.path();
+        let query = uri.query().map(|q| format!("?{}", q)).unwrap_or_default();
+
+        // Always force HTTPS in the redirect as well
+        let new_url = format!("https://{}{}{}", new_host, path, query);
+
+        log::info!("Redirecting canonical: {} -> {}", host, new_url);
+        return axum::response::Redirect::permanent(&new_url).into_response();
+    }
+
+    next.run(req).await
 }
