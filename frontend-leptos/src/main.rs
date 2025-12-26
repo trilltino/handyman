@@ -233,14 +233,14 @@ fn shell(options: leptos::prelude::LeptosOptions) -> impl leptos::prelude::IntoV
                     }(window, document, 'ttq');
                     "#}
                 </script>
-                // Google Analytics 4 - Replace G-XXXXXXXXXX with your GA4 Measurement ID
-                <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+                // Google Analytics 4
+                <script async src="https://www.googletagmanager.com/gtag/js?id=G-66NMFXK2G3"></script>
                 <script>
                     {r#"
                     window.dataLayer = window.dataLayer || [];
                     function gtag(){dataLayer.push(arguments);}
                     gtag('js', new Date());
-                    gtag('config', 'G-XXXXXXXXXX');
+                    gtag('config', 'G-66NMFXK2G3');
                     "#}
                 </script>
             </head>
