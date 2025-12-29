@@ -68,7 +68,7 @@ pub fn Handyman() -> impl IntoView {
 
                         <div class="flex flex-col sm:flex-row gap-4">
                             <Button
-                                label="BUILD MY SITE"
+                                label="GET YOUR CUSTOM QUOTE"
                                 href="/pricing"
                                 variant=ButtonVariant::Primary
                             />

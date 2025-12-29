@@ -19,48 +19,105 @@ pub fn HandymanLayout() -> impl IntoView {
             </div>
 
 
-            // Header
-            <header class="bg-blue-900/95 backdrop-blur-md text-white py-4 px-6 md:px-12 flex justify-between items-center sticky top-0 z-50 shadow-xl shadow-blue-900/20 border-b border-white/10">
-                <a href="/handyman-coventry" class="group flex items-center gap-2">
-                     <div class="w-10 h-10 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-lg flex items-center justify-center text-blue-900 font-black text-xl shadow-lg group-hover:scale-105 transition">"H"</div>
-                     <div class="flex flex-col">
-                        <span class="text-xl font-bold tracking-tight leading-none group-hover:text-yellow-400 transition">"COVENTRY"</span>
-                        <span class="text-xs font-medium text-blue-200 tracking-[0.2em] uppercase">"Handyman Services"</span>
-                     </div>
-                </a>
+            // Header Container
+            <header class="font-sans flex flex-col shadow-xl sticky top-0 z-50">
+                // TOP ROW: Logo & Contact Info
+                <div class="bg-white text-slate-900 py-4 px-6 md:px-12 border-b border-gray-100">
+                    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+                        // Logo
+                        <a href="/handyman-coventry" class="flex items-center gap-3 group">
+                             <div class="w-12 h-12 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-lg flex items-center justify-center text-blue-900 font-black text-2xl shadow-lg group-hover:scale-105 transition">"H"</div>
+                             <div class="flex flex-col">
+                                <span class="text-2xl font-black tracking-tight leading-none text-slate-900">"HANDLE"</span>
+                                <span class="text-2xl font-black tracking-tight leading-none text-blue-900">"MAN"</span>
+                             </div>
+                        </a>
 
-                // Mobile Menu Button
-                <MobileMenuButton />
+                        // Contact Widgets (Hidden on small mobile)
+                        <div class="hidden md:flex items-center divide-x divide-gray-200">
+                            // Phone
+                            <div class="flex items-center gap-4 px-6">
+                                <div class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-blue-900">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                                </div>
+                                <div>
+                                    <div class="text-xs text-gray-500 font-medium uppercase tracking-wide">"Call Today"</div>
+                                    <a href="tel:02476123456" class="text-lg font-bold text-slate-900 hover:text-blue-600 transition">"024 7612 3456"</a>
+                                </div>
+                            </div>
 
-                <nav class="hidden md:flex items-center gap-8 text-sm font-bold uppercase tracking-wide">
-                    <a href="/handyman-coventry" class="hover:text-yellow-400 transition relative group">
-                        "Home"
-                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-yellow-400 transition-all group-hover:w-full"></span>
-                    </a>
-                    <a href="/handyman-coventry/services" class="hover:text-yellow-400 transition relative group">
-                        "Services"
-                         <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-yellow-400 transition-all group-hover:w-full"></span>
-                    </a>
-                    <a href="/handyman-coventry/features" class="hover:text-yellow-400 transition relative group">
-                        "Why Us"
-                         <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-yellow-400 transition-all group-hover:w-full"></span>
-                    </a>
-                    <a href="/handyman-coventry/testimonials" class="hover:text-yellow-400 transition relative group">
-                        "Reviews"
-                         <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-yellow-400 transition-all group-hover:w-full"></span>
-                    </a>
-                    <a href="/handyman-coventry/service-area" class="hover:text-yellow-400 transition relative group">
-                        "Service Area"
-                         <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-yellow-400 transition-all group-hover:w-full"></span>
-                    </a>
-                    <a href="/handyman-coventry/quote" class="hover:text-yellow-400 transition relative group">
-                        "Get Quote"
-                         <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-yellow-400 transition-all group-hover:w-full"></span>
-                    </a>
-                    <a href="/handyman-coventry/booking" class="px-6 py-3 bg-gradient-to-r from-yellow-400 to-yellow-500 text-blue-900 rounded-lg hover:shadow-lg hover:shadow-yellow-500/20 hover:-translate-y-0.5 transition font-bold">
-                        "Book Now"
-                    </a>
-                </nav>
+                            // Email
+                            <div class="flex items-center gap-4 px-6">
+                                <div class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-blue-900">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                                </div>
+                                <div>
+                                    <div class="text-xs text-gray-500 font-medium uppercase tracking-wide">"Send a Message"</div>
+                                    <a href="mailto:hello@coventryhandyman.co.uk" class="text-lg font-bold text-slate-900 hover:text-blue-600 transition">"Click To Email"</a>
+                                </div>
+                            </div>
+
+                             // Location
+                            <div class="flex items-center gap-4 px-6 border-r-0">
+                                <div class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-blue-900">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                </div>
+                                <div>
+                                    <div class="text-xs text-gray-500 font-medium uppercase tracking-wide">"Located In"</div>
+                                    <div class="text-lg font-bold text-slate-900">"Coventry, England"</div>
+                                </div>
+                            </div>
+                        </div>
+
+                         // Mobile Menu Button (Visible only on mobile)
+                        <div class="md:hidden">
+                            <MobileMenuButton />
+                        </div>
+                    </div>
+                </div>
+
+                // BOTTOM ROW: Navigation Bar
+                <div class="bg-blue-900 text-white py-0 md:px-12 shadow-md hidden md:block">
+                    <div class="max-w-7xl mx-auto flex justify-between items-center">
+                        <nav class="flex items-center">
+                             // ABOUT US Dropdown
+                             <div class="group relative">
+                                <button class="px-5 py-4 text-sm font-bold uppercase tracking-wide text-white hover:text-yellow-400 hover:bg-white/5 transition flex items-center gap-1">
+                                    "About Us"
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                                </button>
+                                <div class="absolute left-0 top-full w-48 bg-white text-slate-800 shadow-xl rounded-b-lg overflow-hidden invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200 z-50 border-t-2 border-yellow-400">
+                                    <a href="/handyman-coventry/features" class="block px-6 py-3 text-sm hover:bg-gray-50 hover:text-blue-900 border-b border-gray-100">"Why Choose Us"</a>
+                                    <a href="/handyman-coventry/testimonials" class="block px-6 py-3 text-sm hover:bg-gray-50 hover:text-blue-900 border-b border-gray-100">"Reviews"</a>
+                                    <a href="/handyman-coventry/faq" class="block px-6 py-3 text-sm hover:bg-gray-50 hover:text-blue-900">"FAQ"</a>
+                                </div>
+                             </div>
+
+                             // SERVICES Dropdown
+                              <div class="group relative">
+                                <button class="px-5 py-4 text-sm font-bold uppercase tracking-wide text-white hover:text-yellow-400 hover:bg-white/5 transition flex items-center gap-1">
+                                    "Services"
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                                </button>
+                                <div class="absolute left-0 top-full w-48 bg-white text-slate-800 shadow-xl rounded-b-lg overflow-hidden invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200 z-50 border-t-2 border-yellow-400">
+                                    <a href="/handyman-coventry/services" class="block px-6 py-3 text-sm hover:bg-gray-50 hover:text-blue-900 border-b border-gray-100">"All Services"</a>
+                                    <a href="/handyman-coventry/service-area" class="block px-6 py-3 text-sm hover:bg-gray-50 hover:text-blue-900">"Service Area"</a>
+                                </div>
+                             </div>
+
+                            <a href="/handyman-coventry/testimonials" class="px-5 py-4 text-sm font-bold uppercase tracking-wide text-white hover:text-yellow-400 hover:bg-white/5 transition">"Reviews"</a>
+                            <a href="/handyman-coventry/contact" class="px-5 py-4 text-sm font-bold uppercase tracking-wide text-white hover:text-yellow-400 hover:bg-white/5 transition">"Contact"</a>
+                        </nav>
+
+                        // CTA Button
+                        <div class="py-2">
+                             <a href="/handyman-coventry/booking" class="px-6 py-2.5 bg-blue-600 text-white border border-blue-500 rounded-full hover:bg-blue-500 hover:shadow-lg hover:-translate-y-0.5 transition font-bold text-sm tracking-wide uppercase flex items-center gap-2">
+                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                                "GET YOUR CUSTOM QUOTE"
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </header>
 
             // Main Content Area
@@ -160,19 +217,33 @@ fn MobileMenuButton() -> impl IntoView {
         >
             <a href="/handyman-coventry" class="text-white font-bold text-lg py-3 border-b border-white/10 hover:text-yellow-400"
                on:click=move |_| set_is_open.set(false)>"Home"</a>
-            <a href="/handyman-coventry/services" class="text-white font-bold text-lg py-3 border-b border-white/10 hover:text-yellow-400"
-               on:click=move |_| set_is_open.set(false)>"Services"</a>
-            <a href="/handyman-coventry/features" class="text-white font-bold text-lg py-3 border-b border-white/10 hover:text-yellow-400"
-               on:click=move |_| set_is_open.set(false)>"Why Us"</a>
-            <a href="/handyman-coventry/testimonials" class="text-white font-bold text-lg py-3 border-b border-white/10 hover:text-yellow-400"
-               on:click=move |_| set_is_open.set(false)>"Reviews"</a>
-            <a href="/handyman-coventry/service-area" class="text-white font-bold text-lg py-3 border-b border-white/10 hover:text-yellow-400"
-               on:click=move |_| set_is_open.set(false)>"Service Area"</a>
-            <a href="/handyman-coventry/quote" class="text-white font-bold text-lg py-3 border-b border-white/10 hover:text-yellow-400"
-               on:click=move |_| set_is_open.set(false)>"Get Quote"</a>
+
+            // About Section
+            <div class="py-2 border-b border-white/10">
+                 <div class="text-white/50 text-xs font-bold uppercase tracking-widest mb-2">"About"</div>
+                 <a href="/handyman-coventry/features" class="block text-white font-bold text-lg py-2 hover:text-yellow-400"
+                   on:click=move |_| set_is_open.set(false)>"Why Choose Us"</a>
+                 <a href="/handyman-coventry/faq" class="block text-white font-bold text-lg py-2 hover:text-yellow-400"
+                   on:click=move |_| set_is_open.set(false)>"FAQ"</a>
+                 <a href="/handyman-coventry/testimonials" class="block text-white font-bold text-lg py-2 hover:text-yellow-400"
+                   on:click=move |_| set_is_open.set(false)>"Reviews"</a>
+            </div>
+
+            // Services Section
+             <div class="py-2 border-b border-white/10">
+                 <div class="text-white/50 text-xs font-bold uppercase tracking-widest mb-2">"Services"</div>
+                 <a href="/handyman-coventry/services" class="block text-white font-bold text-lg py-2 hover:text-yellow-400"
+                   on:click=move |_| set_is_open.set(false)>"All Services"</a>
+                 <a href="/handyman-coventry/service-area" class="block text-white font-bold text-lg py-2 hover:text-yellow-400"
+                   on:click=move |_| set_is_open.set(false)>"Service Area"</a>
+            </div>
+
+            <a href="/handyman-coventry/contact" class="text-white font-bold text-lg py-3 border-b border-white/10 hover:text-yellow-400"
+               on:click=move |_| set_is_open.set(false)>"Contact"</a>
+
             <a href="/handyman-coventry/booking"
-               class="mt-4 px-6 py-3 bg-gradient-to-r from-yellow-400 to-yellow-500 text-blue-900 rounded-lg text-center font-bold"
-               on:click=move |_| set_is_open.set(false)>"Book Now"</a>
+               class="mt-6 px-6 py-4 bg-gradient-to-r from-yellow-400 to-yellow-500 text-blue-900 rounded-lg text-center font-black uppercase tracking-wide shadow-lg"
+               on:click=move |_| set_is_open.set(false)>"GET YOUR CUSTOM QUOTE"</a>
         </nav>
     }
 }
