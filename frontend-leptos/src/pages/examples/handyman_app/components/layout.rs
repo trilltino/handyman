@@ -23,7 +23,7 @@ pub fn HandymanLayout() -> impl IntoView {
             <header class="font-sans flex flex-col shadow-xl sticky top-0 z-50">
                 // TOP ROW: Logo & Contact Info
                 <div class="bg-white text-slate-900 py-4 px-6 md:px-12 border-b border-gray-100">
-                    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-6">
+                    <div class="w-full flex flex-col md:flex-row items-center gap-6">
                         // Logo
                         <a href="/handyman-coventry" class="flex items-center gap-3 group mr-auto">
                              <div class="w-12 h-12 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-lg flex items-center justify-center text-blue-900 font-black text-2xl shadow-lg group-hover:scale-105 transition">"H"</div>
@@ -78,7 +78,7 @@ pub fn HandymanLayout() -> impl IntoView {
 
                 // BOTTOM ROW: Navigation Bar
                 <div class="bg-blue-900 text-white py-0 md:px-12 shadow-md hidden md:block">
-                    <div class="max-w-7xl mx-auto flex justify-end items-center gap-12">
+                    <div class="w-full flex justify-end items-center gap-12">
                         <nav class="flex items-center gap-8">
                              // ABOUT US Dropdown
                              <div class="group relative">
