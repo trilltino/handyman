@@ -3,7 +3,6 @@
 //! Frequently Asked Questions about website development services.
 
 use crate::components::seo::SeoHead;
-use crate::components::ui::FaqCard;
 use leptos::prelude::*;
 use leptos_meta::Script;
 use shared::PageMetadata;

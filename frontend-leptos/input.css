@@ -44,14 +44,22 @@
     --color-info: #3B82F6;
 
     /* Typography */
-    --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
-    --font-heading: 'Outfit', 'Inter', ui-sans-serif, system-ui, sans-serif;
+    --font-sans: 'Outfit', 'TWK Lausanne', 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+    --font-heading: 'Outfit', 'TWK Lausanne', 'Inter', ui-sans-serif, system-ui, sans-serif;
     --font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
 
-    /* Shadows */
-    --shadow-glow-sm: 0 0 10px rgba(220, 38, 38, 0.3);
-    --shadow-glow: 0 0 20px rgba(220, 38, 38, 0.5);
-    --shadow-glow-lg: 0 0 40px rgba(220, 38, 38, 0.6);
+    /* Bold Void Palette (Specific to BoldGrp aesthetic) */
+    --color-bold-magenta: #E1005A;
+    --color-bold-indigo: #2E3192;
+    --color-bold-red: #D32F2F;
+
+    /* Transitions & Curves */
+    --transition-reveal: 800ms cubic-bezier(0.85, 0, 0.15, 1);
+    --transition-bounce: 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+
+    /* Shadows & Glows */
+    --shadow-glow-cyan: 0 0 50px rgba(0, 255, 255, 0.2);
+    --shadow-glow-magenta: 0 0 50px rgba(225, 0, 90, 0.2);
 
     /* Border Radius */
     --radius-sm: 0.25rem;
@@ -745,57 +753,213 @@ b {
     background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h40v40H0V0zm1 1h38v38H1V1z' fill='%23171717' fill-opacity='0.5' fill-rule='evenodd'/%3E%3C/svg%3E");
 }
 
-/* Additional animation classes used in pages */
-.animate-pulse-slow {
-    animation: pulseGlow 4s ease-in-out infinite;
-}
-
-/* Cyber grid background pattern */
-.bg-cyber-grid {
-    background-image:
-        linear-gradient(rgba(220, 38, 38, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(220, 38, 38, 0.03) 1px, transparent 1px);
-    background-size: 40px 40px;
-}
-
-/* Font utilities */
-.font-heading {
-    font-family: var(--font-heading);
-}
-
-.font-mono {
-    font-family: var(--font-mono);
-}
-
 /* ----------------------------------------
-   MOBILE HAMBURGER MENU
-   Styles for both main site and handyman site
+   BOLDGRP SPECIAL EFFECTS
    ---------------------------------------- */
 
-/* Hamburger button base */
-.hamburger-btn {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    padding: 8px;
-    z-index: 50;
-    cursor: pointer;
-    background: transparent;
-    border: none;
+/* Grainy Texture Component */
+.bg-grain {
+    position: relative;
 }
 
-.hamburger-btn span {
+.bg-grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.4;
+    pointer-events: none;
+    z-index: 1;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* The "Bold Void" Hero Gradient - Subtle Black with Minimal Red Hints */
+.bg-bold-void {
+    background:
+        radial-gradient(ellipse 100% 50% at 50% 0%, rgba(139, 0, 0, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 0% 0%, rgba(220, 38, 38, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 100% 0%, rgba(185, 28, 28, 0.08) 0%, transparent 40%),
+        #000000;
+}
+
+/* Scroll-triggered color inversion animation for features section */
+.features-animate {
+    animation: colorInvert linear;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
+}
+
+@keyframes colorInvert {
+    0% {
+        background-color: #000000;
+        --text-primary: #ffffff;
+        --text-secondary: #9ca3af;
+        --card-bg: #000000;
+        --card-border: rgba(255, 255, 255, 0.1);
+    }
+
+    100% {
+        background-color: #ffffff;
+        --text-primary: #000000;
+        --text-secondary: #4b5563;
+        --card-bg: #ffffff;
+        --card-border: #e5e7eb;
+    }
+}
+
+.features-animate h2,
+.features-animate h3 {
+    color: var(--text-primary, #ffffff);
+    transition: color 0.3s ease;
+}
+
+.features-animate p {
+    color: var(--text-secondary, #9ca3af);
+    transition: color 0.3s ease;
+}
+
+.features-animate .feature-card {
+    background-color: var(--card-bg, #000000);
+    border-color: var(--card-border, rgba(255, 255, 255, 0.1));
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* 3D Perspective & Transform Utilities */
+.perspective-\[1500px\] {
+    perspective: 1500px;
+}
+
+.transform-style-3d {
+    transform-style: preserve-3d;
+}
+
+.z-5 {
+    z-index: 5;
+}
+
+/* 3D Mockup Card Floating Animation */
+@keyframes float3d {
+
+    0%,
+    100% {
+        transform: translateY(0) rotateX(0);
+    }
+
+    50% {
+        transform: translateY(-10px) rotateX(2deg);
+    }
+}
+
+.animate-float-3d {
+    animation: float3d 4s ease-in-out infinite;
+}
+
+/* Scroll Animation Utilities */
+.reveal-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 1s ease-out;
+}
+
+.reveal-active {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+}
+
+/* Edge Glow Containers */
+.edge-glow-tl {
+    position: fixed;
+    top: -10vw;
+    left: -10vw;
+    width: 40vw;
+    height: 40vw;
+    background: var(--color-brand);
+    opacity: 0.15;
+    filter: blur(100px);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.edge-glow-br {
+    position: fixed;
+    bottom: -10vw;
+    right: -10vw;
+    width: 40vw;
+    height: 40vw;
+    background: var(--color-bold-magenta);
+    opacity: 0.15;
+    filter: blur(100px);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Circular Reveal Animation for Navbar */
+.reveal-container {
+    clip-path: circle(0% at 90% 5%);
+    transition: clip-path var(--transition-reveal);
+    background-color: var(--color-void-surface);
+}
+
+.reveal-container.active {
+    clip-path: circle(150% at 90% 5%);
+}
+
+/* Sliding Text Hover Effect */
+.btn-sliding-text {
+    overflow: hidden;
+    position: relative;
+}
+
+.btn-sliding-text .text-content {
+    display: inline-block;
+    transition: transform 0.4s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.btn-sliding-text .text-hover {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: inline-block;
+    transition: transform 0.4s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.btn-sliding-text:hover .text-content {
+    transform: translateY(-130%);
+}
+
+.btn-sliding-text:hover .text-hover {
+    transform: translateX(-50%) translateY(-130%);
+}
+
+/* Marquee / Scrolling Text for Links */
+.link-marquee {
+    position: relative;
+    overflow: hidden;
+}
+
+.link-marquee span {
     display: block;
-    width: 24px;
-    height: 2px;
-    background-color: white;
-    transition: all 0.3s ease;
-    transform-origin: center;
+    transition: transform 0.3s ease;
 }
 
-/* Hamburger to X animation */
-.hamburger-btn.open span:nth-child(1) {
-    transform: rotate(45deg) translate(5px, 5px);
+.link-marquee::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 100%;
+    left: 0;
+    transition: transform 0.3s ease;
+}
+
+.link-marquee:hover span {
+    transform: translateY(-100%);
+}
+
+.link-marquee:hover::after {
+    transform: translateY(-100%);
 }
 
 .hamburger-btn.open span:nth-child(2) {

@@ -220,6 +220,9 @@ fn shell(options: leptos::prelude::LeptosOptions) -> impl leptos::prelude::IntoV
                 <meta charset="utf-8"/>
                 <meta name="viewport" content="width=device-width, initial-scale=1"/>
                 <link rel="icon" type="image/png" href="/favicon.png"/>
+                <link rel="preconnect" href="https://fonts.googleapis.com"/>
+                <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/>
+                <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
                 <AutoReload options=options.clone() />
                 <HydrationScripts options=options.clone() />
                 <MetaTags/>
@@ -248,6 +251,7 @@ fn shell(options: leptos::prelude::LeptosOptions) -> impl leptos::prelude::IntoV
             </head>
             <body>
                 <App/>
+                <script src="/js/scroll-animation.js" defer></script>
             </body>
         </html>
     }

@@ -2,136 +2,262 @@
 
 use leptos::prelude::*;
 
-/// Fixed navigation bar with blur effect.
+/// Fixed navigation bar with dropdown menus.
 #[component]
 pub fn Navbar() -> impl IntoView {
     let (mobile_open, set_mobile_open) = signal(false);
+    let (main_open, set_main_open) = signal(false);
+    let (resources_open, set_resources_open) = signal(false);
+    let (example_open, set_example_open) = signal(false);
+    let (legal_open, set_legal_open) = signal(false);
 
     view! {
-        <nav class="navbar">
-            <div class="navbar-inner">
-                // Logo
-                <a href="/" class="navbar-logo">
-                    <svg class="w-5 h-5 inline text-brand" fill="currentColor" viewBox="0 0 20 20"><path d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 01.12-.38z"/></svg>
-                    " XFTradesmen"
+        // Navbar with Dropdown Menus
+        <nav class="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-md">
+            <div class="px-6 md:px-12 py-8 md:py-10 flex items-center justify-between">
+                // Left: Brand Logo without Separator
+                <a href="/" class="flex items-center gap-3 md:gap-6">
+                    <span class="text-lg md:text-xl lg:text-2xl xl:text-3xl font-black tracking-tight text-white">
+                        "XFTradesman.com"
+                    </span>
+                    <div class="hidden md:flex flex-col leading-tight">
+                        <span class="text-xs lg:text-sm font-medium tracking-tight text-white">
+                            "Transforming Local Business"
+                        </span>
+                        <span class="text-xs lg:text-sm font-medium tracking-tight text-white">
+                            "Websites with expert design"
+                        </span>
+                    </div>
                 </a>
 
-                // Desktop Navigation
-                <div class="hidden md:flex navbar-nav">
-                    // Example Sites Dropdown
-                    <div class="dropdown">
-                        <button class="navbar-link dropdown-trigger">
-                            "Example Sites"
-                            <svg class="w-4 h-4 ml-1 dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                // Center: Desktop Dropdown Navigation (hidden on mobile)
+                <div class="hidden lg:flex items-center gap-8">
+                    // Main Dropdown
+                    <div class="group relative">
+                        <button class="text-sm font-bold text-white/80 hover:text-white uppercase tracking-wide py-2 flex items-center gap-1">
+                            "Main"
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                             </svg>
                         </button>
-                        <div class="dropdown-menu">
-                            <a href="/handyman-coventry" class="dropdown-item">
-                                <svg class="w-5 h-5 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                </svg>
-                                <div>
-                                    <div class="font-medium">"Handyman Coventry"</div>
-                                    <div class="text-xs text-gray-500">"Local service business demo"</div>
-                                </div>
-                            </a>
+                        <div class="absolute left-0 top-full pt-2 invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200">
+                            <div class="bg-black/95 backdrop-blur-md border border-white/10 rounded-lg shadow-2xl py-2 min-w-[200px]">
+                                <a href="/" class="block px-6 py-2 text-sm text-white/70 hover:text-white hover:bg-white/5 transition-colors">"Home"</a>
+                                <a href="/industries" class="block px-6 py-2 text-sm text-white/70 hover:text-white hover:bg-white/5 transition-colors">"Industries"</a>
+                                <a href="/about" class="block px-6 py-2 text-sm text-white/70 hover:text-white hover:bg-white/5 transition-colors">"About"</a>
+                            </div>
                         </div>
                     </div>
 
-                    <a href="/industries" class="navbar-link">"Industries"</a>
-                    <a href="/packages" class="navbar-link">"Packages"</a>
-                    <a href="/blog" class="navbar-link">"Blog"</a>
-
-                    // About Dropdown
-                    <div class="dropdown">
-                        <button class="navbar-link dropdown-trigger">
-                            "About"
-                            <svg class="w-4 h-4 ml-1 dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    // Resources Dropdown
+                    <div class="group relative">
+                        <button class="text-sm font-bold text-white/80 hover:text-white uppercase tracking-wide py-2 flex items-center gap-1">
+                            "Resources"
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                             </svg>
                         </button>
-                        <div class="dropdown-menu">
-                            <a href="/about" class="dropdown-item">
-                                <svg class="w-5 h-5 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                </svg>
-                                "About Us"
-                            </a>
-                            <a href="/service-agreement" class="dropdown-item">
-                                <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                                </svg>
-                                "Service Agreement"
-                            </a>
-                            <a href="/faq" class="dropdown-item">
-                                <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                </svg>
-                                "FAQ"
-                            </a>
-                            <a href="/terms" class="dropdown-item">
-                                <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-                                </svg>
-                                "Terms & Conditions"
-                            </a>
+                        <div class="absolute left-0 top-full pt-2 invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200">
+                            <div class="bg-black/95 backdrop-blur-md border border-white/10 rounded-lg shadow-2xl py-2 min-w-[200px]">
+                                <a href="/blog" class="block px-6 py-2 text-sm text-white/70 hover:text-white hover:bg-white/5 transition-colors">"Blog"</a>
+                                <a href="/faq" class="block px-6 py-2 text-sm text-white/70 hover:text-white hover:bg-white/5 transition-colors">"FAQ"</a>
+                                <a href="/service-agreement" class="block px-6 py-2 text-sm text-white/70 hover:text-white hover:bg-white/5 transition-colors">"Service Agreement"</a>
+                            </div>
                         </div>
                     </div>
 
-                    <a href="/contact" class="btn btn-primary btn-sm">
-                        "Contact"
-                    </a>
+                    // Example Dropdown
+                    <div class="group relative">
+                        <button class="text-sm font-bold text-white/80 hover:text-white uppercase tracking-wide py-2 flex items-center gap-1">
+                            "Example"
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </button>
+                        <div class="absolute left-0 top-full pt-2 invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200">
+                            <div class="bg-black/95 backdrop-blur-md border border-white/10 rounded-lg shadow-2xl py-2 min-w-[200px]">
+                                <a href="/handyman-coventry" class="block px-6 py-2 text-sm text-white/70 hover:text-white hover:bg-white/5 transition-colors">"The Handyman"</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    // Legal Dropdown
+                    <div class="group relative">
+                        <button class="text-sm font-bold text-white/80 hover:text-white uppercase tracking-wide py-2 flex items-center gap-1">
+                            "Legal"
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </button>
+                        <div class="absolute left-0 top-full pt-2 invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200">
+                            <div class="bg-black/95 backdrop-blur-md border border-white/10 rounded-lg shadow-2xl py-2 min-w-[200px]">
+                                <a href="/terms" class="block px-6 py-2 text-sm text-white/70 hover:text-white hover:bg-white/5 transition-colors">"Terms & Conditions"</a>
+                                <a href="/privacy" class="block px-6 py-2 text-sm text-white/70 hover:text-white hover:bg-white/5 transition-colors">"Privacy Policy"</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                // Mobile Menu Button (Hamburger)
-                <button
-                    class="md:hidden flex flex-col gap-1.5 p-2 z-50"
-                    on:click=move |_| set_mobile_open.update(|v| *v = !*v)
-                    aria-label="Toggle menu"
-                >
-                    <span class={move || format!("w-6 h-0.5 bg-white transition-all duration-300 {}",
-                        if mobile_open.get() { "rotate-45 translate-y-2" } else { "" })}></span>
-                    <span class={move || format!("w-6 h-0.5 bg-white transition-all duration-300 {}",
-                        if mobile_open.get() { "opacity-0" } else { "" })}></span>
-                    <span class={move || format!("w-6 h-0.5 bg-white transition-all duration-300 {}",
-                        if mobile_open.get() { "-rotate-45 -translate-y-2" } else { "" })}></span>
-                </button>
+                // Right: CTA Buttons and Mobile Menu
+                <div class="flex items-center gap-3">
+                    // Desktop CTAs
+                    <a href="/packages" class="hidden lg:inline-flex px-4 py-2 rounded-none font-bold text-xs uppercase tracking-wide items-center gap-2 bg-gray-800 text-white hover:bg-gray-700 transition-colors">
+                        "VIEW PACKAGES"
+                    </a>
+                    <a href="/handyman-coventry" class="hidden lg:inline-flex px-4 py-2 rounded-none font-bold text-xs uppercase tracking-wide items-center gap-2 bg-gray-800 text-white hover:bg-gray-700 transition-colors">
+                        "EXAMPLE"
+                    </a>
+                    <a href="/contact" class="hidden lg:inline-flex px-4 py-2 rounded-none font-bold text-xs uppercase tracking-wide items-center gap-2 bg-white text-black hover:bg-gray-100 transition-colors">
+                        "GET IN TOUCH"
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                        </svg>
+                    </a>
+
+                    // Mobile/Tablet CTAs - Simple white text links (always visible below lg)
+                    <a href="/packages" class="lg:hidden text-[11px] font-bold uppercase tracking-wide transition-colors" style="color: white !important;">
+                        "PACKAGES"
+                    </a>
+                    <a href="/handyman-coventry" class="lg:hidden text-[11px] font-bold uppercase tracking-wide transition-colors" style="color: white !important;">
+                        "EXAMPLE"
+                    </a>
+                    <a href="/contact" class="lg:hidden text-[11px] font-bold uppercase tracking-wide transition-colors" style="color: white !important;">
+                        "CONTACT"
+                    </a>
+
+                    // Mobile Hamburger Menu (always visible on mobile/tablet)
+                    <button
+                        class="lg:hidden flex items-center justify-center p-2 ml-2"
+                        on:click=move |_| set_mobile_open.update(|v| *v = !*v)
+                        aria-label="Toggle menu"
+                    >
+                        <Show when=move || mobile_open.get() fallback=|| view! {
+                            <div class="flex flex-col gap-1.5">
+                                <span class="w-7 h-0.5 bg-white"></span>
+                                <span class="w-7 h-0.5 bg-white"></span>
+                                <span class="w-7 h-0.5 bg-white"></span>
+                            </div>
+                        }>
+                            <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                        </Show>
+                    </button>
+                </div>
             </div>
-        </nav>
 
-        // Mobile Menu Overlay
-        <div
-            class={move || format!("md:hidden fixed inset-0 bg-black/50 z-40 transition-opacity duration-300 {}",
-                if mobile_open.get() { "opacity-100 pointer-events-auto" } else { "opacity-0 pointer-events-none" })}
-            on:click=move |_| set_mobile_open.set(false)
-        ></div>
+            // Mobile Navbar with Independent Dropdowns
+            <div class={move || format!(
+                "lg:hidden transition-all duration-500 ease-out {}",
+                if mobile_open.get() { "max-h-[800px] opacity-100 pb-8" } else { "max-h-0 opacity-0 overflow-hidden" }
+            )}>
+                <div class="px-6 md:px-12 py-6">
+                    // Navbar Row with Pill Buttons
+                    <div class="flex justify-center gap-4 flex-wrap">
+                        // MAIN Button
+                        <div class="relative">
+                            <button
+                                class="flex items-center gap-2 px-6 py-3 rounded-full border border-white/20 text-sm font-bold text-white uppercase tracking-wider hover:border-white/40 transition-colors"
+                                on:click=move |_| set_main_open.update(|v| *v = !*v)
+                            >
+                                "Main"
+                                <svg class={move || format!("w-4 h-4 transition-transform duration-300 {}", if main_open.get() { "rotate-180" } else { "" })} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                </svg>
+                            </button>
+                            <div class={move || format!(
+                                "absolute left-1/2 -translate-x-1/2 top-full mt-2 min-w-[180px] bg-black/95 backdrop-blur-md border border-white/10 rounded-xl shadow-2xl transition-all duration-300 z-50 {}",
+                                if main_open.get() { "opacity-100 visible" } else { "opacity-0 invisible" }
+                            )}>
+                                <nav class="flex flex-col p-2">
+                                    <a href="/" class="px-4 py-2.5 text-sm text-white/70 hover:text-white hover:bg-white/5 rounded-lg transition-all"
+                                       on:click=move |_| { set_main_open.set(false); set_mobile_open.set(false); }>"Home"</a>
+                                    <a href="/industries" class="px-4 py-2.5 text-sm text-white/70 hover:text-white hover:bg-white/5 rounded-lg transition-all"
+                                       on:click=move |_| { set_main_open.set(false); set_mobile_open.set(false); }>"Industries"</a>
+                                    <a href="/packages" class="px-4 py-2.5 text-sm text-white/70 hover:text-white hover:bg-white/5 rounded-lg transition-all"
+                                       on:click=move |_| { set_main_open.set(false); set_mobile_open.set(false); }>"Packages"</a>
+                                    <a href="/about" class="px-4 py-2.5 text-sm text-white/70 hover:text-white hover:bg-white/5 rounded-lg transition-all"
+                                       on:click=move |_| { set_main_open.set(false); set_mobile_open.set(false); }>"About"</a>
+                                    <a href="/contact" class="px-4 py-2.5 text-sm text-white/70 hover:text-white hover:bg-white/5 rounded-lg transition-all"
+                                       on:click=move |_| { set_main_open.set(false); set_mobile_open.set(false); }>"Contact"</a>
+                                </nav>
+                            </div>
+                        </div>
 
-        // Mobile Menu Panel
-        <nav
-            class={move || format!("md:hidden fixed top-0 right-0 h-full w-72 bg-void-surface z-50 flex flex-col pt-20 px-6 gap-4 shadow-2xl transition-transform duration-300 border-l border-void-highlight {}",
-                if mobile_open.get() { "translate-x-0" } else { "translate-x-full" })}
-        >
-            <a href="/handyman-coventry" class="text-white font-medium text-lg py-3 border-b border-void-highlight hover:text-brand-light"
-               on:click=move |_| set_mobile_open.set(false)>"Handyman Coventry"</a>
-            <a href="/industries" class="text-white font-medium text-lg py-3 border-b border-void-highlight hover:text-brand-light"
-               on:click=move |_| set_mobile_open.set(false)>"Industries"</a>
-            <a href="/packages" class="text-white font-medium text-lg py-3 border-b border-void-highlight hover:text-brand-light"
-               on:click=move |_| set_mobile_open.set(false)>"Packages"</a>
-            <a href="/blog" class="text-white font-medium text-lg py-3 border-b border-void-highlight hover:text-brand-light"
-               on:click=move |_| set_mobile_open.set(false)>"Blog"</a>
-            <a href="/about" class="text-white font-medium text-lg py-3 border-b border-void-highlight hover:text-brand-light"
-               on:click=move |_| set_mobile_open.set(false)>"About Us"</a>
-            <a href="/service-agreement" class="text-white font-medium text-lg py-3 border-b border-void-highlight hover:text-brand-light"
-               on:click=move |_| set_mobile_open.set(false)>"Service Agreement"</a>
-            <a href="/faq" class="text-white font-medium text-lg py-3 border-b border-void-highlight hover:text-brand-light"
-               on:click=move |_| set_mobile_open.set(false)>"FAQ"</a>
-            <a href="/terms" class="text-white font-medium text-lg py-3 border-b border-void-highlight hover:text-brand-light"
-               on:click=move |_| set_mobile_open.set(false)>"Terms & Conditions"</a>
-            <a href="/contact"
-               class="mt-4 btn btn-primary text-center"
-               on:click=move |_| set_mobile_open.set(false)>"Contact"</a>
+                        // RESOURCES Button
+                        <div class="relative">
+                            <button
+                                class="flex items-center gap-2 px-6 py-3 rounded-full border border-white/20 text-sm font-bold text-white uppercase tracking-wider hover:border-white/40 transition-colors"
+                                on:click=move |_| set_resources_open.update(|v| *v = !*v)
+                            >
+                                "Resources"
+                                <svg class={move || format!("w-4 h-4 transition-transform duration-300 {}", if resources_open.get() { "rotate-180" } else { "" })} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                </svg>
+                            </button>
+                            <div class={move || format!(
+                                "absolute left-1/2 -translate-x-1/2 top-full mt-2 min-w-[180px] bg-black/95 backdrop-blur-md border border-white/10 rounded-xl shadow-2xl transition-all duration-300 z-50 {}",
+                                if resources_open.get() { "opacity-100 visible" } else { "opacity-0 invisible" }
+                            )}>
+                                <nav class="flex flex-col p-2">
+                                    <a href="/blog" class="px-4 py-2.5 text-sm text-white/70 hover:text-white hover:bg-white/5 rounded-lg transition-all"
+                                       on:click=move |_| { set_resources_open.set(false); set_mobile_open.set(false); }>"Blog"</a>
+                                    <a href="/faq" class="px-4 py-2.5 text-sm text-white/70 hover:text-white hover:bg-white/5 rounded-lg transition-all"
+                                       on:click=move |_| { set_resources_open.set(false); set_mobile_open.set(false); }>"FAQ"</a>
+                                    <a href="/service-agreement" class="px-4 py-2.5 text-sm text-white/70 hover:text-white hover:bg-white/5 rounded-lg transition-all"
+                                       on:click=move |_| { set_resources_open.set(false); set_mobile_open.set(false); }>"Service Agreement"</a>
+                                </nav>
+                            </div>
+                        </div>
+
+                        // EXAMPLE Button
+                        <div class="relative">
+                            <button
+                                class="flex items-center gap-2 px-6 py-3 rounded-full border border-white/20 text-sm font-bold text-white uppercase tracking-wider hover:border-white/40 transition-colors"
+                                on:click=move |_| set_example_open.update(|v| *v = !*v)
+                            >
+                                "Example"
+                                <svg class={move || format!("w-4 h-4 transition-transform duration-300 {}", if example_open.get() { "rotate-180" } else { "" })} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                </svg>
+                            </button>
+                            <div class={move || format!(
+                                "absolute left-1/2 -translate-x-1/2 top-full mt-2 min-w-[180px] bg-black/95 backdrop-blur-md border border-white/10 rounded-xl shadow-2xl transition-all duration-300 z-50 {}",
+                                if example_open.get() { "opacity-100 visible" } else { "opacity-0 invisible" }
+                            )}>
+                                <nav class="flex flex-col p-2">
+                                    <a href="/handyman-coventry" class="px-4 py-2.5 text-sm text-white/70 hover:text-white hover:bg-white/5 rounded-lg transition-all"
+                                       on:click=move |_| { set_example_open.set(false); set_mobile_open.set(false); }>"The Handyman"</a>
+                                </nav>
+                            </div>
+                        </div>
+
+                        // LEGAL Button
+                        <div class="relative">
+                            <button
+                                class="flex items-center gap-2 px-6 py-3 rounded-full border border-white/20 text-sm font-bold text-white uppercase tracking-wider hover:border-white/40 transition-colors"
+                                on:click=move |_| set_legal_open.update(|v| *v = !*v)
+                            >
+                                "Legal"
+                                <svg class={move || format!("w-4 h-4 transition-transform duration-300 {}", if legal_open.get() { "rotate-180" } else { "" })} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                </svg>
+                            </button>
+                            <div class={move || format!(
+                                "absolute left-1/2 -translate-x-1/2 top-full mt-2 min-w-[180px] bg-black/95 backdrop-blur-md border border-white/10 rounded-xl shadow-2xl transition-all duration-300 z-50 {}",
+                                if legal_open.get() { "opacity-100 visible" } else { "opacity-0 invisible" }
+                            )}>
+                                <nav class="flex flex-col p-2">
+                                    <a href="/terms" class="px-4 py-2.5 text-sm text-white/70 hover:text-white hover:bg-white/5 rounded-lg transition-all"
+                                       on:click=move |_| { set_legal_open.set(false); set_mobile_open.set(false); }>"Terms & Conditions"</a>
+                                    <a href="/privacy" class="px-4 py-2.5 text-sm text-white/70 hover:text-white hover:bg-white/5 rounded-lg transition-all"
+                                       on:click=move |_| { set_legal_open.set(false); set_mobile_open.set(false); }>"Privacy Policy"</a>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </nav>
     }
 }
@@ -140,43 +266,51 @@ pub fn Navbar() -> impl IntoView {
 #[component]
 pub fn Footer() -> impl IntoView {
     view! {
-        <footer class="bg-void-surface border-t border-void-highlight">
-            <div class="container section">
-                <div class="grid md:grid-cols-4 gap-8 mb-12">
+        <footer class="bg-black border-t border-white/10 pt-20 pb-10 font-sans">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="grid md:grid-cols-4 gap-12 mb-12">
                     // Brand
                     <div class="md:col-span-2">
-                        <a href="/" class="text-2xl font-bold text-white mb-4 inline-block">
-                            <svg class="w-5 h-5 inline text-brand" fill="currentColor" viewBox="0 0 20 20"><path d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 01.12-.38z"/></svg>" XFTradesmen"
+                        <a href="/" class="text-xl font-bold text-white mb-4 inline-block tracking-tight">
+                            "XFTradesmen"
                         </a>
-                        <p class="text-gray-500 max-w-sm">
-                            "Professional handyman services in Coventry and surrounding areas.
-                            Licensed, insured, and ready to help."
+                        <p class="text-gray-500 max-w-sm text-sm leading-relaxed">
+                            "Professional handyman services in Coventry and surrounding areas. Licensed, insured, and ready to help."
                         </p>
                     </div>
 
-
-                    // Company
+                    // Company Links
                     <div>
-                        <h4 class="text-sm font-semibold text-gray-300 uppercase tracking-wider mb-4">
+                        <h4 class="text-xs font-bold text-white uppercase tracking-[0.2em] mb-4">
                             "Company"
                         </h4>
-                        <ul class="space-y-2">
-                            <li><a href="/about" class="text-gray-500 hover:text-brand-light text-sm">"About Us"</a></li>
-                            <li><a href="/contact" class="text-gray-500 hover:text-brand-light text-sm">"Contact"</a></li>
-                            <li><a href="/blog" class="text-gray-500 hover:text-brand-light text-sm">"Blog"</a></li>
-                            <li><a href="/faq" class="text-gray-500 hover:text-brand-light text-sm">"FAQ"</a></li>
-                            <li><a href="/service-agreement" class="text-gray-500 hover:text-brand-light text-sm">"Service Agreement"</a></li>
-                            <li><a href="/terms" class="text-gray-500 hover:text-brand-light text-sm">"Terms & Conditions"</a></li>
+                        <ul class="space-y-3">
+                            <li><a href="/about" class="text-gray-500 hover:text-white transition-colors text-sm">"About Us"</a></li>
+                            <li><a href="/contact" class="text-gray-500 hover:text-white transition-colors text-sm">"Contact"</a></li>
+                            <li><a href="/blog" class="text-gray-500 hover:text-white transition-colors text-sm">"Blog"</a></li>
+                            <li><a href="/faq" class="text-gray-500 hover:text-white transition-colors text-sm">"FAQ"</a></li>
+                        </ul>
+                    </div>
+
+                    // Legal Links
+                    <div>
+                        <h4 class="text-xs font-bold text-white uppercase tracking-[0.2em] mb-4">
+                            "Legal"
+                        </h4>
+                        <ul class="space-y-3">
+                            <li><a href="/service-agreement" class="text-gray-500 hover:text-white transition-colors text-sm">"Service Agreement"</a></li>
+                            <li><a href="/terms" class="text-gray-500 hover:text-white transition-colors text-sm">"Terms & Conditions"</a></li>
+                            <li><a href="/privacy" class="text-gray-500 hover:text-white transition-colors text-sm">"Privacy Policy"</a></li>
                         </ul>
                     </div>
                 </div>
 
                 // Bottom
-                <div class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-void-highlight text-gray-600 text-sm">
-                    <p>"© 2024 XF Tradesmen. All rights reserved."</p>
-                    <div class="flex gap-6 mt-4 md:mt-0">
-                        <a href="#" class="hover:text-brand-light">"Privacy"</a>
-                        <a href="#" class="hover:text-brand-light">"Terms"</a>
+                <div class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/10 text-gray-600">
+                    <p class="text-xs">"© 2025 XF Tradesmen. All rights reserved."</p>
+                    <div class="flex gap-6 mt-4 md:mt-0 font-medium text-xs">
+                        <a href="/privacy" class="hover:text-white transition-colors">"Privacy"</a>
+                        <a href="/terms" class="hover:text-white transition-colors">"Terms"</a>
                     </div>
                 </div>
             </div>

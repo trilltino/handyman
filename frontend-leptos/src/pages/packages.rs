@@ -28,9 +28,7 @@ pub fn Packages() -> impl IntoView {
                 <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-brand/5 blur-[120px] rounded-full pointer-events-none"></div>
 
                 <div class="max-w-6xl mx-auto text-center relative z-10 animate-fade-in">
-                    <span class="text-brand font-mono text-sm tracking-widest uppercase mb-4 block">"Website Packages"</span>
-                    <h1 class="text-5xl md:text-7xl font-heading font-black mb-6 tracking-tighter">"PROFESSIONAL" <span class="text-brand">"WEBSITES"</span></h1>
-                    <p class="text-xl text-gray-400 max-w-2xl mx-auto font-light">"Everything you need to get found online and book more jobs."</p>
+                    <h1 class="text-5xl md:text-7xl font-heading font-black mb-6 tracking-tighter text-white">"WEBSITE PACKAGES"</h1>
                 </div>
             </section>
 
@@ -44,11 +42,7 @@ pub fn Packages() -> impl IntoView {
                             <div class="absolute -inset-1 bg-gradient-to-r from-brand to-brand-dark rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
 
                             <div class="relative bg-void border border-void-highlight rounded-2xl p-8 shadow-2xl h-full flex flex-col">
-                                <div class="absolute top-0 right-0 p-4">
-                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-mono font-bold bg-brand/10 text-brand border border-brand/20 uppercase tracking-wide">"Best Value"</span>
-                                </div>
-
-                                <h2 class="text-3xl font-bold text-white mb-2 font-heading">"Professional Website"</h2>
+                                <h2 class="text-3xl font-bold text-white mb-2 font-heading">"Website"</h2>
                                 <p class="text-gray-400 mb-8 border-b border-void-highlight pb-8">"Complete tradesman website with SEO, hosting, and support"</p>
 
                                 // Pricing Display

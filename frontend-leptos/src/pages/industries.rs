@@ -5,7 +5,6 @@ use shared::PageMetadata;
 #[derive(Clone, Default)]
 struct IndustrySpec {
     title: String,
-    booster: String,
     details: Vec<String>,
 }
 
@@ -41,7 +40,6 @@ pub fn Industries() -> impl IntoView {
                             <div class="flex justify-between items-start">
                                 <div>
                                     <h3 class="text-3xl font-black text-white tracking-tighter mb-2">{spec.title.clone()}</h3>
-                                    <div class="text-brand font-mono text-xs uppercase tracking-widest">{spec.booster.clone()}</div>
                                 </div>
                                 <button on:click=move |_| active_spec.set(None) class="text-gray-500 hover:text-white transition">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
@@ -73,29 +71,15 @@ pub fn Industries() -> impl IntoView {
                 <div class="absolute inset-0 bg-cyber-grid bg-[length:40px_40px] opacity-20"></div>
                 <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-brand/5 blur-[120px] rounded-full pointer-events-none"></div>
 
-                <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-center relative z-10">
-                    <div class="animate-fade-in">
-                        <span class="text-brand font-mono text-sm tracking-widest uppercase mb-4 block">"System Architecture // Industries"</span>
+                <div class="max-w-6xl mx-auto grid md:grid-cols-1 gap-12 items-center relative z-10 text-center">
+                    <div class="animate-fade-in mx-auto">
                         <h1 class="text-5xl md:text-7xl font-heading font-black mb-6 tracking-tighter leading-[0.9]">
-                            "WEB DEVELOPMENT" <br/>
-                            <span class="text-brand">"FOR TRADESMAN SERVICES"</span>
+                            "GROW YOUR" <br/>
+                            <span class="text-brand">"TRADESMAN BUSINESS IN 2026."</span>
                         </h1>
-                        <p class="text-xl text-gray-400 max-w-xl font-light mb-8">
+                        <p class="text-xl text-gray-400 max-w-xl font-light mb-8 mx-auto">
                             "Most agency sites are generic. We build <span class='text-white font-semibold'>Visibility Engines</span> tailored to the specific jobs that keep your business profitable."
                         </p>
-                        <div class="flex gap-4">
-                            <a href="/pricing" class="btn btn-primary">"BUILD MY ENGINE"</a>
-                            <a href="#visibility-engine" class="btn btn-secondary">"HOW IT WORKS"</a>
-                        </div>
-                    </div>
-
-                    <div class="relative group hidden lg:block">
-                        <div class="absolute -inset-4 bg-brand/20 blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
-                        <img
-                            src="/web_development_for_trades_hero_1766977280951.png"
-                            alt="Elite Engineering for Manual Trades"
-                            class="relative w-full h-auto rounded-2xl border border-void-highlight/50 shadow-2xl transform group-hover:scale-[1.02] transition-transform duration-700"
-                        />
                     </div>
                 </div>
             </section>
@@ -132,153 +116,133 @@ pub fn Industries() -> impl IntoView {
             // Industry Grid
             <section class="py-24 px-4 bg-void">
                 <div class="max-w-7xl mx-auto">
-                    <div class="mb-16">
-                        <span class="text-brand font-mono text-sm tracking-widest uppercase mb-2 block">"Industry Templates"</span>
-                        <h2 class="text-4xl font-bold text-white tracking-tighter">"SPECIALIZED VISIBILITY"</h2>
-                    </div>
+                    // Header Removed
+
 
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         <IndustryCard
                             title="Electricians"
-                            visibility="EV Charger Installs // EICR Checks"
-                            description="Focus on high-value safety certifications and new tech installations."
+                            description="Reliable electrical services for domestic and commercial projects. From rewiring to safety checks."
                             image="/images/industries/industry_electrician.png"
                             on_view_spec=move || active_spec.set(Some(IndustrySpec {
                                 title: "Electricians".to_string(),
-                                booster: "EV Charger Installs // EICR Checks".to_string(),
                                 details: vec![
-                                    "Safe Electrician Schema Injection".to_string(),
-                                    "EV Station Lead Magnets".to_string(),
-                                    "Emergency Call-Out Landing Pages".to_string(),
-                                    "24/7 Response Optimization".to_string(),
+                                    "Residential Rewiring".to_string(),
+                                    "Fuse Board Upgrades".to_string(),
+                                    "Testing & Inspection".to_string(),
+                                    "Lighting Installations".to_string(),
                                 ]
                             }))
                         />
                         <IndustryCard
                             title="Plumbers"
-                            visibility="Boiler Servicing // Leak Detection"
-                            description="Highly conversion-focused for urgent repairs. Specific schema for Gas Safe."
+                            description="Professional plumbing repairs, maintenance, and installations for kitchens and bathrooms."
                             image="/images/industries/industry_plumber.png"
                             on_view_spec=move || active_spec.set(Some(IndustrySpec {
                                 title: "Plumbers".to_string(),
-                                booster: "Boiler Servicing // Leak Detection".to_string(),
                                 details: vec![
-                                    "Gas Safe Badge Integration".to_string(),
-                                    "Emergency Pipelink Infrastructure".to_string(),
-                                    "Boiler Recurring Service Funnels".to_string(),
-                                    "Local Maps Protection Layer".to_string(),
+                                    "Leak Detections & Repairs".to_string(),
+                                    "Bathroom Installations".to_string(),
+                                    "Pipework Maintenance".to_string(),
+                                    "Emergency Call-Outs".to_string(),
                                 ]
                             }))
                         />
                         <IndustryCard
                             title="Carpenters"
-                            visibility="Bespoke Joinery // Kitchen Fitting"
-                            description="Visual-heavy portfolios that showcase craftsmanship and renovation."
+                            description="Bespoke carpentry, joinery, and wood construction services for your home."
                             image="/images/industries/industry_carpenter.png"
                             on_view_spec=move || active_spec.set(Some(IndustrySpec {
                                 title: "Carpenters".to_string(),
-                                booster: "Bespoke Joinery // Kitchen Fitting".to_string(),
                                 details: vec![
-                                    "High-Res Transformation Galleries".to_string(),
-                                    "High-Ticket Renovation SEO".to_string(),
-                                    "Material-Specific Keyword Clusters".to_string(),
-                                    "Interactive Project Showcases".to_string(),
+                                    "Custom Furniture".to_string(),
+                                    "Door & Window Fitting".to_string(),
+                                    "Flooring Installation".to_string(),
+                                    "Decking & Fencing".to_string(),
                                 ]
                             }))
                         />
                         <IndustryCard
                             title="Bricklayers"
-                            visibility="Extensions // Repointing // Walls"
-                            description="Structural focus with case study layouts. Ranking for domestic and commercial masonry projects."
+                            description="Expert bricklaying for new builds, extensions, garden walls, and structural repairs."
                             image="/images/industries/industry_bricklayer.png"
                             on_view_spec=move || active_spec.set(Some(IndustrySpec {
                                 title: "Bricklayers".to_string(),
-                                booster: "Extensions // Repointing // Walls".to_string(),
                                 details: vec![
-                                    "Before/After Slider Integration".to_string(),
-                                    "Local Extension Planning Keywords".to_string(),
-                                    "Structural Integrity Trust Signals".to_string(),
-                                    "Heritage Restoration Galleries".to_string(),
+                                    "Home Extensions".to_string(),
+                                    "Garden Walls".to_string(),
+                                    "Repointing Services".to_string(),
+                                    "Structural Alterations".to_string(),
                                 ]
                             }))
                         />
                         <IndustryCard
                             title="Roofers"
-                            visibility="Flat Roofing // Guttering // Re-Roofs"
-                            description="Trust-building architecture with guarantee highlighting. Dominating local storm damage searches."
+                            description="Complete roofing solutions, from minor repairs to full replacements and guttering."
                             image="/images/industries/industry_roofer.png"
                             on_view_spec=move || active_spec.set(Some(IndustrySpec {
                                 title: "Roofers".to_string(),
-                                booster: "Flat Roofing // Guttering // Re-Roofs".to_string(),
                                 details: vec![
-                                    "Emergency Storm Damage Funnels".to_string(),
-                                    "Drone Survey Video Integration".to_string(),
-                                    "Long-Term Guarantee Badges".to_string(),
-                                    "Seasonal Gutter Maintenance Leads".to_string(),
+                                    "Slating & Tiling".to_string(),
+                                    "Flat Roof Systems".to_string(),
+                                    "Chimney Repairs".to_string(),
+                                    "Guttering & Fascias".to_string(),
                                 ]
                             }))
                         />
                         <IndustryCard
                             title="Locksmiths"
-                            visibility="Emergency Entry // Security Upgrades"
-                            description="The ultimate speed-rank setup. Mobile-first design for customers locked out and in a hurry."
+                            description="Fast and professional lock services, security solutions, and emergency entry."
                             image="/images/industries/industry_locksmith.png"
                             on_view_spec=move || active_spec.set(Some(IndustrySpec {
                                 title: "Locksmiths".to_string(),
-                                booster: "Emergency Entry // Security Upgrades".to_string(),
                                 details: vec![
-                                    "Click-to-Call Primary UI".to_string(),
-                                    "Neighborhood Watch Validation".to_string(),
-                                    "24/7 Availability Schema".to_string(),
-                                    "Rapid Location Detection Logic".to_string(),
+                                    "24/7 Emergency Entry".to_string(),
+                                    "Lock Replacements".to_string(),
+                                    "UPVC Door Repairs".to_string(),
+                                    "Security Upgrades".to_string(),
                                 ]
                             }))
                         />
                         <IndustryCard
                             title="Landscapers"
-                            visibility="Porcelain Patios // Garden Design"
-                            description="Focus on high-ticket landscape transformations and seasonal builds."
+                            description="Garden transformations, paving, decking, and comprehensive grounds maintenance."
                             image="/images/industries/industry_landscaper.png"
                             on_view_spec=move || active_spec.set(Some(IndustrySpec {
                                 title: "Landscapers".to_string(),
-                                booster: "Porcelain Patios // Garden Design".to_string(),
                                 details: vec![
-                                    "Project Cost Calculator Integration".to_string(),
-                                    "Season-Led Content Management".to_string(),
-                                    "Portfolio Transformation System".to_string(),
-                                    "Planning Permission Lead Gen".to_string(),
+                                    "Garden Design".to_string(),
+                                    "Patios & Paving".to_string(),
+                                    "Turfing & Planting".to_string(),
+                                    "Fencing Solutions".to_string(),
                                 ]
                             }))
                         />
                         <IndustryCard
                             title="Tilers"
-                            visibility="Wet Rooms // Large Format Porcelain"
-                            description="Precision-led visibility for luxury bathroom and floor upgrades."
+                            description="High-quality tiling for walls, floors, wet rooms, and kitchen splashbacks."
                             image="/images/industries/industry_tiler.png"
                             on_view_spec=move || active_spec.set(Some(IndustrySpec {
                                 title: "Tilers".to_string(),
-                                booster: "Wet Rooms // Large Format Porcelain".to_string(),
                                 details: vec![
-                                    "Precision Craftmanship Galleries".to_string(),
-                                    "Wet Room Specialist Keywords".to_string(),
-                                    "Instant Tile Estimation Forms".to_string(),
-                                    "Material-Expert Trust Markers".to_string(),
+                                    "Ceramic & Porcelain".to_string(),
+                                    "Natural Stone".to_string(),
+                                    "Wet Room Tiling".to_string(),
+                                    "Floor Levelling".to_string(),
                                 ]
                             }))
                         />
                         <IndustryCard
                             title="Security"
-                            visibility="Smart CCTV // Intruder Alarms"
-                            description="Dominating the tech-led security market for domestic and commercial."
+                            description="Advanced security system installations including CCTV and alarms for peace of mind."
                             image="/images/industries/industry_security.png"
                             on_view_spec=move || active_spec.set(Some(IndustrySpec {
                                 title: "Security".to_string(),
-                                booster: "Smart CCTV // Intruder Alarms".to_string(),
                                 details: vec![
-                                    "Trust & Certification Display".to_string(),
-                                    "Smart Home Integration SEO".to_string(),
-                                    "Emergency Response Funnels".to_string(),
-                                    "Brand-Partner Visibility Prep".to_string(),
+                                    "CCTV Installation".to_string(),
+                                    "Intruder Alarms".to_string(),
+                                    "Access Control".to_string(),
+                                    "Smart Home Security".to_string(),
                                 ]
                             }))
                         />
@@ -286,14 +250,7 @@ pub fn Industries() -> impl IntoView {
                 </div>
             </section>
 
-            // CTA
-            <section class="bg-brand py-20 px-4 text-center">
-                <div class="max-w-3xl mx-auto">
-                    <h2 class="text-4xl font-black text-void mb-6 tracking-tight">"READY TO DOMINATE YOUR TRADE?"</h2>
-                    <p class="text-void/80 text-xl font-medium mb-10">"Stop relying on word of mouth. Build a predictable lead-generation machine."</p>
-                    <a href="/pricing" class="btn bg-void text-white hover:bg-void-surface btn-lg">"INITIALIZE MY WEBSITE"</a>
-                </div>
-            </section>
+
         </div>
     }
 }
@@ -301,7 +258,6 @@ pub fn Industries() -> impl IntoView {
 #[component]
 fn IndustryCard<F>(
     title: &'static str,
-    visibility: &'static str,
     description: &'static str,
     image: &'static str,
     on_view_spec: F,
@@ -325,9 +281,6 @@ where
             </div>
 
             <div class="flex-grow">
-                <div class="text-brand font-mono text-[10px] tracking-widest uppercase mb-3 px-2 py-1 bg-brand/5 border border-brand/10 inline-block rounded">
-                    {visibility}
-                </div>
                 <p class="text-gray-400 text-sm leading-relaxed">{description}</p>
             </div>
 
