@@ -21,6 +21,7 @@ pub struct QuoteItem {
 
 /// Quote creation request
 #[derive(Debug, Deserialize)]
+#[allow(dead_code)]
 pub struct CreateQuoteRequest {
     pub customer_name: String,
     pub customer_email: String,
@@ -229,6 +230,7 @@ pub async fn accept_quote(
 
 /// Instant quote calculator
 #[derive(Debug, Deserialize)]
+#[allow(dead_code)]
 pub struct InstantQuoteRequest {
     pub service_type: String,
     pub description: Option<String>,

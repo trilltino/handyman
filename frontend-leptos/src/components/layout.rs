@@ -42,8 +42,9 @@ pub fn Navbar() -> impl IntoView {
 
                     <a href="/industries" class="navbar-link">"Industries"</a>
                     <a href="/packages" class="navbar-link">"Packages"</a>
+                    <a href="/blog" class="navbar-link">"Blog"</a>
 
-                    // About Dropdown with Blog
+                    // About Dropdown
                     <div class="dropdown">
                         <button class="navbar-link dropdown-trigger">
                             "About"
@@ -58,11 +59,23 @@ pub fn Navbar() -> impl IntoView {
                                 </svg>
                                 "About Us"
                             </a>
-                            <a href="/blog" class="dropdown-item">
+                            <a href="/service-agreement" class="dropdown-item">
                                 <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                                 </svg>
-                                "Blog"
+                                "Service Agreement"
+                            </a>
+                            <a href="/faq" class="dropdown-item">
+                                <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                "FAQ"
+                            </a>
+                            <a href="/terms" class="dropdown-item">
+                                <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                                </svg>
+                                "Terms & Conditions"
                             </a>
                         </div>
                     </div>
@@ -106,10 +119,16 @@ pub fn Navbar() -> impl IntoView {
                on:click=move |_| set_mobile_open.set(false)>"Industries"</a>
             <a href="/packages" class="text-white font-medium text-lg py-3 border-b border-void-highlight hover:text-brand-light"
                on:click=move |_| set_mobile_open.set(false)>"Packages"</a>
-            <a href="/about" class="text-white font-medium text-lg py-3 border-b border-void-highlight hover:text-brand-light"
-               on:click=move |_| set_mobile_open.set(false)>"About Us"</a>
             <a href="/blog" class="text-white font-medium text-lg py-3 border-b border-void-highlight hover:text-brand-light"
                on:click=move |_| set_mobile_open.set(false)>"Blog"</a>
+            <a href="/about" class="text-white font-medium text-lg py-3 border-b border-void-highlight hover:text-brand-light"
+               on:click=move |_| set_mobile_open.set(false)>"About Us"</a>
+            <a href="/service-agreement" class="text-white font-medium text-lg py-3 border-b border-void-highlight hover:text-brand-light"
+               on:click=move |_| set_mobile_open.set(false)>"Service Agreement"</a>
+            <a href="/faq" class="text-white font-medium text-lg py-3 border-b border-void-highlight hover:text-brand-light"
+               on:click=move |_| set_mobile_open.set(false)>"FAQ"</a>
+            <a href="/terms" class="text-white font-medium text-lg py-3 border-b border-void-highlight hover:text-brand-light"
+               on:click=move |_| set_mobile_open.set(false)>"Terms & Conditions"</a>
             <a href="/contact"
                class="mt-4 btn btn-primary text-center"
                on:click=move |_| set_mobile_open.set(false)>"Contact"</a>
@@ -145,6 +164,9 @@ pub fn Footer() -> impl IntoView {
                             <li><a href="/about" class="text-gray-500 hover:text-brand-light text-sm">"About Us"</a></li>
                             <li><a href="/contact" class="text-gray-500 hover:text-brand-light text-sm">"Contact"</a></li>
                             <li><a href="/blog" class="text-gray-500 hover:text-brand-light text-sm">"Blog"</a></li>
+                            <li><a href="/faq" class="text-gray-500 hover:text-brand-light text-sm">"FAQ"</a></li>
+                            <li><a href="/service-agreement" class="text-gray-500 hover:text-brand-light text-sm">"Service Agreement"</a></li>
+                            <li><a href="/terms" class="text-gray-500 hover:text-brand-light text-sm">"Terms & Conditions"</a></li>
                         </ul>
                     </div>
                 </div>

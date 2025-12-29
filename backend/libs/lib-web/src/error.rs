@@ -257,3 +257,142 @@ impl IntoResponse for Error {
         (status, axum::Json(client_error)).into_response()
     }
 }
+
+// region:    --- Tests
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use axum::body::to_bytes;
+    use axum::response::IntoResponse;
+
+    #[test]
+    fn test_auth_required_status() {
+        let err = Error::AuthRequired;
+        assert_eq!(err.status_code(), StatusCode::UNAUTHORIZED);
+    }
+
+    #[test]
+    fn test_invalid_credentials_status() {
+        let err = Error::InvalidCredentials;
+        assert_eq!(err.status_code(), StatusCode::UNAUTHORIZED);
+    }
+
+    #[test]
+    fn test_invalid_token_status() {
+        let err = Error::InvalidToken;
+        assert_eq!(err.status_code(), StatusCode::UNAUTHORIZED);
+    }
+
+    #[test]
+    fn test_token_expired_status() {
+        let err = Error::TokenExpired;
+        assert_eq!(err.status_code(), StatusCode::UNAUTHORIZED);
+    }
+
+    #[test]
+    fn test_insufficient_permissions_status() {
+        let err = Error::InsufficientPermissions;
+        assert_eq!(err.status_code(), StatusCode::FORBIDDEN);
+    }
+
+    #[test]
+    fn test_not_a_member_status() {
+        let err = Error::NotAMember;
+        assert_eq!(err.status_code(), StatusCode::FORBIDDEN);
+    }
+
+    #[test]
+    fn test_validation_error_status() {
+        let err = Error::ValidationError("Invalid input".into());
+        assert_eq!(err.status_code(), StatusCode::BAD_REQUEST);
+    }
+
+    #[test]
+    fn test_password_error_status() {
+        let err = Error::PasswordError("Password too weak".into());
+        assert_eq!(err.status_code(), StatusCode::BAD_REQUEST);
+    }
+
+    #[test]
+    fn test_token_error_status() {
+        let err = Error::TokenError("Token creation failed".into());
+        assert_eq!(err.status_code(), StatusCode::UNAUTHORIZED);
+    }
+
+    #[test]
+    fn test_entity_not_found_status() {
+        let model_err = ModelError::EntityNotFound {
+            entity: "User",
+            id: 123,
+        };
+        let err = Error::Model(model_err);
+        assert_eq!(err.status_code(), StatusCode::NOT_FOUND);
+    }
+
+    #[test]
+    fn test_user_already_exists_status() {
+        let model_err = ModelError::UserAlreadyExists {
+            username: "testuser".into(),
+        };
+        let err = Error::Model(model_err);
+        assert_eq!(err.status_code(), StatusCode::CONFLICT);
+    }
+
+    #[test]
+    fn test_error_display() {
+        let err = Error::AuthRequired;
+        assert_eq!(err.to_string(), "Authentication required");
+
+        let err = Error::ValidationError("Email is invalid".into());
+        assert_eq!(err.to_string(), "Validation error: Email is invalid");
+    }
+
+    #[test]
+    fn test_error_context_returns_same_error() {
+        let err = Error::AuthRequired;
+        let contextual = err.context("test_handler");
+        // Context doesn't change the error type
+        assert_eq!(contextual.status_code(), StatusCode::UNAUTHORIZED);
+    }
+
+    #[tokio::test]
+    async fn test_into_response_auth_required() {
+        let err = Error::AuthRequired;
+        let response = err.into_response();
+        assert_eq!(response.status(), StatusCode::UNAUTHORIZED);
+    }
+
+    #[tokio::test]
+    async fn test_into_response_validation_error() {
+        let err = Error::ValidationError("Invalid email".into());
+        let response = err.into_response();
+        assert_eq!(response.status(), StatusCode::BAD_REQUEST);
+    }
+
+    #[tokio::test]
+    async fn test_into_response_body_is_json() {
+        let err = Error::AuthRequired;
+        let response = err.into_response();
+        let body = to_bytes(response.into_body(), 1024).await.unwrap();
+        let json: serde_json::Value = serde_json::from_slice(&body).unwrap();
+        assert!(json.get("error").is_some());
+    }
+
+    #[tokio::test]
+    async fn test_into_response_not_found_has_detail() {
+        let model_err = ModelError::EntityNotFound {
+            entity: "Customer",
+            id: 456,
+        };
+        let err = Error::Model(model_err);
+        let response = err.into_response();
+        assert_eq!(response.status(), StatusCode::NOT_FOUND);
+
+        let body = to_bytes(response.into_body(), 1024).await.unwrap();
+        let json: serde_json::Value = serde_json::from_slice(&body).unwrap();
+        assert!(json.get("detail").is_some());
+    }
+}
+
+// endregion: --- Tests

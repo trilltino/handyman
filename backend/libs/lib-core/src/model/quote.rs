@@ -326,3 +326,314 @@ impl QuoteBmc {
         Ok(())
     }
 }
+
+// region:    --- Tests
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::_dev_utils;
+
+    fn test_items() -> Vec<QuoteItem> {
+        vec![
+            QuoteItem {
+                description: "Call-out fee".to_string(),
+                quantity: 1,
+                unit_price: 3000,
+            },
+            QuoteItem {
+                description: "Labour (1 hour)".to_string(),
+                quantity: 1,
+                unit_price: 4500,
+            },
+        ]
+    }
+
+    #[tokio::test]
+    async fn test_quote_create_ok() -> Result<()> {
+        // Setup
+        let mm = _dev_utils::init_test().await;
+
+        // Execute
+        let quote = QuoteForCreate {
+            customer_id: None,
+            title: "Test Quote Create".to_string(),
+            items: test_items(),
+            valid_days: Some(30),
+        };
+
+        let id = QuoteBmc::create(&mm, quote).await?;
+
+        // Check
+        assert!(id > 0, "Should return valid ID");
+
+        // Cleanup
+        QuoteBmc::delete(&mm, id).await?;
+
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn test_quote_get_ok() -> Result<()> {
+        // Setup
+        let mm = _dev_utils::init_test().await;
+
+        // Create test quote
+        let quote = QuoteForCreate {
+            customer_id: None,
+            title: "Test Quote Get".to_string(),
+            items: test_items(),
+            valid_days: Some(30),
+        };
+        let id = QuoteBmc::create(&mm, quote).await?;
+
+        // Execute
+        let quote = QuoteBmc::get(&mm, id).await?;
+
+        // Check
+        assert_eq!(quote.id, id);
+        assert_eq!(quote.title, "Test Quote Get");
+        assert_eq!(quote.status, "draft");
+        assert_eq!(quote.subtotal_cents, 7500); // 3000 + 4500
+        assert_eq!(quote.total_cents, 7500);
+
+        // Cleanup
+        QuoteBmc::delete(&mm, id).await?;
+
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn test_quote_get_err_not_found() -> Result<()> {
+        // Setup
+        let mm = _dev_utils::init_test().await;
+        let fx_id = 999999;
+
+        // Execute
+        let res = QuoteBmc::get(&mm, fx_id).await;
+
+        // Check
+        assert!(res.is_err(), "Should return error for non-existent quote");
+
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn test_quote_list_ok() -> Result<()> {
+        // Setup
+        let mm = _dev_utils::init_test().await;
+
+        // Create test quotes
+        let quote1 = QuoteForCreate {
+            customer_id: None,
+            title: "Test List Quote 1".to_string(),
+            items: test_items(),
+            valid_days: Some(30),
+        };
+        let quote2 = QuoteForCreate {
+            customer_id: None,
+            title: "Test List Quote 2".to_string(),
+            items: test_items(),
+            valid_days: Some(30),
+        };
+
+        let id1 = QuoteBmc::create(&mm, quote1).await?;
+        let id2 = QuoteBmc::create(&mm, quote2).await?;
+
+        // Execute
+        let quotes = QuoteBmc::list(&mm).await?;
+
+        // Check
+        assert!(quotes.len() >= 2, "Should have at least 2 quotes");
+
+        // Cleanup
+        QuoteBmc::delete(&mm, id1).await?;
+        QuoteBmc::delete(&mm, id2).await?;
+
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn test_quote_list_by_status() -> Result<()> {
+        // Setup
+        let mm = _dev_utils::init_test().await;
+
+        // Create test quote
+        let quote = QuoteForCreate {
+            customer_id: None,
+            title: "Test Status Filter".to_string(),
+            items: test_items(),
+            valid_days: Some(30),
+        };
+        let id = QuoteBmc::create(&mm, quote).await?;
+
+        // Execute
+        let draft_quotes = QuoteBmc::list_by_status(&mm, "draft").await?;
+
+        // Check
+        assert!(
+            draft_quotes.iter().any(|q| q.id == id),
+            "Should find newly created quote in draft list"
+        );
+
+        // Cleanup
+        QuoteBmc::delete(&mm, id).await?;
+
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn test_quote_update_status() -> Result<()> {
+        // Setup
+        let mm = _dev_utils::init_test().await;
+
+        // Create test quote
+        let quote = QuoteForCreate {
+            customer_id: None,
+            title: "Test Update Status".to_string(),
+            items: test_items(),
+            valid_days: Some(30),
+        };
+        let id = QuoteBmc::create(&mm, quote).await?;
+
+        // Execute
+        QuoteBmc::update_status(&mm, id, "sent").await?;
+
+        // Check
+        let quote = QuoteBmc::get(&mm, id).await?;
+        assert_eq!(quote.status, "sent");
+
+        // Cleanup
+        QuoteBmc::delete(&mm, id).await?;
+
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn test_quote_send() -> Result<()> {
+        // Setup
+        let mm = _dev_utils::init_test().await;
+
+        // Create test quote
+        let quote = QuoteForCreate {
+            customer_id: None,
+            title: "Test Send".to_string(),
+            items: test_items(),
+            valid_days: Some(30),
+        };
+        let id = QuoteBmc::create(&mm, quote).await?;
+
+        // Execute
+        QuoteBmc::send(&mm, id).await?;
+
+        // Check
+        let quote = QuoteBmc::get(&mm, id).await?;
+        assert_eq!(quote.status, "sent");
+
+        // Cleanup
+        QuoteBmc::delete(&mm, id).await?;
+
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn test_quote_accept() -> Result<()> {
+        // Setup
+        let mm = _dev_utils::init_test().await;
+
+        // Create test quote
+        let quote = QuoteForCreate {
+            customer_id: None,
+            title: "Test Accept".to_string(),
+            items: test_items(),
+            valid_days: Some(30),
+        };
+        let id = QuoteBmc::create(&mm, quote).await?;
+
+        // Execute
+        QuoteBmc::accept(&mm, id, None, Some("Looks good!")).await?;
+
+        // Check
+        let quote = QuoteBmc::get(&mm, id).await?;
+        assert_eq!(quote.status, "accepted");
+        assert!(quote.accepted_at.is_some());
+        assert_eq!(quote.customer_notes, Some("Looks good!".to_string()));
+
+        // Cleanup
+        QuoteBmc::delete(&mm, id).await?;
+
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn test_quote_reject() -> Result<()> {
+        // Setup
+        let mm = _dev_utils::init_test().await;
+
+        // Create test quote
+        let quote = QuoteForCreate {
+            customer_id: None,
+            title: "Test Reject".to_string(),
+            items: test_items(),
+            valid_days: Some(30),
+        };
+        let id = QuoteBmc::create(&mm, quote).await?;
+
+        // Execute
+        QuoteBmc::reject(&mm, id, Some("Too expensive")).await?;
+
+        // Check
+        let quote = QuoteBmc::get(&mm, id).await?;
+        assert_eq!(quote.status, "rejected");
+        assert_eq!(quote.customer_notes, Some("Too expensive".to_string()));
+
+        // Cleanup
+        QuoteBmc::delete(&mm, id).await?;
+
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn test_quote_delete_ok() -> Result<()> {
+        // Setup
+        let mm = _dev_utils::init_test().await;
+
+        // Create test quote
+        let quote = QuoteForCreate {
+            customer_id: None,
+            title: "Test Delete".to_string(),
+            items: test_items(),
+            valid_days: Some(30),
+        };
+        let id = QuoteBmc::create(&mm, quote).await?;
+
+        // Execute
+        QuoteBmc::delete(&mm, id).await?;
+
+        // Check - should not be able to get deleted quote
+        let res = QuoteBmc::get(&mm, id).await;
+        assert!(res.is_err(), "Should not find deleted quote");
+
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn test_quote_delete_err_not_found() -> Result<()> {
+        // Setup
+        let mm = _dev_utils::init_test().await;
+        let fx_id = 999999;
+
+        // Execute
+        let res = QuoteBmc::delete(&mm, fx_id).await;
+
+        // Check
+        assert!(
+            res.is_err(),
+            "Should return error when deleting non-existent quote"
+        );
+
+        Ok(())
+    }
+}
+
+// endregion: --- Tests

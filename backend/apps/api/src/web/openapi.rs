@@ -11,7 +11,6 @@ use utoipa_swagger_ui::SwaggerUi;
     paths(
         crate::web::handlers::contact::api_contact_handler,
         crate::web::handlers::static_content::version_handler,
-        crate::web::handlers::static_content::stripe_config_handler,
         crate::web::routes_health::api_health_handler
     ),
     components(
@@ -21,7 +20,6 @@ use utoipa_swagger_ui::SwaggerUi;
     ),
     tags(
         (name = "contact", description = "Contact form endpoints"),
-        (name = "payments", description = "Payment and Stripe endpoints"),
         (name = "health", description = "Health check endpoints")
     )
 )]

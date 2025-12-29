@@ -48,8 +48,6 @@ pub struct AppConfig {
     pub server: ServerConfig,
     /// Database configuration (connection URL)
     pub db: DbConfig,
-    /// Stripe configuration
-    pub stripe: StripeConfig,
 }
 
 /// Server network configuration.
@@ -69,20 +67,6 @@ pub struct DbConfig {
     pub url: String,
 }
 
-/// Stripe service configuration.
-#[derive(Debug, Deserialize, Clone)]
-#[allow(dead_code)]
-pub struct StripeConfig {
-    /// Stripe public key
-    pub public_key: String,
-    /// Stripe secret key
-    pub secret_key: String,
-    /// Stripe product ID for the main package
-    pub product_id: String,
-    /// Stripe webhook secret
-    pub webhook_secret: String,
-}
-
 impl AppConfig {
     /// Load configuration from environment variables and defaults.
     ///
@@ -99,24 +83,19 @@ impl AppConfig {
                 "db.url",
                 "postgres://postgres:YOUR_PASSWORD_HERE@localhost:5432/handyman",
             )?
-            .set_default("stripe.public_key", "")?
-            .set_default("stripe.secret_key", "")?
-            .set_default("stripe.product_id", "")?
-            .set_default("stripe.webhook_secret", "")?
             // Add environment variables (APP_SERVER__PORT etc)
             .add_source(Environment::with_prefix("APP").separator("__"))
             // Map legacy vars to structure
             .set_override_option("db.url", env::var("DATABASE_URL").ok())?
-            .set_override_option("stripe.public_key", env::var("STRIPE_PUBLIC_KEY").ok())?
-            .set_override_option("stripe.secret_key", env::var("STRIPE_SECRET_KEY").ok())?
-            .set_override_option("stripe.product_id", env::var("STRIPE_PRODUCT_ID").ok())?
-            .set_override_option(
-                "stripe.webhook_secret",
-                env::var("STRIPE_WEBHOOK_SECRET").ok(),
-            )?
             // Explicitly map PORT and API_PORT to server.port to ensure Fly.io config works
-            .set_override_option("server.port", env::var("API_PORT").ok())?
-            .set_override_option("server.port", env::var("PORT").ok())?
+            .set_override_option(
+                "server.port",
+                env::var("API_PORT").ok().map(|s| s.trim().to_string()),
+            )?
+            .set_override_option(
+                "server.port",
+                env::var("PORT").ok().map(|s| s.trim().to_string()),
+            )?
             .build()?;
 
         s.try_deserialize()

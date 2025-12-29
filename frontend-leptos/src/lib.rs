@@ -20,7 +20,6 @@ use leptos_router::{
 
 pub mod api;
 mod components;
-mod design_system;
 mod pages;
 use crate::pages::about::About;
 use crate::pages::blog::article::BlogArticle;
@@ -28,6 +27,9 @@ use crate::pages::blog::index::BlogIndex;
 use crate::pages::contact::Contact;
 use crate::pages::coventry::Coventry;
 use crate::pages::examples::handyman_app::components::layout::HandymanLayout;
+use crate::pages::faq::Faq;
+use crate::pages::service_agreement::ServiceAgreement;
+use crate::pages::terms::Terms;
 // Admin pages
 use crate::pages::examples::handyman_app::pages::admin::AdminDashboard;
 // Main pages
@@ -73,7 +75,7 @@ pub fn App() -> impl IntoView {
 
     view! {
         <Html attr:lang="en-gb" />
-        <Stylesheet id="leptos" href="/xftradesmen.css"/>
+        <Stylesheet id="leptos" href="/css/xftradesmen.css"/>
         <Title text="XFTradesmen"/>
 
         // Import Google Fonts
@@ -95,6 +97,9 @@ pub fn App() -> impl IntoView {
                     <Route path=path!("/blog") view=BlogIndex/>
                     <Route path=path!("/blog/:slug") view=BlogArticle/>
                     <Route path=path!("/industries") view=crate::pages::industries::Industries/>
+                    <Route path=path!("/terms") view=Terms/>
+                    <Route path=path!("/faq") view=Faq/>
+                    <Route path=path!("/service-agreement") view=ServiceAgreement/>
                 </ParentRoute>
 
                 // Handyman Example App Routes

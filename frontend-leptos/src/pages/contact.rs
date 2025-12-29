@@ -99,7 +99,7 @@ pub fn Contact() -> impl IntoView {
                         <a href="https://wa.me/447833263486" target="_blank" rel="noopener noreferrer" class="card-deep p-8 border-void-highlight hover:border-green-500/50 transition-all duration-300 group">
                             <div class="flex items-center gap-4">
                                 <div class="w-14 h-14 rounded-full bg-green-500/10 flex items-center justify-center text-green-500 group-hover:scale-110 transition-transform duration-300">
-                                    <img src="/whatsapp-logo.png" alt="WhatsApp" class="w-8 h-8"/>
+                                    <img src="/images/icons/whatsapp-logo.png" alt="WhatsApp" class="w-8 h-8"/>
                                 </div>
                                 <div>
                                     <h3 class="text-lg font-bold text-white group-hover:text-green-400 transition font-heading mb-1">"Or WhatsApp"</h3>

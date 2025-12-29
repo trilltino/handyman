@@ -39,8 +39,8 @@ if errorlevel 1 (
 )
 
 :: Start CSS watch in background (rebuilds on file changes)
-echo [2/4] Starting CSS watch...
-start "Tailwind Watch" cmd /k "npm run watch:css"
+echo [2/4] Starting CSS watch (hidden)...
+start /min "" cmd /c "npm run watch:css > nul 2>&1"
 timeout /t 1 /nobreak >nul
 
 :: Start Backend API (dev mode for faster builds)
@@ -48,7 +48,7 @@ timeout /t 1 /nobreak >nul
 set API_PORT=8080
 set RUST_LOG=info
 echo [3/4] Launching Backend API (dev mode on port %API_PORT%)...
-start "XFTradesmen Backend" cmd /k "set API_PORT=8080 && set RUST_LOG=info && cargo run -p api"
+start "XFTradesmen Backend" cmd /k "set API_PORT=8080&& set RUST_LOG=info&& cargo run -p api"
 timeout /t 2 /nobreak >nul
 
 :: Start Frontend with cargo leptos (dev mode)
@@ -56,7 +56,7 @@ timeout /t 2 /nobreak >nul
 set API_URL=http://127.0.0.1:%API_PORT%
 echo [4/4] Launching Frontend (dev mode proxying to %API_URL%)...
 timeout /t 1 /nobreak >nul
-start "XFTradesmen Frontend" cmd /k "set API_URL=http://127.0.0.1:8080 && cargo leptos watch"
+start "XFTradesmen Frontend" cmd /k "set API_URL=http://127.0.0.1:8080&& cargo leptos watch"
 
 echo.
 echo ========================================================

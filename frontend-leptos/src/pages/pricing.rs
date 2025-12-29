@@ -2,9 +2,7 @@
 //!
 //! Service packages and Stripe payment integration.
 
-use crate::api::stripe::get_stripe_config;
 use leptos::prelude::*;
-use leptos::task::spawn_local;
 
 use crate::components::seo::SeoHead;
 use crate::components::ui::FaqCard;
@@ -13,15 +11,6 @@ use shared::PageMetadata;
 
 #[component]
 pub fn Pricing() -> impl IntoView {
-    let (stripe_config, set_stripe_config) =
-        signal(Option::<Result<crate::api::stripe::StripeConfig, String>>::None);
-
-    {
-        spawn_local(async move {
-            set_stripe_config.set(Some(get_stripe_config().await));
-        });
-    }
-
     view! {
         <SeoHead metadata=PageMetadata {
             title: "Affordable Tradesman Website Pricing | No Hidden Fees | XF Tradesmen".to_string(),
@@ -107,40 +96,21 @@ pub fn Pricing() -> impl IntoView {
                                 </li>
                             </ul>
 
-                            <Suspense fallback=move || view! { <div class="text-gray-400 text-center py-4 animate-pulse">"Loading payment gateway..."</div> }>
-                                {move || {
-                                    stripe_config.get().map(|result| match &result {
-                                        Ok(config) => {
-                                            let payment_link_id = config.product_id.clone();
-                                            view! {
-                                                <button
-                                                    on:click=move |_| {
-                                                        // Use Stripe Payment Links format: https://buy.stripe.com/{payment_link_id}
-                                                        let checkout_url = format!(
-                                                            "https://buy.stripe.com/{}",
-                                                            payment_link_id.clone()
-                                                        );
-                                                        if let Some(window) = web_sys::window() {
-                                                            let _ = window.location().set_href(&checkout_url);
-                                                        }
-                                                    }
-                                                    class="w-full btn-primary group relative overflow-hidden"
-                                                >
-                                                    <span class="relative z-10 flex items-center justify-center gap-2">
-                                                        "INITIATE SUBSCRIPTION"
-                                                        <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-                                                    </span>
-                                                </button>
-                                            }.into_any()
-                                        },
-                                        Err(e) => view! {
-                                            <div class="p-4 bg-red-900/20 border border-red-500/50 rounded text-red-400 text-center text-sm">{format!("Error loading pricing: {}", e)}</div>
-                                        }.into_any()
-                                    })
-                                }}
-                            </Suspense>
+                            <button
+                                on:click=move |_| {
+                                    if let Some(window) = web_sys::window() {
+                                        let _ = window.location().set_href("https://buy.stripe.com/14AcMYfxO5Ddak70Ik83C03");
+                                    }
+                                }
+                                class="w-full btn-primary group relative overflow-hidden"
+                            >
+                                <span class="relative z-10 flex items-center justify-center gap-2">
+                                    "GET STARTED NOW"
+                                    <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                                </span>
+                            </button>
 
-                            <p class="text-center text-gray-500 text-xs mt-4">"Secure SSL Encryption. Cancel Anytime."</p>
+                            <p class="text-center text-gray-500 text-xs mt-4">"Secure SSL Encryption. Monthly subscription details sent separately."</p>
                         </div>
                     </div>
                 </div>

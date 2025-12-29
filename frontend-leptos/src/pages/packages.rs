@@ -8,7 +8,7 @@ use leptos_meta::Script;
 use shared::PageMetadata;
 
 /// Stripe Payment Link URL (includes £329 setup + £30/month subscription)
-const STRIPE_CHECKOUT_URL: &str = "https://buy.stripe.com/00w4gsfxO8Pp4ZNdv683C01";
+const STRIPE_CHECKOUT_URL: &str = "https://buy.stripe.com/14AcMYfxO5Ddak70Ik83C03";
 
 #[component]
 pub fn Packages() -> impl IntoView {

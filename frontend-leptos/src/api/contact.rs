@@ -47,7 +47,7 @@ pub async fn submit_contact_form(
         let body =
             serde_json::to_string(&form).map_err(|e| format!("Serialization error: {}", e))?;
 
-        let mut opts = RequestInit::new();
+        let opts = RequestInit::new();
         opts.set_method("POST");
         opts.set_mode(RequestMode::Cors);
         opts.set_body(&wasm_bindgen::JsValue::from_str(&body));
@@ -84,3 +84,82 @@ pub async fn submit_contact_form(
         }
     }
 }
+
+// region:    --- Tests
+
+#[cfg(test)]
+mod tests {
+    use shared::validation::Validate;
+    use shared::ContactForm;
+
+    #[test]
+    fn test_contact_form_structure() {
+        let form = ContactForm {
+            name: "Test User".to_string(),
+            email: "test@example.com".to_string(),
+            message: "Hello, I need help.".to_string(),
+        };
+
+        assert_eq!(form.name, "Test User");
+        assert_eq!(form.email, "test@example.com");
+        assert_eq!(form.message, "Hello, I need help.");
+    }
+
+    #[test]
+    fn test_contact_form_validation_success() {
+        let form = ContactForm {
+            name: "John Doe".to_string(),
+            email: "john@example.com".to_string(),
+            message: "I need a quote for plumbing work.".to_string(),
+        };
+
+        assert!(form.validate().is_ok());
+    }
+
+    #[test]
+    fn test_contact_form_validation_empty_name() {
+        let form = ContactForm {
+            name: "".to_string(),
+            email: "test@example.com".to_string(),
+            message: "Hello".to_string(),
+        };
+
+        assert!(form.validate().is_err());
+    }
+
+    #[test]
+    fn test_contact_form_validation_invalid_email() {
+        let form = ContactForm {
+            name: "John Doe".to_string(),
+            email: "invalid-email".to_string(),
+            message: "Hello".to_string(),
+        };
+
+        assert!(form.validate().is_err());
+    }
+
+    #[test]
+    fn test_contact_form_validation_empty_message() {
+        let form = ContactForm {
+            name: "John Doe".to_string(),
+            email: "john@example.com".to_string(),
+            message: "".to_string(),
+        };
+
+        assert!(form.validate().is_err());
+    }
+
+    #[test]
+    fn test_form_trims_input() {
+        // Simulate the trimming that happens in submit_contact_form
+        let name = "  John Doe  ".trim().to_string();
+        let email = "  john@example.com  ".trim().to_string();
+        let message = "  Hello  ".trim().to_string();
+
+        assert_eq!(name, "John Doe");
+        assert_eq!(email, "john@example.com");
+        assert_eq!(message, "Hello");
+    }
+}
+
+// endregion: --- Tests

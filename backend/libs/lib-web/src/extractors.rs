@@ -36,3 +36,41 @@ impl<T> std::ops::Deref for ValidatedJson<T> {
         &self.0
     }
 }
+
+// region:    --- Tests
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use shared::ContactForm;
+
+    #[test]
+    fn test_validated_json_deref() {
+        let form = ContactForm {
+            name: "Test User".to_string(),
+            email: "test@example.com".to_string(),
+            message: "Hello".to_string(),
+        };
+        let validated = ValidatedJson(form);
+
+        // Test Deref trait
+        assert_eq!(validated.name, "Test User");
+        assert_eq!(validated.email, "test@example.com");
+        assert_eq!(validated.message, "Hello");
+    }
+
+    #[test]
+    fn test_validated_json_inner_access() {
+        let form = ContactForm {
+            name: "Jane Doe".to_string(),
+            email: "jane@example.com".to_string(),
+            message: "Test message".to_string(),
+        };
+        let validated = ValidatedJson(form);
+
+        // Access inner value via .0
+        assert_eq!(validated.0.name, "Jane Doe");
+    }
+}
+
+// endregion: --- Tests

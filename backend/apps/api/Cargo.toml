@@ -38,8 +38,6 @@ config = "0.14"
 # Database
 sqlx = { workspace = true }
 
-# Payments
-async-stripe = { workspace = true }
 
 # Date/Time
 chrono = { workspace = true }

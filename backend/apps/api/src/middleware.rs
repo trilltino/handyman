@@ -89,3 +89,89 @@ where
         HeaderValue::from_static("1; mode=block"),
     ))
 }
+
+// region:    --- Tests
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use axum::{body::Body, routing::get, Router};
+    use http::Request;
+    use tower::ServiceExt;
+
+    async fn test_handler() -> &'static str {
+        "Hello, World!"
+    }
+
+    #[tokio::test]
+    async fn test_apply_middleware_returns_router() {
+        let app: Router = Router::new().route("/test", get(test_handler));
+        let app_with_middleware = apply_middleware(app);
+
+        // Should be able to create a request
+        let request = Request::builder().uri("/test").body(Body::empty()).unwrap();
+
+        let response = app_with_middleware.oneshot(request).await.unwrap();
+        assert_eq!(response.status(), http::StatusCode::OK);
+    }
+
+    #[tokio::test]
+    async fn test_security_headers_applied() {
+        let app: Router = Router::new().route("/test", get(test_handler));
+        let app_with_middleware = apply_middleware(app);
+
+        let request = Request::builder().uri("/test").body(Body::empty()).unwrap();
+
+        let response = app_with_middleware.oneshot(request).await.unwrap();
+
+        // Check security headers
+        assert_eq!(
+            response.headers().get("x-content-type-options"),
+            Some(&HeaderValue::from_static("nosniff"))
+        );
+        assert_eq!(
+            response.headers().get("x-frame-options"),
+            Some(&HeaderValue::from_static("DENY"))
+        );
+    }
+
+    #[tokio::test]
+    async fn test_cors_headers_on_options() {
+        let app: Router = Router::new().route("/test", get(test_handler));
+        let app_with_middleware = apply_middleware(app);
+
+        // OPTIONS preflight request
+        let request = Request::builder()
+            .method(Method::OPTIONS)
+            .uri("/test")
+            .header("Origin", "http://localhost:3000")
+            .header("Access-Control-Request-Method", "GET")
+            .body(Body::empty())
+            .unwrap();
+
+        let response = app_with_middleware.oneshot(request).await.unwrap();
+
+        // CORS headers should be present
+        assert!(response
+            .headers()
+            .get("access-control-allow-origin")
+            .is_some());
+    }
+
+    #[tokio::test]
+    async fn test_hsts_header_applied() {
+        let app: Router = Router::new().route("/test", get(test_handler));
+        let app_with_middleware = apply_middleware(app);
+
+        let request = Request::builder().uri("/test").body(Body::empty()).unwrap();
+
+        let response = app_with_middleware.oneshot(request).await.unwrap();
+
+        // HSTS header should include max-age
+        let hsts = response.headers().get("strict-transport-security");
+        assert!(hsts.is_some());
+        assert!(hsts.unwrap().to_str().unwrap().contains("max-age"));
+    }
+}
+
+// endregion: --- Tests

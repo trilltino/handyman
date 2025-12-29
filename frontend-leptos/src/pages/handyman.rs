@@ -162,7 +162,7 @@ pub fn Handyman() -> impl IntoView {
                         <div class="relative group">
                             <div class="absolute top-4 left-4 bg-red-500/90 text-white text-xs font-bold px-3 py-1 rounded-full z-10">"BEFORE"</div>
                             <img
-                                src="/bathroom_before.png"
+                                src="/images/projects/bathroom_before.png"
                                 alt="Bathroom before renovation - dated UK bathroom with pink tiles"
                                 class="w-full h-80 object-cover rounded-xl border border-void-highlight group-hover:border-orange-500/30 transition-colors"
                             />
@@ -170,7 +170,7 @@ pub fn Handyman() -> impl IntoView {
                         <div class="relative group">
                             <div class="absolute top-4 left-4 bg-green-500/90 text-white text-xs font-bold px-3 py-1 rounded-full z-10">"AFTER"</div>
                             <img
-                                src="/bathroom_after.png"
+                                src="/images/projects/bathroom_after.png"
                                 alt="Bathroom after renovation - modern UK bathroom with grey tiles"
                                 class="w-full h-80 object-cover rounded-xl border border-void-highlight group-hover:border-orange-500/30 transition-colors"
                             />
@@ -184,7 +184,7 @@ pub fn Handyman() -> impl IntoView {
                     <div class="grid md:grid-cols-2 gap-8">
                         <div class="relative group overflow-hidden rounded-xl">
                             <img
-                                src="/handyman_kitchen.png"
+                                src="/images/projects/handyman_kitchen.png"
                                 alt="Handyman installing kitchen cabinet in UK home"
                                 class="w-full h-64 object-cover transition-transform group-hover:scale-105"
                             />
@@ -196,7 +196,7 @@ pub fn Handyman() -> impl IntoView {
                         </div>
                         <div class="relative group overflow-hidden rounded-xl">
                             <img
-                                src="/handyman_fence.png"
+                                src="/images/projects/handyman_fence.png"
                                 alt="Handyman repairing fence in UK garden"
                                 class="w-full h-64 object-cover transition-transform group-hover:scale-105"
                             />

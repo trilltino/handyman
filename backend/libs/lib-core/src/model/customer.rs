@@ -313,3 +313,277 @@ impl CustomerBmc {
         Ok(())
     }
 }
+
+// region:    --- Tests
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::_dev_utils;
+
+    #[tokio::test]
+    async fn test_customer_create_ok() -> Result<()> {
+        // Setup
+        let mm = _dev_utils::init_test().await;
+
+        // Execute
+        let customer = CustomerForCreate {
+            name: "Test Customer Create".to_string(),
+            email: Some("test_create@example.com".to_string()),
+            phone: Some("+44 7833 263486".to_string()),
+            notes: Some("Test notes".to_string()),
+        };
+
+        let id = CustomerBmc::create(&mm, customer).await?;
+
+        // Check
+        assert!(id > 0, "Should return valid ID");
+
+        // Cleanup
+        CustomerBmc::delete(&mm, id).await?;
+
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn test_customer_get_ok() -> Result<()> {
+        // Setup
+        let mm = _dev_utils::init_test().await;
+
+        // Create test customer
+        let customer = CustomerForCreate {
+            name: "Test Customer Get".to_string(),
+            email: Some("test_get@example.com".to_string()),
+            phone: None,
+            notes: None,
+        };
+        let id = CustomerBmc::create(&mm, customer).await?;
+
+        // Execute
+        let customer = CustomerBmc::get(&mm, id).await?;
+
+        // Check
+        assert_eq!(customer.id, id);
+        assert_eq!(customer.name, "Test Customer Get");
+        assert_eq!(customer.email, Some("test_get@example.com".to_string()));
+
+        // Cleanup
+        CustomerBmc::delete(&mm, id).await?;
+
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn test_customer_get_err_not_found() -> Result<()> {
+        // Setup
+        let mm = _dev_utils::init_test().await;
+        let fx_id = 999999;
+
+        // Execute
+        let res = CustomerBmc::get(&mm, fx_id).await;
+
+        // Check
+        assert!(
+            res.is_err(),
+            "Should return error for non-existent customer"
+        );
+
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn test_customer_get_by_email() -> Result<()> {
+        // Setup
+        let mm = _dev_utils::init_test().await;
+        let unique_email = format!("test_email_{}@example.com", uuid::Uuid::new_v4());
+
+        // Create test customer
+        let customer = CustomerForCreate {
+            name: "Test Email Customer".to_string(),
+            email: Some(unique_email.clone()),
+            phone: None,
+            notes: None,
+        };
+        let id = CustomerBmc::create(&mm, customer).await?;
+
+        // Execute
+        let customer = CustomerBmc::get_by_email(&mm, &unique_email).await?;
+
+        // Check
+        assert!(customer.is_some());
+        assert_eq!(customer.unwrap().email, Some(unique_email));
+
+        // Cleanup
+        CustomerBmc::delete(&mm, id).await?;
+
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn test_customer_list_ok() -> Result<()> {
+        // Setup
+        let mm = _dev_utils::init_test().await;
+
+        // Create test customers
+        let customer1 = CustomerForCreate {
+            name: "Test List Customer 1".to_string(),
+            email: None,
+            phone: None,
+            notes: None,
+        };
+        let customer2 = CustomerForCreate {
+            name: "Test List Customer 2".to_string(),
+            email: None,
+            phone: None,
+            notes: None,
+        };
+
+        let id1 = CustomerBmc::create(&mm, customer1).await?;
+        let id2 = CustomerBmc::create(&mm, customer2).await?;
+
+        // Execute
+        let customers = CustomerBmc::list(&mm).await?;
+
+        // Check
+        assert!(customers.len() >= 2, "Should have at least 2 customers");
+
+        // Cleanup
+        CustomerBmc::delete(&mm, id1).await?;
+        CustomerBmc::delete(&mm, id2).await?;
+
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn test_customer_search() -> Result<()> {
+        // Setup
+        let mm = _dev_utils::init_test().await;
+        let unique_name = format!("UniqueSearchTest{}", uuid::Uuid::new_v4());
+
+        // Create test customer
+        let customer = CustomerForCreate {
+            name: unique_name.clone(),
+            email: None,
+            phone: None,
+            notes: None,
+        };
+        let id = CustomerBmc::create(&mm, customer).await?;
+
+        // Execute
+        let results = CustomerBmc::search(&mm, "UniqueSearchTest").await?;
+
+        // Check
+        assert!(results.iter().any(|c| c.name == unique_name));
+
+        // Cleanup
+        CustomerBmc::delete(&mm, id).await?;
+
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn test_customer_update() -> Result<()> {
+        // Setup
+        let mm = _dev_utils::init_test().await;
+
+        // Create test customer
+        let customer = CustomerForCreate {
+            name: "Test Update Original".to_string(),
+            email: None,
+            phone: None,
+            notes: None,
+        };
+        let id = CustomerBmc::create(&mm, customer).await?;
+
+        // Execute
+        let update = CustomerForUpdate {
+            name: Some("Test Update Changed".to_string()),
+            email: None,
+            phone: None,
+            notes: None,
+            tags: None,
+        };
+        CustomerBmc::update(&mm, id, update).await?;
+
+        // Check
+        let customer = CustomerBmc::get(&mm, id).await?;
+        assert_eq!(customer.name, "Test Update Changed");
+
+        // Cleanup
+        CustomerBmc::delete(&mm, id).await?;
+
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn test_customer_add_tag() -> Result<()> {
+        // Setup
+        let mm = _dev_utils::init_test().await;
+
+        // Create test customer
+        let customer = CustomerForCreate {
+            name: "Test Tag Customer".to_string(),
+            email: None,
+            phone: None,
+            notes: None,
+        };
+        let id = CustomerBmc::create(&mm, customer).await?;
+
+        // Execute
+        CustomerBmc::add_tag(&mm, id, "vip").await?;
+
+        // Check
+        let customer = CustomerBmc::get(&mm, id).await?;
+        assert!(customer.tags.is_some());
+        assert!(customer.tags.unwrap().contains(&"vip".to_string()));
+
+        // Cleanup
+        CustomerBmc::delete(&mm, id).await?;
+
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn test_customer_delete_ok() -> Result<()> {
+        // Setup
+        let mm = _dev_utils::init_test().await;
+
+        // Create test customer
+        let customer = CustomerForCreate {
+            name: "Test Delete Customer".to_string(),
+            email: None,
+            phone: None,
+            notes: None,
+        };
+        let id = CustomerBmc::create(&mm, customer).await?;
+
+        // Execute
+        CustomerBmc::delete(&mm, id).await?;
+
+        // Check - should not be able to get deleted customer
+        let res = CustomerBmc::get(&mm, id).await;
+        assert!(res.is_err(), "Should not find deleted customer");
+
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn test_customer_delete_err_not_found() -> Result<()> {
+        // Setup
+        let mm = _dev_utils::init_test().await;
+        let fx_id = 999999;
+
+        // Execute
+        let res = CustomerBmc::delete(&mm, fx_id).await;
+
+        // Check
+        assert!(
+            res.is_err(),
+            "Should return error when deleting non-existent customer"
+        );
+
+        Ok(())
+    }
+}
+
+// endregion: --- Tests

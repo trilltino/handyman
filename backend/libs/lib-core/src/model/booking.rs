@@ -308,3 +308,250 @@ impl BookingBmc {
         Ok(())
     }
 }
+
+// region:    --- Tests
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::_dev_utils;
+
+    #[tokio::test]
+    async fn test_booking_create_ok() -> Result<()> {
+        // Setup
+        let mm = _dev_utils::init_test().await;
+
+        // Execute
+        let booking = BookingForCreate {
+            customer_id: None,
+            service_type: "test_plumbing".to_string(),
+            scheduled_date: Some("2025-01-15".to_string()),
+            scheduled_time: Some("10:00".to_string()),
+            notes: Some("Leaky tap in kitchen".to_string()),
+        };
+
+        let id = BookingBmc::create(&mm, booking).await?;
+
+        // Check
+        assert!(id > 0, "Should return valid ID");
+
+        // Cleanup
+        BookingBmc::delete(&mm, id).await?;
+
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn test_booking_get_ok() -> Result<()> {
+        // Setup
+        let mm = _dev_utils::init_test().await;
+
+        // Create test booking
+        let booking = BookingForCreate {
+            customer_id: None,
+            service_type: "test_electrical".to_string(),
+            scheduled_date: None,
+            scheduled_time: None,
+            notes: None,
+        };
+        let id = BookingBmc::create(&mm, booking).await?;
+
+        // Execute
+        let booking = BookingBmc::get(&mm, id).await?;
+
+        // Check
+        assert_eq!(booking.id, id);
+        assert_eq!(booking.service_type, "test_electrical");
+        assert_eq!(booking.status, "pending");
+
+        // Cleanup
+        BookingBmc::delete(&mm, id).await?;
+
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn test_booking_get_err_not_found() -> Result<()> {
+        // Setup
+        let mm = _dev_utils::init_test().await;
+        let fx_id = 999999;
+
+        // Execute
+        let res = BookingBmc::get(&mm, fx_id).await;
+
+        // Check
+        assert!(res.is_err(), "Should return error for non-existent booking");
+
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn test_booking_list_ok() -> Result<()> {
+        // Setup
+        let mm = _dev_utils::init_test().await;
+
+        // Create test bookings
+        let booking1 = BookingForCreate {
+            customer_id: None,
+            service_type: "test_list_1".to_string(),
+            scheduled_date: None,
+            scheduled_time: None,
+            notes: None,
+        };
+        let booking2 = BookingForCreate {
+            customer_id: None,
+            service_type: "test_list_2".to_string(),
+            scheduled_date: None,
+            scheduled_time: None,
+            notes: None,
+        };
+
+        let id1 = BookingBmc::create(&mm, booking1).await?;
+        let id2 = BookingBmc::create(&mm, booking2).await?;
+
+        // Execute
+        let bookings = BookingBmc::list(&mm).await?;
+
+        // Check
+        assert!(bookings.len() >= 2, "Should have at least 2 bookings");
+
+        // Cleanup
+        BookingBmc::delete(&mm, id1).await?;
+        BookingBmc::delete(&mm, id2).await?;
+
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn test_booking_list_by_status() -> Result<()> {
+        // Setup
+        let mm = _dev_utils::init_test().await;
+
+        // Create test booking
+        let booking = BookingForCreate {
+            customer_id: None,
+            service_type: "test_status_filter".to_string(),
+            scheduled_date: None,
+            scheduled_time: None,
+            notes: None,
+        };
+        let id = BookingBmc::create(&mm, booking).await?;
+
+        // Execute
+        let pending_bookings = BookingBmc::list_by_status(&mm, "pending").await?;
+
+        // Check
+        assert!(
+            pending_bookings.iter().any(|b| b.id == id),
+            "Should find newly created booking in pending list"
+        );
+
+        // Cleanup
+        BookingBmc::delete(&mm, id).await?;
+
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn test_booking_update_status() -> Result<()> {
+        // Setup
+        let mm = _dev_utils::init_test().await;
+
+        // Create test booking
+        let booking = BookingForCreate {
+            customer_id: None,
+            service_type: "test_update_status".to_string(),
+            scheduled_date: None,
+            scheduled_time: None,
+            notes: None,
+        };
+        let id = BookingBmc::create(&mm, booking).await?;
+
+        // Execute
+        BookingBmc::update_status(&mm, id, "confirmed").await?;
+
+        // Check
+        let booking = BookingBmc::get(&mm, id).await?;
+        assert_eq!(booking.status, "confirmed");
+
+        // Cleanup
+        BookingBmc::delete(&mm, id).await?;
+
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn test_booking_complete() -> Result<()> {
+        // Setup
+        let mm = _dev_utils::init_test().await;
+
+        // Create test booking
+        let booking = BookingForCreate {
+            customer_id: None,
+            service_type: "test_complete".to_string(),
+            scheduled_date: None,
+            scheduled_time: None,
+            notes: None,
+        };
+        let id = BookingBmc::create(&mm, booking).await?;
+
+        // Execute
+        BookingBmc::complete(&mm, id, 120).await?;
+
+        // Check
+        let booking = BookingBmc::get(&mm, id).await?;
+        assert_eq!(booking.status, "completed");
+        assert_eq!(booking.actual_duration, Some(120));
+        assert!(booking.completed_at.is_some());
+
+        // Cleanup
+        BookingBmc::delete(&mm, id).await?;
+
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn test_booking_delete_ok() -> Result<()> {
+        // Setup
+        let mm = _dev_utils::init_test().await;
+
+        // Create test booking
+        let booking = BookingForCreate {
+            customer_id: None,
+            service_type: "test_delete".to_string(),
+            scheduled_date: None,
+            scheduled_time: None,
+            notes: None,
+        };
+        let id = BookingBmc::create(&mm, booking).await?;
+
+        // Execute
+        BookingBmc::delete(&mm, id).await?;
+
+        // Check - should not be able to get deleted booking
+        let res = BookingBmc::get(&mm, id).await;
+        assert!(res.is_err(), "Should not find deleted booking");
+
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn test_booking_delete_err_not_found() -> Result<()> {
+        // Setup
+        let mm = _dev_utils::init_test().await;
+        let fx_id = 999999;
+
+        // Execute
+        let res = BookingBmc::delete(&mm, fx_id).await;
+
+        // Check
+        assert!(
+            res.is_err(),
+            "Should return error when deleting non-existent booking"
+        );
+
+        Ok(())
+    }
+}
+
+// endregion: --- Tests

@@ -41,6 +41,23 @@ pub async fn sitemap_xml_handler() -> impl IntoResponse {
             "/packages",
             "/handyman",
             "/industries",
+            "/terms",
+            "/faq",
+            "/service-agreement",
+            // Handyman Example App Routes
+            "/handyman-coventry",
+            "/handyman-coventry/services",
+            "/handyman-coventry/features",
+            "/handyman-coventry/testimonials",
+            "/handyman-coventry/service-area",
+            "/handyman-coventry/booking",
+            "/handyman-coventry/quote",
+            "/handyman-coventry/about",
+            "/handyman-coventry/contact",
+            "/handyman-coventry/blog",
+            "/handyman-coventry/emergency",
+            "/handyman-coventry/privacy",
+            "/handyman-coventry/terms",
         ];
 
         // List of dynamic blog posts (hardcoded for now as they are static in frontend)
@@ -93,3 +110,89 @@ pub async fn sitemap_xml_handler() -> impl IntoResponse {
         .body(sitemap.clone())
         .unwrap_or_else(|_| Response::default())
 }
+
+// region:    --- Tests
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use axum::body::to_bytes;
+
+    #[tokio::test]
+    async fn test_robots_txt_handler_returns_text() {
+        let response = robots_txt_handler().await.into_response();
+
+        // Check content type
+        assert_eq!(
+            response.headers().get("content-type"),
+            Some(&header::HeaderValue::from_static("text/plain"))
+        );
+    }
+
+    #[tokio::test]
+    async fn test_robots_txt_contains_sitemap() {
+        let response = robots_txt_handler().await.into_response();
+        let body = to_bytes(response.into_body(), 4096).await.unwrap();
+        let content = String::from_utf8(body.to_vec()).unwrap();
+
+        assert!(content.contains("Sitemap:"));
+        assert!(content.contains("User-agent:"));
+    }
+
+    #[tokio::test]
+    async fn test_sitemap_xml_handler_returns_xml() {
+        let response = sitemap_xml_handler().await.into_response();
+
+        // Check content type
+        assert_eq!(
+            response.headers().get("content-type"),
+            Some(&header::HeaderValue::from_static("application/xml"))
+        );
+    }
+
+    #[tokio::test]
+    async fn test_sitemap_contains_required_pages() {
+        let response = sitemap_xml_handler().await.into_response();
+        let body = to_bytes(response.into_body(), 16384).await.unwrap();
+        let content = String::from_utf8(body.to_vec()).unwrap();
+
+        // Should be valid XML structure
+        assert!(content.contains("<?xml"));
+        assert!(content.contains("<urlset"));
+        assert!(content.contains("<url>"));
+        assert!(content.contains("<loc>"));
+
+        // Should contain main pages
+        assert!(content.contains("xftradesman.com"));
+        assert!(content.contains("/about"));
+        assert!(content.contains("/contact"));
+        assert!(content.contains("/pricing"));
+    }
+
+    #[tokio::test]
+    async fn test_sitemap_contains_blog_posts() {
+        let response = sitemap_xml_handler().await.into_response();
+        let body = to_bytes(response.into_body(), 16384).await.unwrap();
+        let content = String::from_utf8(body.to_vec()).unwrap();
+
+        // Should contain blog posts
+        assert!(content.contains("/blog/why-tradesmen-need-websites"));
+        assert!(content.contains("/blog/local-seo-guide"));
+        assert!(content.contains("/blog/building-trust-online"));
+    }
+
+    #[tokio::test]
+    async fn test_sitemap_has_priorities() {
+        let response = sitemap_xml_handler().await.into_response();
+        let body = to_bytes(response.into_body(), 16384).await.unwrap();
+        let content = String::from_utf8(body.to_vec()).unwrap();
+
+        // Should have priority elements
+        assert!(content.contains("<priority>"));
+        assert!(content.contains("1.0")); // Homepage
+        assert!(content.contains("0.8")); // Main pages
+        assert!(content.contains("0.7")); // Blog posts
+    }
+}
+
+// endregion: --- Tests

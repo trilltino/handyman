@@ -54,3 +54,6 @@ lettre = { workspace = true }
 
 [lints]
 workspace = true
+
+[features]
+testing = []

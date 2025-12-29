@@ -1,64 +1,66 @@
 //! Blog index page.
 //!
-//! Lists all blog posts.
+//! Lists all blog posts with SEO optimization.
 
+use super::data::{get_all_posts, BlogPost};
 use crate::components::seo::SeoHead;
 use crate::components::ui::{Button, ButtonVariant};
 use leptos::prelude::*;
 use leptos_meta::Script;
 use shared::PageMetadata;
 
-#[derive(Clone)]
-struct BlogPost {
-    title: &'static str,
-    slug: &'static str,
-    category: &'static str,
-    date: &'static str,
-    excerpt: &'static str,
-    image_color: &'static str, // Simple placeholder for now, would be URL in real app
+fn blog_list_json_ld(posts: &[BlogPost]) -> String {
+    let post_items: Vec<String> = posts
+        .iter()
+        .map(|p| {
+            format!(
+                r#"{{
+                "@type": "BlogPosting",
+                "headline": "{}",
+                "description": "{}",
+                "url": "{}",
+                "datePublished": "{}",
+                "author": {{
+                    "@type": "Organization",
+                    "name": "{}"
+                }}
+            }}"#,
+                p.title,
+                p.description,
+                p.canonical_url(),
+                p.published_date,
+                p.author
+            )
+        })
+        .collect();
+
+    format!(
+        r#"{{
+        "@context": "https://schema.org",
+        "@type": "Blog",
+        "name": "XF Tradesmen Blog",
+        "description": "Expert marketing guides and tips for UK tradesmen. Learn how to grow your business with digital tools, SEO strategies, and website best practices.",
+        "url": "https://xftradesman.com/blog",
+        "publisher": {{
+            "@type": "Organization",
+            "name": "XF Tradesmen",
+            "url": "https://xftradesman.com"
+        }},
+        "blogPost": [{}]
+    }}"#,
+        post_items.join(",")
+    )
 }
 
 #[component]
 pub fn BlogIndex() -> impl IntoView {
-    let posts = vec![
-        BlogPost {
-            title: "Why Tradesmen with Websites Earn 40% More",
-            slug: "why-tradesmen-need-websites",
-            category: "Revenue Data",
-            date: "2025-10-15",
-            excerpt: "New 2024 statistics show the massive gap in earnings between tradesmen with a professional online presence and those without.",
-            image_color: "brand",
-        },
-        BlogPost {
-            title: "The Ultimate Guide to Local SEO for Plumbers",
-            slug: "local-seo-guide",
-            category: "Local SEO",
-            date: "2025-10-22",
-            excerpt: "Learn how to rank #1 in your local area and get the phone ringing with high-quality leads.",
-            image_color: "blue-500",
-        },
-        BlogPost {
-            title: "How to Build Instant Trust with Potential Clients",
-            slug: "building-trust-online",
-            category: "Trust Protocols",
-            date: "2025-11-01",
-            excerpt: "Your website is your first impression. Make it count with these 5 proven trust signals.",
-            image_color: "green-500",
-        },
-    ];
-
-    let json_ld = r#"{
-      "@context": "https://schema.org",
-      "@type": "Blog",
-      "name": "XF Tradesmen Intelligence",
-      "description": "Tactical guides for tradesmen to dominate their local market.",
-      "url": "https://xftradesman.com/blog"
-    }"#;
+    let posts = get_all_posts();
+    let json_ld = blog_list_json_ld(&posts);
 
     view! {
         <SeoHead metadata=PageMetadata {
-            title: "XF Tradesmen Blog - Tips for Tradesmen | XF Tradesmen".to_string(),
-            description: "Expert advice for plumbers, electricians, and handymen on growing their business online. Marketing tips, SEO guides, and website best practices.".to_string(),
+            title: "Marketing Tips for Tradesmen | XF Tradesmen Blog".to_string(),
+            description: "Expert marketing guides, SEO strategies, and website tips for UK tradesmen. Learn how to grow your business and get more leads online.".to_string(),
             canonical_url: Some("https://xftradesman.com/blog".to_string()),
             og_image: None,
         }/>
@@ -81,6 +83,7 @@ pub fn BlogIndex() -> impl IntoView {
                 </div>
             </section>
 
+            // Posts Grid
             <section class="py-24 px-4 bg-void-surface relative">
                 <div class="max-w-6xl mx-auto">
                     <div class="flex items-center gap-4 mb-12">
@@ -90,60 +93,67 @@ pub fn BlogIndex() -> impl IntoView {
 
                     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {posts.into_iter().map(|post| {
-                            let category_bg = match post.image_color {
-                                "blue-500" => "bg-blue-500/10 text-blue-400",
-                                "green-500" => "bg-green-500/10 text-green-400",
-                                _ => "bg-brand/10 text-brand",
-                            };
-
-                            let icon_color = match post.image_color {
-                                "blue-500" => "text-blue-500 bg-blue-500/10",
-                                "green-500" => "text-green-500 bg-green-500/10",
-                                _ => "text-brand bg-brand/10",
-                            };
+                            let slug = post.slug.to_string();
+                            let title = post.title.to_string();
+                            let excerpt = post.description.to_string();
+                            let category_str = post.category.as_str().to_string();
+                            let category_bg = post.category.color_class().to_string();
+                            let icon_color = post.category.icon_class().to_string();
+                            let date = post.published_date.to_string();
+                            let read_time = post.read_time.to_string();
 
                             view! {
-                                <div class="card-deep overflow-hidden group p-0 border-void-highlight hover:border-brand/50 transition-all duration-300">
+                                <article class="card-deep overflow-hidden group p-0 border-void-highlight hover:border-brand/50 transition-all duration-300">
                                     <div class="h-56 bg-void relative overflow-hidden group-hover:opacity-90 transition">
                                          <div class="absolute inset-0 bg-cyber-grid opacity-30"></div>
                                          <div class="absolute inset-0 flex items-center justify-center">
                                             <div class={format!("w-16 h-16 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-500 {}", icon_color)}>
-                                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
+                                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
+                                                </svg>
                                             </div>
                                          </div>
                                     </div>
                                     <div class="p-8 relative">
                                         <div class="flex justify-between items-center mb-4">
                                             <span class={format!("inline-block px-2 py-1 rounded text-[10px] font-mono font-bold uppercase tracking-wider {}", category_bg)}>
-                                                {post.category}
+                                                {category_str}
                                             </span>
-                                            <span class="text-gray-500 text-xs font-mono">{post.date}</span>
+                                            <div class="flex items-center gap-2 text-gray-500 text-xs font-mono">
+                                                <span>{date.clone()}</span>
+                                                <span>"·"</span>
+                                                <span>{read_time.clone()}</span>
+                                            </div>
                                         </div>
 
                                         <h3 class="text-xl font-bold text-white mb-4 leading-tight group-hover:text-brand-light transition font-heading">
-                                            <a href=format!("/blog/{}", post.slug) class="inset-0">{post.title}</a>
+                                            <a href={format!("/blog/{}", slug.clone())}>{title}</a>
                                         </h3>
                                         <p class="text-gray-400 text-sm mb-6 line-clamp-3 leading-relaxed">
-                                            {post.excerpt}
+                                            {excerpt}
                                         </p>
-                                        <a href=format!("/blog/{}", post.slug) class="text-white hover:text-brand-light text-xs font-bold uppercase tracking-widest flex items-center gap-2 group/link">
-                                            "Read Analysis" <svg class="w-4 h-4 group-hover/link:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                                        <a href={format!("/blog/{}", slug)} class="text-white hover:text-brand-light text-xs font-bold uppercase tracking-widest flex items-center gap-2 group/link">
+                                            "Read Analysis"
+                                            <svg class="w-4 h-4 group-hover/link:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                                            </svg>
                                         </a>
                                     </div>
-                                </div>
+                                </article>
                             }
                         }).collect::<Vec<_>>()}
                     </div>
                 </div>
             </section>
 
+            // Newsletter CTA
             <section class="bg-void border-t border-void-highlight py-24 px-4 overflow-hidden relative">
                  <div class="absolute inset-y-0 right-0 w-1/3 bg-gradient-to-l from-brand/5 to-transparent"></div>
                 <div class="max-w-2xl mx-auto text-center relative z-10">
                     <h2 class="text-3xl font-bold text-white mb-6 font-heading">"STAY CONNECTED"</h2>
                     <p class="text-gray-400 mb-8 max-w-lg mx-auto">"Get the latest marketing intelligence for tradesmen delivered to your inbox."</p>
                     <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                         <input type="email" placeholder="ENTER EMAIL FREQUENCY..." class="bg-void-surface border border-void-highlight text-white px-6 py-3 rounded text-sm w-full max-w-xs focus:ring-1 focus:ring-brand focus:border-brand placeholder-gray-600 font-mono" />
+                         <input type="email" placeholder="ENTER EMAIL..." class="bg-void-surface border border-void-highlight text-white px-6 py-3 rounded text-sm w-full max-w-xs focus:ring-1 focus:ring-brand focus:border-brand placeholder-gray-600 font-mono" />
                          <Button label="SUBSCRIBE" href="#" variant=ButtonVariant::Primary />
                     </div>
                 </div>

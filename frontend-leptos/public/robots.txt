@@ -15,6 +15,6 @@ Allow: *.gif
 Allow: *.svg
 Allow: *.webp
 
-Sitemap: https://xftradesmen.com/sitemap.xml
+Sitemap: https://xftradesman.com/sitemap.xml
 
 Crawl-delay: 1
