@@ -30,7 +30,6 @@ pub fn HandymanLayout() -> impl IntoView {
                              <div class="flex flex-col">
                                 <span class="text-2xl font-black tracking-tight leading-none text-slate-900">"HANDLE"</span>
                                 <span class="text-2xl font-black tracking-tight leading-none text-blue-900">"MAN"</span>
-                                <span class="text-xs text-red-600 font-bold">"DEBUG MODE"</span>
                              </div>
                         </a>
 
@@ -79,8 +78,8 @@ pub fn HandymanLayout() -> impl IntoView {
 
                 // BOTTOM ROW: Navigation Bar
                 <div class="bg-blue-900 text-white py-0 shadow-md hidden md:block">
-                    <div class="w-full flex justify-end items-center gap-6 px-4">
-                        <nav class="flex items-center gap-6">
+                    <div class="w-full flex justify-end items-center gap-10 px-6">
+                        <nav class="flex items-center gap-8">
                              // ABOUT US Dropdown
                              <div class="group relative">
                                 <button class="px-5 py-4 text-sm font-bold uppercase tracking-wide text-white hover:text-yellow-400 hover:bg-white/5 transition flex items-center gap-1">
