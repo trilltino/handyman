@@ -32,8 +32,44 @@ pub fn Packages() -> impl IntoView {
                 </div>
             </section>
 
+            // How It Works Section
+            <section class="py-20 px-4 bg-void-surface relative border-b border-void-highlight">
+                <div class="max-w-6xl mx-auto">
+                    <div class="text-center mb-16">
+                        <h2 class="text-3xl font-bold text-white mb-4 font-heading">"Deployment Process"</h2>
+                        <p class="text-gray-400">"Simple, transparent, and legally binding."</p>
+                        <div class="h-1 w-20 bg-brand mx-auto mt-6 rounded-full"></div>
+                    </div>
+
+                    <div class="grid md:grid-cols-3 gap-8">
+                        // Step 1
+                        <div class="relative">
+                            <div class="w-16 h-16 bg-brand/10 rounded-2xl flex items-center justify-center text-brand font-black text-2xl mb-6 mx-auto border border-brand/20">"1"</div>
+                            <h3 class="text-xl font-bold text-white mb-3 text-center">"Secure Payment"</h3>
+                            <p class="text-gray-400 text-center text-sm leading-relaxed">"Complete the secure checkout to initialize your order and reserve your build slot."</p>
+                        </div>
+
+                        // Step 2
+                        <div class="relative">
+                             <div class="hidden md:block absolute top-8 left-[-50%] w-full h-[2px] bg-gradient-to-r from-brand/0 via-brand/20 to-brand/0"></div>
+                            <div class="w-16 h-16 bg-brand/10 rounded-2xl flex items-center justify-center text-brand font-black text-2xl mb-6 mx-auto border border-brand/20 relative z-10 bg-void">"2"</div>
+                            <h3 class="text-xl font-bold text-white mb-3 text-center">"Legal Agreement"</h3>
+                            <p class="text-gray-400 text-center text-sm leading-relaxed">"You'll receive a digital service contract. Sign it online to protect both parties."</p>
+                        </div>
+
+                        // Step 3
+                        <div class="relative">
+                            <div class="hidden md:block absolute top-8 left-[-50%] w-full h-[2px] bg-gradient-to-r from-brand/0 via-brand/20 to-brand/0"></div>
+                            <div class="w-16 h-16 bg-brand/10 rounded-2xl flex items-center justify-center text-brand font-black text-2xl mb-6 mx-auto border border-brand/20 relative z-10 bg-void">"3"</div>
+                            <h3 class="text-xl font-bold text-white mb-3 text-center">"Build Commences"</h3>
+                            <p class="text-gray-400 text-center text-sm leading-relaxed">"Our engineers begin construction immediately. Your site goes live in 72 hours."</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             // Pricing Card Section - Two Cards Layout
-            <section class="py-20 px-4 bg-void-surface relative">
+            <section class="py-20 px-4 bg-void relative">
                 <div class="max-w-6xl mx-auto">
                     <div class="grid md:grid-cols-2 gap-8">
                         // Card 1: Pricing & CTA
@@ -69,7 +105,7 @@ pub fn Packages() -> impl IntoView {
                                     class="w-full btn btn-primary btn-lg group"
                                 >
                                     <span class="flex items-center justify-center gap-2">
-                                        "GET STARTED NOW"
+                                        "START YOUR BUILD"
                                         <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                                     </span>
                                 </a>
