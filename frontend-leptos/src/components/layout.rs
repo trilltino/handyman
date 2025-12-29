@@ -151,107 +151,93 @@ pub fn Navbar() -> impl IntoView {
                 "lg:hidden transition-all duration-500 ease-out {}",
                 if mobile_open.get() { "max-h-[800px] opacity-100 pb-8" } else { "max-h-0 opacity-0 overflow-hidden" }
             )}>
-                <div class="px-6 md:px-12 py-6">
-                    // Navbar Row with Pill Buttons
-                    <div class="flex justify-center gap-4 flex-wrap">
-                        // MAIN Button
-                        <div class="relative">
+                <div class="px-6 py-8 h-[calc(100vh-80px)] overflow-y-auto">
+                    <div class="flex flex-col gap-6">
+                        // MAIN Section
+                        <div class="border-b border-white/10 pb-6">
                             <button
-                                class="flex items-center gap-2 px-6 py-3 rounded-full border border-white/20 text-sm font-bold text-white uppercase tracking-wider hover:border-white/40 transition-colors"
+                                class="w-full flex items-center justify-between text-lg font-bold text-white uppercase tracking-wider mb-4"
                                 on:click=move |_| set_main_open.update(|v| *v = !*v)
                             >
                                 "Main"
-                                <svg class={move || format!("w-4 h-4 transition-transform duration-300 {}", if main_open.get() { "rotate-180" } else { "" })} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class={move || format!("w-5 h-5 transition-transform duration-300 {}", if main_open.get() { "rotate-180" } else { "" })} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                                 </svg>
                             </button>
                             <div class={move || format!(
-                                "absolute left-1/2 -translate-x-1/2 top-full mt-2 min-w-[180px] bg-black/95 backdrop-blur-md border border-white/10 rounded-xl shadow-2xl transition-all duration-300 z-50 {}",
-                                if main_open.get() { "opacity-100 visible" } else { "opacity-0 invisible" }
+                                "overflow-hidden transition-all duration-300 {}",
+                                if main_open.get() { "max-h-[500px] opacity-100" } else { "max-h-0 opacity-0" }
                             )}>
-                                <nav class="flex flex-col p-2">
-                                    <a href="/" class="px-4 py-2.5 text-sm text-white/70 hover:text-white hover:bg-white/5 rounded-lg transition-all"
-                                       on:click=move |_| { set_main_open.set(false); set_mobile_open.set(false); }>"Home"</a>
-                                    <a href="/industries" class="px-4 py-2.5 text-sm text-white/70 hover:text-white hover:bg-white/5 rounded-lg transition-all"
-                                       on:click=move |_| { set_main_open.set(false); set_mobile_open.set(false); }>"Industries"</a>
-                                    <a href="/packages" class="px-4 py-2.5 text-sm text-white/70 hover:text-white hover:bg-white/5 rounded-lg transition-all"
-                                       on:click=move |_| { set_main_open.set(false); set_mobile_open.set(false); }>"Packages"</a>
-                                    <a href="/about" class="px-4 py-2.5 text-sm text-white/70 hover:text-white hover:bg-white/5 rounded-lg transition-all"
-                                       on:click=move |_| { set_main_open.set(false); set_mobile_open.set(false); }>"About"</a>
-                                    <a href="/contact" class="px-4 py-2.5 text-sm text-white/70 hover:text-white hover:bg-white/5 rounded-lg transition-all"
-                                       on:click=move |_| { set_main_open.set(false); set_mobile_open.set(false); }>"Contact"</a>
+                                <nav class="flex flex-col gap-3 pl-4">
+                                    <a href="/" class="text-white/70 hover:text-white py-2 block" on:click=move |_| set_mobile_open.set(false)>"Home"</a>
+                                    <a href="/industries" class="text-white/70 hover:text-white py-2 block" on:click=move |_| set_mobile_open.set(false)>"Industries"</a>
+                                    <a href="/about" class="text-white/70 hover:text-white py-2 block" on:click=move |_| set_mobile_open.set(false)>"About"</a>
                                 </nav>
                             </div>
                         </div>
 
-                        // RESOURCES Button
-                        <div class="relative">
+                        // RESOURCES Section
+                        <div class="border-b border-white/10 pb-6">
                             <button
-                                class="flex items-center gap-2 px-6 py-3 rounded-full border border-white/20 text-sm font-bold text-white uppercase tracking-wider hover:border-white/40 transition-colors"
+                                class="w-full flex items-center justify-between text-lg font-bold text-white uppercase tracking-wider mb-4"
                                 on:click=move |_| set_resources_open.update(|v| *v = !*v)
                             >
                                 "Resources"
-                                <svg class={move || format!("w-4 h-4 transition-transform duration-300 {}", if resources_open.get() { "rotate-180" } else { "" })} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class={move || format!("w-5 h-5 transition-transform duration-300 {}", if resources_open.get() { "rotate-180" } else { "" })} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                                 </svg>
                             </button>
                             <div class={move || format!(
-                                "absolute left-1/2 -translate-x-1/2 top-full mt-2 min-w-[180px] bg-black/95 backdrop-blur-md border border-white/10 rounded-xl shadow-2xl transition-all duration-300 z-50 {}",
-                                if resources_open.get() { "opacity-100 visible" } else { "opacity-0 invisible" }
+                                "overflow-hidden transition-all duration-300 {}",
+                                if resources_open.get() { "max-h-[500px] opacity-100" } else { "max-h-0 opacity-0" }
                             )}>
-                                <nav class="flex flex-col p-2">
-                                    <a href="/blog" class="px-4 py-2.5 text-sm text-white/70 hover:text-white hover:bg-white/5 rounded-lg transition-all"
-                                       on:click=move |_| { set_resources_open.set(false); set_mobile_open.set(false); }>"Blog"</a>
-                                    <a href="/faq" class="px-4 py-2.5 text-sm text-white/70 hover:text-white hover:bg-white/5 rounded-lg transition-all"
-                                       on:click=move |_| { set_resources_open.set(false); set_mobile_open.set(false); }>"FAQ"</a>
-                                    <a href="/service-agreement" class="px-4 py-2.5 text-sm text-white/70 hover:text-white hover:bg-white/5 rounded-lg transition-all"
-                                       on:click=move |_| { set_resources_open.set(false); set_mobile_open.set(false); }>"Service Agreement"</a>
+                                <nav class="flex flex-col gap-3 pl-4">
+                                    <a href="/blog" class="text-white/70 hover:text-white py-2 block" on:click=move |_| set_mobile_open.set(false)>"Blog"</a>
+                                    <a href="/faq" class="text-white/70 hover:text-white py-2 block" on:click=move |_| set_mobile_open.set(false)>"FAQ"</a>
+                                    <a href="/service-agreement" class="text-white/70 hover:text-white py-2 block" on:click=move |_| set_mobile_open.set(false)>"Service Agreement"</a>
                                 </nav>
                             </div>
                         </div>
 
-                        // EXAMPLE Button
-                        <div class="relative">
+                        // EXAMPLE Section
+                        <div class="border-b border-white/10 pb-6">
                             <button
-                                class="flex items-center gap-2 px-6 py-3 rounded-full border border-white/20 text-sm font-bold text-white uppercase tracking-wider hover:border-white/40 transition-colors"
+                                class="w-full flex items-center justify-between text-lg font-bold text-white uppercase tracking-wider mb-4"
                                 on:click=move |_| set_example_open.update(|v| *v = !*v)
                             >
                                 "Example"
-                                <svg class={move || format!("w-4 h-4 transition-transform duration-300 {}", if example_open.get() { "rotate-180" } else { "" })} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class={move || format!("w-5 h-5 transition-transform duration-300 {}", if example_open.get() { "rotate-180" } else { "" })} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                                 </svg>
                             </button>
                             <div class={move || format!(
-                                "absolute left-1/2 -translate-x-1/2 top-full mt-2 min-w-[180px] bg-black/95 backdrop-blur-md border border-white/10 rounded-xl shadow-2xl transition-all duration-300 z-50 {}",
-                                if example_open.get() { "opacity-100 visible" } else { "opacity-0 invisible" }
+                                "overflow-hidden transition-all duration-300 {}",
+                                if example_open.get() { "max-h-[500px] opacity-100" } else { "max-h-0 opacity-0" }
                             )}>
-                                <nav class="flex flex-col p-2">
-                                    <a href="/handyman-coventry" class="px-4 py-2.5 text-sm text-white/70 hover:text-white hover:bg-white/5 rounded-lg transition-all"
-                                       on:click=move |_| { set_example_open.set(false); set_mobile_open.set(false); }>"The Handyman"</a>
+                                <nav class="flex flex-col gap-3 pl-4">
+                                     <a href="/handyman-coventry" class="text-white/70 hover:text-white py-2 block" on:click=move |_| set_mobile_open.set(false)>"The Handyman"</a>
                                 </nav>
                             </div>
                         </div>
 
-                        // LEGAL Button
-                        <div class="relative">
+                        // LEGAL Section
+                        <div class="pb-6">
                             <button
-                                class="flex items-center gap-2 px-6 py-3 rounded-full border border-white/20 text-sm font-bold text-white uppercase tracking-wider hover:border-white/40 transition-colors"
+                                class="w-full flex items-center justify-between text-lg font-bold text-white uppercase tracking-wider mb-4"
                                 on:click=move |_| set_legal_open.update(|v| *v = !*v)
                             >
                                 "Legal"
-                                <svg class={move || format!("w-4 h-4 transition-transform duration-300 {}", if legal_open.get() { "rotate-180" } else { "" })} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class={move || format!("w-5 h-5 transition-transform duration-300 {}", if legal_open.get() { "rotate-180" } else { "" })} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                                 </svg>
                             </button>
                             <div class={move || format!(
-                                "absolute left-1/2 -translate-x-1/2 top-full mt-2 min-w-[180px] bg-black/95 backdrop-blur-md border border-white/10 rounded-xl shadow-2xl transition-all duration-300 z-50 {}",
-                                if legal_open.get() { "opacity-100 visible" } else { "opacity-0 invisible" }
+                                "overflow-hidden transition-all duration-300 {}",
+                                if legal_open.get() { "max-h-[500px] opacity-100" } else { "max-h-0 opacity-0" }
                             )}>
-                                <nav class="flex flex-col p-2">
-                                    <a href="/terms" class="px-4 py-2.5 text-sm text-white/70 hover:text-white hover:bg-white/5 rounded-lg transition-all"
-                                       on:click=move |_| { set_legal_open.set(false); set_mobile_open.set(false); }>"Terms & Conditions"</a>
-                                    <a href="/privacy" class="px-4 py-2.5 text-sm text-white/70 hover:text-white hover:bg-white/5 rounded-lg transition-all"
-                                       on:click=move |_| { set_legal_open.set(false); set_mobile_open.set(false); }>"Privacy Policy"</a>
+                                <nav class="flex flex-col gap-3 pl-4">
+                                    <a href="/terms" class="text-white/70 hover:text-white py-2 block" on:click=move |_| set_mobile_open.set(false)>"Terms & Conditions"</a>
+                                    <a href="/privacy" class="text-white/70 hover:text-white py-2 block" on:click=move |_| set_mobile_open.set(false)>"Privacy Policy"</a>
                                 </nav>
                             </div>
                         </div>
