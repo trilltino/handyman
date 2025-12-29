@@ -23,9 +23,9 @@ pub fn HandymanLayout() -> impl IntoView {
             <header class="font-sans flex flex-col shadow-xl sticky top-0 z-50">
                 // TOP ROW: Logo & Contact Info
                 <div class="bg-white text-slate-900 py-4 px-6 md:px-12 border-b border-gray-100">
-                    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+                    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-6">
                         // Logo
-                        <a href="/handyman-coventry" class="flex items-center gap-3 group">
+                        <a href="/handyman-coventry" class="flex items-center gap-3 group mr-auto">
                              <div class="w-12 h-12 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-lg flex items-center justify-center text-blue-900 font-black text-2xl shadow-lg group-hover:scale-105 transition">"H"</div>
                              <div class="flex flex-col">
                                 <span class="text-2xl font-black tracking-tight leading-none text-slate-900">"HANDLE"</span>
@@ -34,7 +34,7 @@ pub fn HandymanLayout() -> impl IntoView {
                         </a>
 
                         // Contact Widgets (Hidden on small mobile)
-                        <div class="hidden md:flex items-center divide-x divide-gray-200">
+                        <div class="hidden md:flex items-center divide-x divide-gray-200 ml-auto bg-white/50 backdrop-blur-sm">
                             // Phone
                             <div class="flex items-center gap-4 px-6">
                                 <div class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-blue-900">
@@ -70,7 +70,7 @@ pub fn HandymanLayout() -> impl IntoView {
                         </div>
 
                          // Mobile Menu Button (Visible only on mobile)
-                        <div class="md:hidden">
+                        <div class="md:hidden ml-auto">
                             <MobileMenuButton />
                         </div>
                     </div>
@@ -78,8 +78,8 @@ pub fn HandymanLayout() -> impl IntoView {
 
                 // BOTTOM ROW: Navigation Bar
                 <div class="bg-blue-900 text-white py-0 md:px-12 shadow-md hidden md:block">
-                    <div class="max-w-7xl mx-auto flex justify-between items-center">
-                        <nav class="flex items-center">
+                    <div class="max-w-7xl mx-auto flex justify-end items-center gap-12">
+                        <nav class="flex items-center gap-8">
                              // ABOUT US Dropdown
                              <div class="group relative">
                                 <button class="px-5 py-4 text-sm font-bold uppercase tracking-wide text-white hover:text-yellow-400 hover:bg-white/5 transition flex items-center gap-1">
