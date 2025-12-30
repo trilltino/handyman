@@ -75,7 +75,7 @@ pub fn App() -> impl IntoView {
 
     view! {
         <Html attr:lang="en-gb" />
-        <Stylesheet id="leptos" href="/css/xftradesmen.css"/>
+        <Stylesheet id="leptos" href="/xftradesmen.css"/>
         <Title text="XFTradesmen"/>
 
         // Import Google Fonts

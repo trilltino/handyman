@@ -3,7 +3,7 @@
 // use crate::pages::examples::handyman_app::components::CtaButton;
 use crate::components::seo::HandymanLocalBusinessSchema;
 use leptos::prelude::*;
-use leptos_router::components::Outlet;
+use leptos_router::components::{Outlet, A};
 
 #[component]
 pub fn HandymanLayout() -> impl IntoView {
@@ -15,7 +15,7 @@ pub fn HandymanLayout() -> impl IntoView {
             // Demo Site Banner
             <div class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white py-2 px-4 text-center text-sm">
                 <span class="mr-2">"This is an example site showcasing XFTradesmen capabilities."</span>
-                <a href="/" class="underline font-bold hover:text-purple-200 transition">"Back to XFTradesmen"</a>
+                <A href="/" {..} class="underline font-bold hover:text-purple-200 transition">"Back to XFTradesmen"</A>
             </div>
 
 
@@ -25,13 +25,13 @@ pub fn HandymanLayout() -> impl IntoView {
                 <div class="bg-white text-slate-900 py-4 px-2 border-b border-gray-100">
                     <div class="w-full flex flex-col md:flex-row justify-between items-center gap-0">
                         // Logo
-                        <a href="/handyman-coventry" class="flex items-center gap-3 group mr-auto">
+                        <A href="/handyman-coventry" {..} class="flex items-center gap-3 group mr-auto">
                              <div class="w-12 h-12 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-lg flex items-center justify-center text-blue-900 font-black text-2xl shadow-lg group-hover:scale-105 transition">"H"</div>
                              <div class="flex flex-col">
                                 <span class="text-2xl font-black tracking-tight leading-none text-slate-900">"HANDLE"</span>
                                 <span class="text-2xl font-black tracking-tight leading-none text-blue-900">"MAN"</span>
                              </div>
-                        </a>
+                        </A>
 
                         // Contact Widgets (Hidden on small mobile)
                         <div class="hidden md:flex items-center divide-x divide-gray-200 ml-auto bg-white/50 backdrop-blur-sm">
@@ -42,7 +42,7 @@ pub fn HandymanLayout() -> impl IntoView {
                                 </div>
                                 <div>
                                     <div class="text-xs text-gray-500 font-medium uppercase tracking-wide">"Call Today"</div>
-                                    <a href="tel:02476123456" class="text-lg font-bold text-slate-900 hover:text-blue-600 transition">"024 7612 3456"</a>
+                                    <A href="tel:02476123456" {..} class="text-lg font-bold text-slate-900 hover:text-blue-600 transition">"024 7612 3456"</A>
                                 </div>
                             </div>
 
@@ -53,7 +53,7 @@ pub fn HandymanLayout() -> impl IntoView {
                                 </div>
                                 <div>
                                     <div class="text-xs text-gray-500 font-medium uppercase tracking-wide">"Send a Message"</div>
-                                    <a href="mailto:hello@coventryhandyman.co.uk" class="text-lg font-bold text-slate-900 hover:text-blue-600 transition">"Click To Email"</a>
+                                    <A href="mailto:hello@coventryhandyman.co.uk" {..} class="text-lg font-bold text-slate-900 hover:text-blue-600 transition">"Click To Email"</A>
                                 </div>
                             </div>
 
@@ -87,9 +87,9 @@ pub fn HandymanLayout() -> impl IntoView {
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                                 </button>
                                 <div class="absolute left-0 top-full w-48 bg-white text-slate-800 shadow-xl rounded-b-lg overflow-hidden invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200 z-50 border-t-2 border-yellow-400">
-                                    <a href="/handyman-coventry/features" class="block px-6 py-3 text-sm hover:bg-gray-50 hover:text-blue-900 border-b border-gray-100">"Why Choose Us"</a>
-                                    <a href="/handyman-coventry/testimonials" class="block px-6 py-3 text-sm hover:bg-gray-50 hover:text-blue-900 border-b border-gray-100">"Reviews"</a>
-                                    <a href="/handyman-coventry/faq" class="block px-6 py-3 text-sm hover:bg-gray-50 hover:text-blue-900">"FAQ"</a>
+                                    <A href="/handyman-coventry/features" {..} class="block px-6 py-3 text-sm hover:bg-gray-50 hover:text-blue-900 border-b border-gray-100">"Why Choose Us"</A>
+                                    <A href="/handyman-coventry/testimonials" {..} class="block px-6 py-3 text-sm hover:bg-gray-50 hover:text-blue-900 border-b border-gray-100">"Reviews"</A>
+                                    <A href="/handyman-coventry/faq" {..} class="block px-6 py-3 text-sm hover:bg-gray-50 hover:text-blue-900">"FAQ"</A>
                                 </div>
                              </div>
 
@@ -100,21 +100,21 @@ pub fn HandymanLayout() -> impl IntoView {
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                                 </button>
                                 <div class="absolute left-0 top-full w-48 bg-white text-slate-800 shadow-xl rounded-b-lg overflow-hidden invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200 z-50 border-t-2 border-yellow-400">
-                                    <a href="/handyman-coventry/services" class="block px-6 py-3 text-sm hover:bg-gray-50 hover:text-blue-900 border-b border-gray-100">"All Services"</a>
-                                    <a href="/handyman-coventry/service-area" class="block px-6 py-3 text-sm hover:bg-gray-50 hover:text-blue-900">"Service Area"</a>
+                                    <A href="/handyman-coventry/services" {..} class="block px-6 py-3 text-sm hover:bg-gray-50 hover:text-blue-900 border-b border-gray-100">"All Services"</A>
+                                    <A href="/handyman-coventry/service-area" {..} class="block px-6 py-3 text-sm hover:bg-gray-50 hover:text-blue-900">"Service Area"</A>
                                 </div>
                              </div>
 
-                            <a href="/handyman-coventry/testimonials" class="px-5 py-4 text-sm font-bold uppercase tracking-wide text-white hover:text-yellow-400 hover:bg-white/5 transition">"Reviews"</a>
-                            <a href="/handyman-coventry/contact" class="px-5 py-4 text-sm font-bold uppercase tracking-wide text-white hover:text-yellow-400 hover:bg-white/5 transition">"Contact"</a>
+                            <A href="/handyman-coventry/testimonials" {..} class="px-5 py-4 text-sm font-bold uppercase tracking-wide text-white hover:text-yellow-400 hover:bg-white/5 transition">"Reviews"</A>
+                            <A href="/handyman-coventry/contact" {..} class="px-5 py-4 text-sm font-bold uppercase tracking-wide text-white hover:text-yellow-400 hover:bg-white/5 transition">"Contact"</A>
                         </nav>
 
                         // CTA Button
                         <div class="py-2">
-                             <a href="/handyman-coventry/booking" class="px-6 py-2.5 bg-blue-600 text-white border border-blue-500 rounded-full hover:bg-blue-500 hover:shadow-lg hover:-translate-y-0.5 transition font-bold text-sm tracking-wide uppercase flex items-center gap-2">
+                             <A href="/handyman-coventry/booking" {..} class="px-6 py-2.5 bg-blue-600 text-white border border-blue-500 rounded-full hover:bg-blue-500 hover:shadow-lg hover:-translate-y-0.5 transition font-bold text-sm tracking-wide uppercase flex items-center gap-2">
                                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
                                 "GET YOUR CUSTOM QUOTE"
-                            </a>
+                            </A>
                         </div>
                     </div>
                 </div>
@@ -146,11 +146,11 @@ pub fn HandymanLayout() -> impl IntoView {
                     <div>
                         <h4 class="text-white font-bold text-lg mb-6 uppercase tracking-wider">"Explore"</h4>
                         <ul class="space-y-4">
-                            <li><a href="/handyman-coventry/services" class="hover:text-yellow-400 transition flex items-center gap-2">"All Services"</a></li>
-                            <li><a href="/handyman-coventry/features" class="hover:text-yellow-400 transition flex items-center gap-2">"Our Guarantee"</a></li>
-                            <li><a href="/handyman-coventry/testimonials" class="hover:text-yellow-400 transition flex items-center gap-2">"Customer Stories"</a></li>
-                            <li><a href="/handyman-coventry/service-area" class="hover:text-yellow-400 transition flex items-center gap-2">"Service Area Map"</a></li>
-                            <li><a href="/handyman-coventry/booking" class="hover:text-yellow-400 transition flex items-center gap-2">"Book Online"</a></li>
+                            <li><A href="/handyman-coventry/services" {..} class="hover:text-yellow-400 transition flex items-center gap-2">"All Services"</A></li>
+                            <li><A href="/handyman-coventry/features" {..} class="hover:text-yellow-400 transition flex items-center gap-2">"Our Guarantee"</A></li>
+                            <li><A href="/handyman-coventry/testimonials" {..} class="hover:text-yellow-400 transition flex items-center gap-2">"Customer Stories"</A></li>
+                            <li><A href="/handyman-coventry/service-area" {..} class="hover:text-yellow-400 transition flex items-center gap-2">"Service Area Map"</A></li>
+                            <li><A href="/handyman-coventry/booking" {..} class="hover:text-yellow-400 transition flex items-center gap-2">"Book Online"</A></li>
                         </ul>
                     </div>
                     <div>
@@ -162,11 +162,11 @@ pub fn HandymanLayout() -> impl IntoView {
                             </li>
                             <li class="flex items-center gap-3">
                                 <svg class="w-6 h-6 text-yellow-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-                                <a href="tel:07833263486" class="hover:text-yellow-400 font-bold text-white text-lg">"+44 7833 263486"</a>
+                                <A href="tel:07833263486" {..} class="hover:text-yellow-400 font-bold text-white text-lg">"+44 7833 263486"</A>
                             </li>
                              <li class="flex items-center gap-3">
                                 <svg class="w-6 h-6 text-yellow-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                                <a href="mailto:hello@xftradesman.com" class="hover:text-yellow-400">"hello@coventryhandyman.co.uk"</a>
+                                <A href="mailto:hello@xftradesman.com" {..} class="hover:text-yellow-400">"hello@coventryhandyman.co.uk"</A>
                             </li>
                         </ul>
                     </div>
@@ -174,8 +174,8 @@ pub fn HandymanLayout() -> impl IntoView {
                 <div class="text-center text-sm border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center text-slate-500">
                      <span>"© 2026 Coventry Handyman Services. All rights reserved."</span>
                      <div class="flex gap-6 mt-4 md:mt-0">
-                        <a href="#" class="hover:text-white transition">"Privacy Policy"</a>
-                        <a href="#" class="hover:text-white transition">"Terms of Service"</a>
+                        <A href="#" {..} class="hover:text-white transition">"Privacy Policy"</A>
+                        <A href="#" {..} class="hover:text-white transition">"Terms of Service"</A>
                      </div>
                 </div>
             </footer>
@@ -215,35 +215,35 @@ fn MobileMenuButton() -> impl IntoView {
             class={move || format!("md:hidden fixed top-0 right-0 h-full w-72 bg-blue-900 z-50 flex flex-col pt-20 px-6 gap-4 shadow-2xl transition-transform duration-300 {}",
                 if is_open.get() { "translate-x-0" } else { "translate-x-full" })}
         >
-            <a href="/handyman-coventry" class="text-white font-bold text-lg py-3 border-b border-white/10 hover:text-yellow-400"
-               on:click=move |_| set_is_open.set(false)>"Home"</a>
+            <A href="/handyman-coventry" {..} class="text-white font-bold text-lg py-3 border-b border-white/10 hover:text-yellow-400"
+               on:click=move |_| set_is_open.set(false)>"Home"</A>
 
             // About Section
             <div class="py-2 border-b border-white/10">
                  <div class="text-white/50 text-xs font-bold uppercase tracking-widest mb-2">"About"</div>
-                 <a href="/handyman-coventry/features" class="block text-white font-bold text-lg py-2 hover:text-yellow-400"
-                   on:click=move |_| set_is_open.set(false)>"Why Choose Us"</a>
-                 <a href="/handyman-coventry/faq" class="block text-white font-bold text-lg py-2 hover:text-yellow-400"
-                   on:click=move |_| set_is_open.set(false)>"FAQ"</a>
-                 <a href="/handyman-coventry/testimonials" class="block text-white font-bold text-lg py-2 hover:text-yellow-400"
-                   on:click=move |_| set_is_open.set(false)>"Reviews"</a>
+                 <A href="/handyman-coventry/features" {..} class="block text-white font-bold text-lg py-2 hover:text-yellow-400"
+                   on:click=move |_| set_is_open.set(false)>"Why Choose Us"</A>
+                 <A href="/handyman-coventry/faq" {..} class="block text-white font-bold text-lg py-2 hover:text-yellow-400"
+                   on:click=move |_| set_is_open.set(false)>"FAQ"</A>
+                 <A href="/handyman-coventry/testimonials" {..} class="block text-white font-bold text-lg py-2 hover:text-yellow-400"
+                   on:click=move |_| set_is_open.set(false)>"Reviews"</A>
             </div>
 
             // Services Section
              <div class="py-2 border-b border-white/10">
                  <div class="text-white/50 text-xs font-bold uppercase tracking-widest mb-2">"Services"</div>
-                 <a href="/handyman-coventry/services" class="block text-white font-bold text-lg py-2 hover:text-yellow-400"
-                   on:click=move |_| set_is_open.set(false)>"All Services"</a>
-                 <a href="/handyman-coventry/service-area" class="block text-white font-bold text-lg py-2 hover:text-yellow-400"
-                   on:click=move |_| set_is_open.set(false)>"Service Area"</a>
+                 <A href="/handyman-coventry/services" {..} class="block text-white font-bold text-lg py-2 hover:text-yellow-400"
+                   on:click=move |_| set_is_open.set(false)>"All Services"</A>
+                 <A href="/handyman-coventry/service-area" {..} class="block text-white font-bold text-lg py-2 hover:text-yellow-400"
+                   on:click=move |_| set_is_open.set(false)>"Service Area"</A>
             </div>
 
-            <a href="/handyman-coventry/contact" class="text-white font-bold text-lg py-3 border-b border-white/10 hover:text-yellow-400"
-               on:click=move |_| set_is_open.set(false)>"Contact"</a>
+            <A href="/handyman-coventry/contact" {..} class="text-white font-bold text-lg py-3 border-b border-white/10 hover:text-yellow-400"
+               on:click=move |_| set_is_open.set(false)>"Contact"</A>
 
-            <a href="/handyman-coventry/booking"
+            <A href="/handyman-coventry/booking" {..}
                class="mt-6 px-6 py-4 bg-gradient-to-r from-yellow-400 to-yellow-500 text-blue-900 rounded-lg text-center font-black uppercase tracking-wide shadow-lg"
-               on:click=move |_| set_is_open.set(false)>"GET YOUR CUSTOM QUOTE"</a>
+               on:click=move |_| set_is_open.set(false)>"GET YOUR CUSTOM QUOTE"</A>
         </nav>
     }
 }

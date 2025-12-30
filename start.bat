@@ -2,7 +2,7 @@
 setlocal EnableDelayedExpansion
 
 :: Title: XFTradesmen Local Development Launcher
-:: Uses npm for Tailwind CSS v4
+:: Uses Windows Terminal tabs for each service
 
 echo ========================================================
 echo   XFTRADESMEN: LOCAL DEVELOPMENT STARTUP
@@ -38,25 +38,27 @@ if errorlevel 1 (
     exit /b 1
 )
 
-:: Start CSS watch in background (rebuilds on file changes)
-echo [2/4] Starting CSS watch (hidden)...
-start /min "" cmd /c "npm run watch:css > nul 2>&1"
-timeout /t 1 /nobreak >nul
-
-:: Start Backend API (dev mode for faster builds)
-:: Set explicit port and logging
+:: Set environment variables
 set API_PORT=8080
 set RUST_LOG=info
-echo [3/4] Launching Backend API (dev mode on port %API_PORT%)...
-start "XFTradesmen Backend" cmd /k "set API_PORT=8080&& set RUST_LOG=info&& cargo run -p api"
-timeout /t 2 /nobreak >nul
+set API_URL=http://127.0.0.1:8080
 
-:: Start Frontend with cargo leptos (dev mode)
-:: Set API_URL to point to local backend
-set API_URL=http://127.0.0.1:%API_PORT%
-echo [4/4] Launching Frontend (dev mode proxying to %API_URL%)...
-timeout /t 1 /nobreak >nul
-start "XFTradesmen Frontend" cmd /k "set API_URL=http://127.0.0.1:8080&& cargo leptos watch"
+echo.
+echo ========================================================
+echo   LAUNCHING SERVICES IN SEPARATE TABS
+echo ========================================================
+echo.
+
+:: Get current directory for the tabs
+set "CURRENT_DIR=%CD%"
+
+:: Launch Windows Terminal with multiple tabs:
+:: - Tab 1: CSS Watch
+:: - Tab 2: Backend API
+:: - Tab 3: Frontend (Leptos)
+wt -w 0 new-tab --title "CSS Watch" -d "%CURRENT_DIR%" cmd /k "npm run watch:css" ; ^
+   new-tab --title "Backend API" -d "%CURRENT_DIR%" cmd /k "set RUST_LOG=info && cargo run -p api" ; ^
+   new-tab --title "Frontend" -d "%CURRENT_DIR%" cmd /k "set API_URL=http://127.0.0.1:8080 && cargo leptos watch"
 
 echo.
 echo ========================================================
@@ -66,10 +68,11 @@ echo   Backend:  http://127.0.0.1:8080
 echo   Reload Port: 3002
 echo ========================================================
 echo.
-echo LIVE RELOAD ACTIVE:
-echo   - Rust code changes auto-reload
-echo   - CSS changes auto-rebuild and refresh
-echo   - Browser auto-refreshes on changes
+echo Each service is running in its own Windows Terminal tab:
+echo   [TAB 1] CSS Watch - Auto-rebuilds CSS on changes
+echo   [TAB 2] Backend API - Rust API server
+echo   [TAB 3] Frontend - Leptos SSR with live reload
 echo.
-echo Press any key to exit (servers will continue running)...
-pause >nul
+echo Close the terminal tabs to stop services.
+echo.
+pause

@@ -12,25 +12,24 @@ pub fn Home() -> impl IntoView {
         <SeoHead metadata=PageMetadata::for_homepage() />
         <LocalBusinessSchema />
 
-        <div class="bg-grain min-h-screen text-white font-sans selection:bg-brand selection:text-white overflow-x-hidden">
+        // Single continuous gradient background for entire page
+        <div class="min-h-screen text-white font-sans selection:bg-brand selection:text-white overflow-x-hidden bg-gradient-to-br from-red-950 via-black to-black">
             // Fixed Edge Glows for Ambient depth
             <div class="edge-glow-tl opacity-20 md:opacity-30"></div>
             <div class="edge-glow-br opacity-20 md:opacity-30"></div>
 
-            // HERO SECTION
-            <section class="relative bg-bold-void min-h-screen flex items-center pt-20 pb-32 px-6 overflow-hidden">
+            // HERO SECTION - transparent to show parent gradient
+            <section class="relative min-h-screen flex items-center pt-20 pb-32 px-6 overflow-hidden">
                 <div class="relative max-w-7xl mx-auto text-center z-10 animate-fade-in">
                     <h1 class="text-6xl md:text-8xl lg:text-[10rem] font-black tracking-tighter mb-8 leading-[0.9] uppercase">
-                        "GROW YOUR" <br/>
                         <span class="text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-gray-500">
-                            "TRADESMAN BUSINESS IN 2026."
+                            "EXPAND YOUR TRADE IN 2026."
                         </span>
                     </h1>
 
                     <p class="text-xl md:text-2xl text-gray-400 max-w-4xl mx-auto leading-relaxed font-medium">
-                        "Most agency sites are generic. We build "
-                        <span class="text-white font-bold">"Visibility Engines"</span>
-                        " tailored to the specific jobs that keep your business profitable."
+                        <span class="text-white font-bold">"36 hours from signature to live."</span>
+                        " We engineer websites built for trust and growth, show your good work off."
                     </p>
                 </div>
 
@@ -40,8 +39,8 @@ pub fn Home() -> impl IntoView {
                 <div class="absolute top-[50%] left-[15%] w-80 h-80 bg-red-600/10 blur-[100px] rounded-full"></div>
             </section>
 
-            // FEATURES SECTION - Completely black with white text
-            <section class="py-32 px-6 bg-black">
+            // FEATURES SECTION - transparent to show parent gradient
+            <section class="py-32 px-6">
                 <div class="max-w-7xl mx-auto">
                     <div class="grid md:grid-cols-2 gap-12 items-center mb-24">
                         <h2 class="text-3xl md:text-4xl lg:text-5xl font-black tracking-tight leading-tight text-white">
@@ -200,61 +199,63 @@ pub fn Home() -> impl IntoView {
                 </div>
             </section>
 
-            // MOCKUP SHOWCASE SECTION - 3D Angled Display
-            <section class="py-32 px-6 bg-gradient-to-b from-black via-gray-950 to-black relative overflow-hidden">
+            // WEBSITE PACKAGES SECTION
+            <section class="py-24 px-6 relative overflow-hidden">
                 // Background glow
                 <div class="absolute inset-0 flex items-center justify-center">
                     <div class="w-[800px] h-[400px] bg-brand/10 blur-[150px] rounded-full"></div>
                 </div>
 
                 <div class="max-w-7xl mx-auto relative z-10">
-                    <div class="mb-12 text-center relative z-20">
+                    <div class="mb-12 text-center">
                         <h2 class="text-5xl md:text-7xl font-black tracking-tighter leading-none uppercase mb-6 text-white">
                             "WEBSITE PACKAGES"
                         </h2>
-                        <a href="/terms" class="inline-block text-xs text-brand font-bold uppercase tracking-widest hover:text-white transition-colors border-b border-brand/30 hover:border-white pb-1 mb-12">
+                        <a href="/terms" class="inline-block text-xs text-brand font-bold uppercase tracking-widest hover:text-white transition-colors border-b border-brand/30 hover:border-white pb-1">
                             "Terms & Conditions"
                         </a>
-
-
                     </div>
 
-                    // 3D Angled Stack Container
-                    <div class="relative min-h-[1400px] flex justify-center items-center perspective-[2500px] py-12">
-                        // Stack Group - Smaller Max Width
-                        <div class="relative w-full max-w-2xl h-[600px] preserve-3d">
-
-                            // Bottom Card (Roofer)
-                            <div class="absolute top-0 left-0 w-full transform transition-all duration-1000 ease-out hover:translate-x-2 hover:translate-y-2 reveal-on-scroll delay-100"
-                                 style="transform: rotateX(20deg) rotateZ(-10deg) skewY(5deg) translateZ(-80px) translateX(40px) translateY(40px);">
-                                <div class="relative overflow-hidden rounded-lg shadow-2xl shadow-black aspect-video bg-gray-900 border border-white/5">
-                                    <img src="/images/mockups/roofer.png" alt="Roofer Website" class="w-full h-full object-cover object-top opacity-60 hover:opacity-100 transition-opacity duration-500"/>
-                                </div>
+                    // Website Examples Grid
+                    <div class="grid md:grid-cols-3 gap-8 mt-12">
+                        // Example 1
+                        <div class="group relative bg-gradient-to-br from-white/5 to-transparent p-6 rounded-2xl border border-white/10 hover:border-brand/50 transition-all duration-500 overflow-hidden">
+                            <div class="relative overflow-hidden rounded-lg mb-6 aspect-video">
+                                <img src="/images/mockups/plumber.png" alt="Professional Trade Website" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"/>
                             </div>
+                            <h3 class="text-xl font-black text-white mb-4">"Professional Online Presence"</h3>
+                            <p class="text-gray-400 text-sm leading-relaxed">
+                                "Modern, mobile-friendly websites designed specifically for tradesmen. Look professional, build trust with customers, and make it easy for them to contact you anytime, day or night."
+                            </p>
+                        </div>
 
-                            // Middle Card (Carpenter)
-                            <div class="absolute top-0 left-0 w-full transform transition-all duration-1000 ease-out hover:translate-x-1 hover:translate-y-1 reveal-on-scroll delay-300"
-                                 style="transform: rotateX(20deg) rotateZ(-10deg) skewY(5deg) translateZ(-40px) translateX(20px) translateY(20px);">
-                                <div class="relative overflow-hidden rounded-lg shadow-2xl shadow-black aspect-video bg-gray-900 border border-white/5">
-                                    <img src="/images/mockups/carpenter.png" alt="Carpenter Website" class="w-full h-full object-cover object-top opacity-80 hover:opacity-100 transition-opacity duration-500"/>
-                                </div>
+                        // Example 2
+                        <div class="group relative bg-gradient-to-br from-white/5 to-transparent p-6 rounded-2xl border border-white/10 hover:border-brand/50 transition-all duration-500 overflow-hidden">
+                            <div class="relative overflow-hidden rounded-lg mb-6 aspect-video">
+                                <img src="/images/mockups/gas_engineer.png" alt="SEO Optimized Trade Website" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"/>
                             </div>
+                            <h3 class="text-xl font-black text-white mb-4">"Local SEO & Booking Systems"</h3>
+                            <p class="text-gray-400 text-sm leading-relaxed">
+                                "Get found on Google when customers search for services in your area. Integrated booking systems and quote request forms turn website visitors into paying jobs."
+                            </p>
+                        </div>
 
-                            // Top Card (Plumber)
-                            <div class="absolute top-0 left-0 w-full transform transition-all duration-1000 ease-out z-10 reveal-on-scroll delay-500"
-                                 style="transform: rotateX(20deg) rotateZ(-10deg) skewY(5deg);">
-                                <div class="relative overflow-hidden rounded-lg shadow-2xl shadow-black aspect-video bg-gray-900 border border-white/5">
-                                    <img src="/images/mockups/plumber.png" alt="Plumber Website" class="w-full h-full object-cover object-top"/>
-                                </div>
+                        // Example 3
+                        <div class="group relative bg-gradient-to-br from-white/5 to-transparent p-6 rounded-2xl border border-white/10 hover:border-brand/50 transition-all duration-500 overflow-hidden">
+                            <div class="relative overflow-hidden rounded-lg mb-6 aspect-video">
+                                <img src="/images/mockups/carpenter.png" alt="Complete Trade Business Website" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"/>
                             </div>
-
+                            <h3 class="text-xl font-black text-white mb-4">"Complete Business Branding"</h3>
+                            <p class="text-gray-400 text-sm leading-relaxed">
+                                "Full branding, portfolio showcases, customer reviews, and ongoing support. Everything you need to grow your reputation and expand your business into new areas."
+                            </p>
                         </div>
                     </div>
                 </div>
             </section>
 
-            // AREAS SECTION (Sleek minimalist marquee)
-            <section class="bg-black py-20 px-6">
+            // AREAS SECTION - transparent to show parent gradient
+            <section class="py-20 px-6">
                 <div class="max-w-7xl mx-auto flex flex-col items-center justify-center gap-8 text-center">
                     <span class="text-sm font-black text-white/30 uppercase tracking-[0.3em] whitespace-nowrap">"OPERATING IN"</span>
                     <div class="flex flex-wrap justify-center gap-x-8 gap-y-4 text-gray-600 font-bold uppercase text-xs tracking-widest">

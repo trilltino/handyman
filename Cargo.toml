@@ -25,10 +25,11 @@ name = "frontend-leptos"
 crate-type = ["cdylib", "rlib"]
 package = "frontend-leptos"
 bin-package = "frontend-leptos"
+bin-target = "frontend-leptos"
 lib-package = "frontend-leptos"
 lib-features = ["hydrate"]
 bin-features = ["ssr"]
-output-name = "xftradesmen"
+output-name = "frontend-leptos"
 site-root = "target/site"
 site-pkg-dir = "pkg"
 assets-dir = "frontend-leptos/public"
@@ -38,6 +39,7 @@ browserquery = "defaults"
 env = "DEV"
 bin-default-features = false
 lib-default-features = false
+
 
 [workspace.dependencies]
 serde = { version = "1.0", features = ["derive"] }

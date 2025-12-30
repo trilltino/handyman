@@ -1,247 +1,85 @@
 //! Navigation bar component with responsive design.
 
 use leptos::prelude::*;
+use leptos_router::components::A;
 
 /// Fixed navigation bar with dropdown menus.
 #[component]
 pub fn Navbar() -> impl IntoView {
-    let (mobile_open, set_mobile_open) = signal(false);
-    let (main_open, set_main_open) = signal(false);
-    let (resources_open, set_resources_open) = signal(false);
-    let (example_open, set_example_open) = signal(false);
-    let (legal_open, set_legal_open) = signal(false);
+    // State for mobile menu
+    let (is_open, set_is_open) = signal(false);
+
+    // Close menu when a link is clicked
+    let close_menu = move |_| set_is_open.set(false);
 
     view! {
-        // Navbar with Dropdown Menus
-        <nav class="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-md">
-            <div class="px-6 md:px-12 py-8 md:py-10 flex items-center justify-between">
-                // Left: Brand Logo without Separator
-                <a href="/" class="flex items-center gap-3 md:gap-6">
-                    <span class="text-lg md:text-xl lg:text-2xl xl:text-3xl font-black tracking-tight text-white">
-                        "XFTradesman.com"
-                    </span>
-                    <div class="hidden md:flex flex-col leading-tight">
-                        <span class="text-xs lg:text-sm font-medium tracking-tight text-white">
-                            "Transforming Local Business"
+        <nav class="fixed top-0 left-0 right-0 z-50">
+            // Main Navbar Content - Seamless (Transparent)
+            <div class="w-full px-6 h-24 flex items-center justify-between transition-all duration-300">
+                // Left: Brand Logo & Tagline
+                <div class="flex items-center gap-6">
+                    <A href="/" attr:class="flex items-center gap-3" on:click=close_menu>
+                        <span class="text-2xl md:text-3xl font-black tracking-tight" style="color: white;">
+                            "XFTradesman.com"
                         </span>
-                        <span class="text-xs lg:text-sm font-medium tracking-tight text-white">
-                            "Websites with expert design"
-                        </span>
-                    </div>
-                </a>
-
-                // Center: Desktop Dropdown Navigation (hidden on mobile)
-                <div class="hidden lg:flex items-center gap-8">
-                    // Main Dropdown
-                    <div class="group relative">
-                        <button class="text-sm font-bold text-white/80 hover:text-white uppercase tracking-wide py-2 flex items-center gap-1">
-                            "Main"
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                            </svg>
-                        </button>
-                        <div class="absolute left-0 top-full pt-2 invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200">
-                            <div class="bg-black/95 backdrop-blur-md border border-white/10 rounded-lg shadow-2xl py-2 min-w-[200px]">
-                                <a href="/" class="block px-6 py-2 text-sm text-white/70 hover:text-white hover:bg-white/5 transition-colors">"Home"</a>
-                                <a href="/industries" class="block px-6 py-2 text-sm text-white/70 hover:text-white hover:bg-white/5 transition-colors">"Industries"</a>
-                                <a href="/about" class="block px-6 py-2 text-sm text-white/70 hover:text-white hover:bg-white/5 transition-colors">"About"</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    // Resources Dropdown
-                    <div class="group relative">
-                        <button class="text-sm font-bold text-white/80 hover:text-white uppercase tracking-wide py-2 flex items-center gap-1">
-                            "Resources"
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                            </svg>
-                        </button>
-                        <div class="absolute left-0 top-full pt-2 invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200">
-                            <div class="bg-black/95 backdrop-blur-md border border-white/10 rounded-lg shadow-2xl py-2 min-w-[200px]">
-                                <a href="/blog" class="block px-6 py-2 text-sm text-white/70 hover:text-white hover:bg-white/5 transition-colors">"Blog"</a>
-                                <a href="/faq" class="block px-6 py-2 text-sm text-white/70 hover:text-white hover:bg-white/5 transition-colors">"FAQ"</a>
-                                <a href="/service-agreement" class="block px-6 py-2 text-sm text-white/70 hover:text-white hover:bg-white/5 transition-colors">"Service Agreement"</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    // Example Dropdown
-                    <div class="group relative">
-                        <button class="text-sm font-bold text-white/80 hover:text-white uppercase tracking-wide py-2 flex items-center gap-1">
-                            "Example"
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                            </svg>
-                        </button>
-                        <div class="absolute left-0 top-full pt-2 invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200">
-                            <div class="bg-black/95 backdrop-blur-md border border-white/10 rounded-lg shadow-2xl py-2 min-w-[200px]">
-                                <a href="/handyman-coventry" class="block px-6 py-2 text-sm text-white/70 hover:text-white hover:bg-white/5 transition-colors">"The Handyman"</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    // Legal Dropdown
-                    <div class="group relative">
-                        <button class="text-sm font-bold text-white/80 hover:text-white uppercase tracking-wide py-2 flex items-center gap-1">
-                            "Legal"
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                            </svg>
-                        </button>
-                        <div class="absolute left-0 top-full pt-2 invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200">
-                            <div class="bg-black/95 backdrop-blur-md border border-white/10 rounded-lg shadow-2xl py-2 min-w-[200px]">
-                                <a href="/terms" class="block px-6 py-2 text-sm text-white/70 hover:text-white hover:bg-white/5 transition-colors">"Terms & Conditions"</a>
-                                <a href="/privacy" class="block px-6 py-2 text-sm text-white/70 hover:text-white hover:bg-white/5 transition-colors">"Privacy Policy"</a>
-                            </div>
-                        </div>
+                    </A>
+                    // Vertical Divider
+                    <div class="hidden md:block w-px h-8 bg-white/20"></div>
+                    // Tagline
+                    <div class="hidden md:flex flex-col justify-center">
+                        <span class="text-xs font-bold tracking-wide leading-tight" style="color: #d1d5db;">"Transforming Local Business"</span>
+                        <span class="text-xs tracking-wide leading-tight" style="color: #6b7280;">"Websites with expert design"</span>
                     </div>
                 </div>
 
-                // Right: CTA Buttons and Mobile Menu
-                <div class="flex items-center gap-3">
-                    // Desktop CTAs
-                    <a href="/packages" class="hidden lg:inline-flex px-4 py-2 rounded-none font-bold text-xs uppercase tracking-wide items-center gap-2 bg-gray-800 text-white hover:bg-gray-700 transition-colors">
-                        "VIEW PACKAGES"
-                    </a>
-                    <a href="/handyman-coventry" class="hidden lg:inline-flex px-4 py-2 rounded-none font-bold text-xs uppercase tracking-wide items-center gap-2 bg-gray-800 text-white hover:bg-gray-700 transition-colors">
-                        "EXAMPLE"
-                    </a>
-                    <a href="/contact" class="hidden lg:inline-flex px-4 py-2 rounded-none font-bold text-xs uppercase tracking-wide items-center gap-2 bg-white text-black hover:bg-gray-100 transition-colors">
-                        "GET IN TOUCH"
-                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-                        </svg>
-                    </a>
+                // Right: Navigation & Burger
+                <div class="flex items-center gap-8 md:gap-12">
+                    // Desktop Links
+                    <div class="hidden md:flex items-center gap-8">
+                        <A href="/packages" attr:class="text-sm font-black hover:opacity-80 transition-opacity uppercase tracking-widest" attr:style="color: white;">"PACKAGES"</A>
+                        <A href="/handyman-coventry" attr:class="text-sm font-black hover:opacity-80 transition-opacity uppercase tracking-widest" attr:style="color: white;">"EXAMPLE"</A>
+                        <A href="/contact" attr:class="text-sm font-black hover:opacity-80 transition-opacity uppercase tracking-widest" attr:style="color: white;">"CONTACT"</A>
+                    </div>
 
-                    // Mobile/Tablet CTAs - Simple white text links (always visible below lg)
-                    <a href="/packages" class="lg:hidden text-[11px] font-bold uppercase tracking-wide transition-colors" style="color: white !important;">
-                        "PACKAGES"
-                    </a>
-                    <a href="/handyman-coventry" class="lg:hidden text-[11px] font-bold uppercase tracking-wide transition-colors" style="color: white !important;">
-                        "EXAMPLE"
-                    </a>
-                    <a href="/contact" class="lg:hidden text-[11px] font-bold uppercase tracking-wide transition-colors" style="color: white !important;">
-                        "CONTACT"
-                    </a>
-
-                    // Mobile Hamburger Menu (always visible on mobile/tablet)
+                    // Burger Menu (Visible on Desktop too as per design, or predominantly mobile)
+                    // The user's design shows links AND the burger.
                     <button
-                        class="lg:hidden flex items-center justify-center p-2 ml-2"
-                        on:click=move |_| set_mobile_open.update(|v| *v = !*v)
+                        class="text-white p-2 focus:outline-none hover:text-brand transition-colors"
+                        on:click=move |_| set_is_open.update(|v| *v = !*v)
                         aria-label="Toggle menu"
                     >
-                        <Show when=move || mobile_open.get() fallback=|| view! {
-                            <div class="flex flex-col gap-1.5">
-                                <span class="w-7 h-0.5 bg-white"></span>
-                                <span class="w-7 h-0.5 bg-white"></span>
-                                <span class="w-7 h-0.5 bg-white"></span>
-                            </div>
-                        }>
-                            <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                            </svg>
-                        </Show>
+                         {move || if is_open.get() {
+                            view! {
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            }.into_any()
+                        } else {
+                            view! {
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                                </svg>
+                            }.into_any()
+                        }}
                     </button>
                 </div>
             </div>
 
-            // Mobile Navbar with Independent Dropdowns
-            <div class={move || format!(
-                "lg:hidden transition-all duration-500 ease-out {}",
-                if mobile_open.get() { "max-h-[800px] opacity-100 pb-8" } else { "max-h-0 opacity-0 overflow-hidden" }
-            )}>
-                <div class="px-6 py-8 h-[calc(100vh-80px)] overflow-y-auto">
-                    <div class="flex flex-col gap-6">
-                        // MAIN Section
-                        <div class="border-b border-white/10 pb-6">
-                            <button
-                                class="w-full flex items-center justify-between text-lg font-bold text-white uppercase tracking-wider mb-4"
-                                on:click=move |_| set_main_open.update(|v| *v = !*v)
-                            >
-                                "Main"
-                                <svg class={move || format!("w-5 h-5 transition-transform duration-300 {}", if main_open.get() { "rotate-180" } else { "" })} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                                </svg>
-                            </button>
-                            <div class={move || format!(
-                                "overflow-hidden transition-all duration-300 {}",
-                                if main_open.get() { "max-h-[500px] opacity-100" } else { "max-h-0 opacity-0" }
-                            )}>
-                                <nav class="flex flex-col gap-3 pl-4">
-                                    <a href="/" class="text-white/70 hover:text-white py-2 block" on:click=move |_| set_mobile_open.set(false)>"Home"</a>
-                                    <a href="/industries" class="text-white/70 hover:text-white py-2 block" on:click=move |_| set_mobile_open.set(false)>"Industries"</a>
-                                    <a href="/about" class="text-white/70 hover:text-white py-2 block" on:click=move |_| set_mobile_open.set(false)>"About"</a>
-                                </nav>
-                            </div>
-                        </div>
-
-                        // RESOURCES Section
-                        <div class="border-b border-white/10 pb-6">
-                            <button
-                                class="w-full flex items-center justify-between text-lg font-bold text-white uppercase tracking-wider mb-4"
-                                on:click=move |_| set_resources_open.update(|v| *v = !*v)
-                            >
-                                "Resources"
-                                <svg class={move || format!("w-5 h-5 transition-transform duration-300 {}", if resources_open.get() { "rotate-180" } else { "" })} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                                </svg>
-                            </button>
-                            <div class={move || format!(
-                                "overflow-hidden transition-all duration-300 {}",
-                                if resources_open.get() { "max-h-[500px] opacity-100" } else { "max-h-0 opacity-0" }
-                            )}>
-                                <nav class="flex flex-col gap-3 pl-4">
-                                    <a href="/blog" class="text-white/70 hover:text-white py-2 block" on:click=move |_| set_mobile_open.set(false)>"Blog"</a>
-                                    <a href="/faq" class="text-white/70 hover:text-white py-2 block" on:click=move |_| set_mobile_open.set(false)>"FAQ"</a>
-                                    <a href="/service-agreement" class="text-white/70 hover:text-white py-2 block" on:click=move |_| set_mobile_open.set(false)>"Service Agreement"</a>
-                                </nav>
-                            </div>
-                        </div>
-
-                        // EXAMPLE Section
-                        <div class="border-b border-white/10 pb-6">
-                            <button
-                                class="w-full flex items-center justify-between text-lg font-bold text-white uppercase tracking-wider mb-4"
-                                on:click=move |_| set_example_open.update(|v| *v = !*v)
-                            >
-                                "Example"
-                                <svg class={move || format!("w-5 h-5 transition-transform duration-300 {}", if example_open.get() { "rotate-180" } else { "" })} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                                </svg>
-                            </button>
-                            <div class={move || format!(
-                                "overflow-hidden transition-all duration-300 {}",
-                                if example_open.get() { "max-h-[500px] opacity-100" } else { "max-h-0 opacity-0" }
-                            )}>
-                                <nav class="flex flex-col gap-3 pl-4">
-                                     <a href="/handyman-coventry" class="text-white/70 hover:text-white py-2 block" on:click=move |_| set_mobile_open.set(false)>"The Handyman"</a>
-                                </nav>
-                            </div>
-                        </div>
-
-                        // LEGAL Section
-                        <div class="pb-6">
-                            <button
-                                class="w-full flex items-center justify-between text-lg font-bold text-white uppercase tracking-wider mb-4"
-                                on:click=move |_| set_legal_open.update(|v| *v = !*v)
-                            >
-                                "Legal"
-                                <svg class={move || format!("w-5 h-5 transition-transform duration-300 {}", if legal_open.get() { "rotate-180" } else { "" })} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                                </svg>
-                            </button>
-                            <div class={move || format!(
-                                "overflow-hidden transition-all duration-300 {}",
-                                if legal_open.get() { "max-h-[500px] opacity-100" } else { "max-h-0 opacity-0" }
-                            )}>
-                                <nav class="flex flex-col gap-3 pl-4">
-                                    <a href="/terms" class="text-white/70 hover:text-white py-2 block" on:click=move |_| set_mobile_open.set(false)>"Terms & Conditions"</a>
-                                    <a href="/privacy" class="text-white/70 hover:text-white py-2 block" on:click=move |_| set_mobile_open.set(false)>"Privacy Policy"</a>
-                                </nav>
-                            </div>
-                        </div>
-                    </div>
+            // Mobile/Drawer Dropdown Menu
+            <div class=move || format!(
+                "absolute top-full left-0 right-0 bg-black/95 border-b border-white/10 transition-all duration-300 ease-in-out overflow-hidden {}",
+                if is_open.get() { "max-h-screen opacity-100 border-t border-white/10" } else { "max-h-0 opacity-0 border-none" }
+            )>
+                <div class="flex flex-col px-8 py-12 space-y-8 text-center min-h-[50vh] justify-center">
+                    <A href="/" attr:class="text-lg font-bold text-white hover:text-gray-300" on:click=close_menu>"Home"</A>
+                    <A href="/about" attr:class="text-lg font-bold text-white hover:text-gray-300" on:click=close_menu>"About"</A>
+                    <A href="/services" attr:class="text-lg font-bold text-white hover:text-gray-300" on:click=close_menu>"Services"</A>
+                    <A href="/packages" attr:class="text-lg font-bold text-white hover:text-gray-300" on:click=close_menu>"Packages"</A>
+                    <A href="/handyman-coventry" attr:class="text-lg font-bold text-white hover:text-gray-300" on:click=close_menu>"Example"</A>
+                    <A href="/reviews" attr:class="text-lg font-bold text-white hover:text-gray-300" on:click=close_menu>"Reviews"</A>
+                    <A href="/contact" attr:class="inline-block px-8 py-3 bg-white text-black font-black uppercase tracking-widest hover:bg-gray-200 mx-auto" on:click=close_menu>
+                        "Contact Us"
+                    </A>
                 </div>
             </div>
         </nav>
