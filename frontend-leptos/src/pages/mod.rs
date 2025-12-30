@@ -1,3 +1,4 @@
+#![allow(unused_imports)]
 //! Application pages.
 //!
 //! Contains all route page components organized into subfolders.

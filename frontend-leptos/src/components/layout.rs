@@ -36,9 +36,10 @@ pub fn Navbar() -> impl IntoView {
                 <div class="flex items-center gap-8 md:gap-12">
                     // Desktop Links
                     <div class="hidden md:flex items-center gap-8">
-                        <A href="/faq" attr:class="text-sm font-black hover:opacity-80 transition-opacity uppercase tracking-widest" attr:style="color: white;">"FAQ"</A>
-                        <A href="/terms" attr:class="text-sm font-black hover:opacity-80 transition-opacity uppercase tracking-widest" attr:style="color: white;">"TERMS"</A>
-                        <A href="/blog" attr:class="text-sm font-black hover:opacity-80 transition-opacity uppercase tracking-widest" attr:style="color: white;">"BLOG"</A>
+                        <A href="/packages" attr:class="text-sm font-black hover:opacity-80 transition-opacity uppercase tracking-widest" attr:style="color: white;">"PACKAGES"</A>
+                        <A href="/handyman-coventry" attr:class="text-sm font-black hover:opacity-80 transition-opacity uppercase tracking-widest" attr:style="color: white;">"EXAMPLE"</A>
+                        <a href="https://calendly.com/isicheivalentine/30min" target="_blank" class="text-sm font-black hover:opacity-80 transition-opacity uppercase tracking-widest" style="color: white;">"QUICK CHAT?"</a>
+                        <A href="/contact" attr:class="text-sm font-black hover:opacity-80 transition-opacity uppercase tracking-widest" attr:style="color: white;">"CONTACT"</A>
                     </div>
 
                     // Burger Menu (Visible on Desktop too as per design, or predominantly mobile)
@@ -71,15 +72,9 @@ pub fn Navbar() -> impl IntoView {
                 if is_open.get() { "max-h-screen opacity-100 border-t border-white/10" } else { "max-h-0 opacity-0 border-none" }
             )>
                 <div class="flex flex-col px-8 py-12 space-y-8 text-center min-h-[50vh] justify-center">
-                    <A href="/" attr:class="text-lg font-bold text-white hover:text-gray-300" on:click=close_menu>"Home"</A>
-                    <A href="/about" attr:class="text-lg font-bold text-white hover:text-gray-300" on:click=close_menu>"About"</A>
                     <A href="/faq" attr:class="text-lg font-bold text-white hover:text-gray-300" on:click=close_menu>"FAQ"</A>
-                    <A href="/terms" attr:class="text-lg font-bold text-white hover:text-gray-300" on:click=close_menu>"Terms of Service"</A>
-                    <A href="/blog" attr:class="text-lg font-bold text-white hover:text-gray-300" on:click=close_menu>"Blog"</A>
-                    <A href="/industries" attr:class="text-lg font-bold text-white hover:text-gray-300" on:click=close_menu>"Industries"</A>
-                    <A href="/contact" attr:class="inline-block px-8 py-3 bg-white text-black font-black uppercase tracking-widest hover:bg-gray-200 mx-auto" on:click=close_menu>
-                        "Contact Us"
-                    </A>
+                    <A href="/terms" attr:class="text-lg font-bold text-white hover:text-gray-300" on:click=close_menu>"TERMS"</A>
+                    <A href="/blog" attr:class="text-lg font-bold text-white hover:text-gray-300" on:click=close_menu>"BLOG"</A>
                 </div>
             </div>
         </nav>
