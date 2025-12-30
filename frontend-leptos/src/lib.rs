@@ -21,41 +21,49 @@ use leptos_router::{
 pub mod api;
 mod components;
 mod pages;
-use crate::pages::about::About;
+
+// Main pages
+use crate::pages::main::About;
+use crate::pages::main::Contact;
+use crate::pages::main::Home;
+use crate::pages::main::Industries;
+use crate::pages::main::Packages;
+use crate::pages::main::Pricing;
+
+// Legal pages
+use crate::pages::legal::ServiceAgreement;
+use crate::pages::legal::Terms;
+
+// Location pages
+use crate::pages::locations::Coventry;
+use crate::pages::locations::Handyman;
+
+// Info pages
+use crate::pages::info::Faq;
+use crate::pages::info::NotFound;
+
+// Blog pages
 use crate::pages::blog::article::BlogArticle;
 use crate::pages::blog::index::BlogIndex;
-use crate::pages::contact::Contact;
-use crate::pages::coventry::Coventry;
+
+// Handyman example app
 use crate::pages::examples::handyman_app::components::layout::HandymanLayout;
-use crate::pages::faq::Faq;
-use crate::pages::service_agreement::ServiceAgreement;
-use crate::pages::terms::Terms;
-// Admin pages
 use crate::pages::examples::handyman_app::pages::admin::AdminDashboard;
-// Main pages
+use crate::pages::examples::handyman_app::pages::booking::AdminCustomers;
+use crate::pages::examples::handyman_app::pages::booking::HandymanBooking;
+use crate::pages::examples::handyman_app::pages::booking::HandymanEmergency;
+use crate::pages::examples::handyman_app::pages::booking::HandymanQuote;
+use crate::pages::examples::handyman_app::pages::content::HandymanAbout;
+use crate::pages::examples::handyman_app::pages::content::HandymanBlog;
+use crate::pages::examples::handyman_app::pages::content::HandymanContact;
+use crate::pages::examples::handyman_app::pages::content::HandymanTestimonials;
+use crate::pages::examples::handyman_app::pages::content::{PrivacyPolicy, TermsOfService};
 use crate::pages::examples::handyman_app::pages::main::HandymanAreaPage;
 use crate::pages::examples::handyman_app::pages::main::HandymanFeatures;
 use crate::pages::examples::handyman_app::pages::main::HandymanHome;
 use crate::pages::examples::handyman_app::pages::main::HandymanServiceDetail;
 use crate::pages::examples::handyman_app::pages::main::HandymanServiceMap;
 use crate::pages::examples::handyman_app::pages::main::HandymanServices;
-// Booking pages
-use crate::pages::examples::handyman_app::pages::booking::AdminCustomers;
-use crate::pages::examples::handyman_app::pages::booking::HandymanBooking;
-use crate::pages::examples::handyman_app::pages::booking::HandymanEmergency;
-use crate::pages::examples::handyman_app::pages::booking::HandymanQuote;
-// Content pages
-use crate::pages::examples::handyman_app::pages::content::HandymanAbout;
-use crate::pages::examples::handyman_app::pages::content::HandymanBlog;
-use crate::pages::examples::handyman_app::pages::content::HandymanContact;
-use crate::pages::examples::handyman_app::pages::content::HandymanTestimonials;
-use crate::pages::examples::handyman_app::pages::content::{PrivacyPolicy, TermsOfService};
-
-use crate::pages::handyman::Handyman;
-use crate::pages::home::Home;
-use crate::pages::not_found::NotFound;
-use crate::pages::packages::Packages;
-use crate::pages::pricing::Pricing;
 
 #[component]
 fn MainLayout() -> impl IntoView {
@@ -96,7 +104,7 @@ pub fn App() -> impl IntoView {
                     <Route path=path!("/handyman") view=Handyman/>
                     <Route path=path!("/blog") view=BlogIndex/>
                     <Route path=path!("/blog/:slug") view=BlogArticle/>
-                    <Route path=path!("/industries") view=crate::pages::industries::Industries/>
+                    <Route path=path!("/industries") view=Industries/>
                     <Route path=path!("/terms") view=Terms/>
                     <Route path=path!("/faq") view=Faq/>
                     <Route path=path!("/service-agreement") view=ServiceAgreement/>

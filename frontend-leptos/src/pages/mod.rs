@@ -1,18 +1,16 @@
 //! Application pages.
 //!
-//! Contains all route page components.
+//! Contains all route page components organized into subfolders.
 
-pub mod about;
 pub mod blog;
-pub mod contact;
-pub mod coventry;
 pub mod examples;
-pub mod faq;
-pub mod handyman;
-pub mod home;
-pub mod industries;
-pub mod not_found;
-pub mod packages;
-pub mod pricing;
-pub mod service_agreement;
-pub mod terms;
+pub mod info;
+pub mod legal;
+pub mod locations;
+pub mod main;
+
+// Re-export all page components for convenient access
+pub use info::*;
+pub use legal::*;
+pub use locations::*;
+pub use main::*;

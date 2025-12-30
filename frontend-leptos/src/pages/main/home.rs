@@ -234,9 +234,9 @@ pub fn Home() -> impl IntoView {
                             <div class="relative overflow-hidden rounded-lg mb-6 aspect-video">
                                 <img src="/images/mockups/gas_engineer.png" alt="SEO Optimized Trade Website" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"/>
                             </div>
-                            <h3 class="text-xl font-black text-white mb-4">"Local SEO & Booking Systems"</h3>
+                            <h3 class="text-xl font-black text-white mb-4">"Search Engine Optimization (SEO)"</h3>
                             <p class="text-gray-400 text-sm leading-relaxed">
-                                "Get found on Google when customers search for services in your area. Integrated booking systems and quote request forms turn website visitors into paying jobs."
+                                "SEO means your website appears when people search 'plumber near me' or 'electrician in Coventry'. We optimize page titles, meta descriptions, local keywords, and Google Business integration so customers find YOU instead of your competitors."
                             </p>
                         </div>
 
