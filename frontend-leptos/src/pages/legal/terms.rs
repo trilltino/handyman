@@ -120,7 +120,7 @@ pub fn Terms() -> impl IntoView {
                             <div class="space-y-3">
                                 <div class="bg-void-surface border-l-4 border-brand p-4 rounded">
                                     <p class="font-bold text-white">"Initial Version"</p>
-                                    <p class="text-sm text-gray-400">"Delivered within 36 hours after Final Specification Sheet agreement"</p>
+                                    <p class="text-sm text-gray-400">"Delivered within 72 HRS after Final Specification Sheet agreement"</p>
                                 </div>
                                 <div class="bg-void-surface border-l-4 border-brand p-4 rounded">
                                     <p class="font-bold text-white">"Host Version"</p>

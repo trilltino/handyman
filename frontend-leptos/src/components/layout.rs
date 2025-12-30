@@ -23,7 +23,7 @@ pub fn Navbar() -> impl IntoView {
 
     // Scroll detection - Client side only to avoid SSR panic
     Effect::new(move |_| {
-        if let Some(win) = window() {
+        if let Some(win) = leptos::window() {
             let on_scroll = Closure::wrap(Box::new(move |_e: web_sys::Event| {
                 let current_y = win.scroll_y().unwrap_or(0.0);
                 let last_y = last_scroll_y.get_untracked();
@@ -94,8 +94,8 @@ pub fn Navbar() -> impl IntoView {
                     <div class="hidden md:flex items-center gap-8">
                         <A href="/packages" attr:class="text-sm font-black hover:opacity-80 transition-opacity uppercase tracking-widest" attr:style="color: white;">"PACKAGES"</A>
                         <A href="/handyman-coventry" attr:class="text-sm font-black hover:opacity-80 transition-opacity uppercase tracking-widest" attr:style="color: white;">"EXAMPLE"</A>
-                        <a href="https://calendly.com/isicheivalentine/30min" target="_blank" class="text-sm font-black hover:opacity-80 transition-opacity uppercase tracking-widest" style="color: white;">"QUICK CHAT?"</a>
                         <A href="/contact" attr:class="text-sm font-black hover:opacity-80 transition-opacity uppercase tracking-widest" attr:style="color: white;">"CONTACT"</A>
+                        <a href="https://calendly.com/isicheivalentine/30min" target="_blank" class="text-sm font-black hover:opacity-80 transition-opacity uppercase tracking-widest" style="color: white;">"QUICK CHAT?"</a>
                     </div>
 
                     // Burger Menu

@@ -59,7 +59,7 @@ pub fn Faq() -> impl IntoView {
                                 </div>
                                 <div class="faq-item">
                                     <h3 class="text-brand font-bold text-lg mb-2">"How long does it take?"</h3>
-                                    <p class="text-gray-400 text-sm leading-relaxed">"Typically 3-5 days from specification to launch. We deliver an initial version within 36 hours."</p>
+                                    <p class="text-gray-400 text-sm leading-relaxed">"Typically 3-5 days from specification to launch. We deliver an initial version within 72 HRS."</p>
                                 </div>
                                 <div class="faq-item">
                                     <h3 class="text-brand font-bold text-lg mb-2">"Is there a refund policy?"</h3>
@@ -200,7 +200,7 @@ pub fn Faq() -> impl IntoView {
             "name": "How long does website development take?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "We deliver an Initial Version within 36 hours after you approve the Final Specification Sheet. Total typical timeline: 3-5 days from specification to launch."
+              "text": "We deliver an Initial Version within 72 HRS after you approve the Final Specification Sheet. Total typical timeline: 3-5 days from specification to launch."
             }
           }, {
             "@type": "Question",

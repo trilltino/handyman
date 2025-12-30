@@ -149,7 +149,7 @@ pub fn ServiceAgreement() -> impl IntoView {
                             />
                             <ProcessStep
                                 number="3"
-                                title="Initial Version (36 hours)"
+                                title="Initial Version (72 HRS)"
                                 description="We build your website. You test it at our facilities. You can suggest modifications, which we incorporate at no extra charge."
                             />
                             <ProcessStep

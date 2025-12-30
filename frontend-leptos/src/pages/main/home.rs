@@ -28,7 +28,7 @@ pub fn Home() -> impl IntoView {
                     </h1>
 
                     <p class="text-xl md:text-2xl text-gray-400 max-w-4xl mx-auto leading-relaxed font-medium">
-                        <span class="text-white font-bold">"36 hours from signature to live."</span>
+                        <span class="text-white font-bold">"72 HRS from signature to live."</span>
                         " We engineer websites built for trust and growth, show your good work off."
                     </p>
                 </div>
