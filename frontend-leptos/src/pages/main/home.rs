@@ -12,8 +12,9 @@ pub fn Home() -> impl IntoView {
         <SeoHead metadata=PageMetadata::for_homepage() />
         <LocalBusinessSchema />
 
-        // Single continuous gradient background for entire page
-        <div class="min-h-screen text-white font-sans selection:bg-brand selection:text-white overflow-x-hidden bg-gradient-to-br from-red-950 via-black to-black">
+        // Local wrapper (was background wrapper)
+        // Kept div for structure but removed BG classes
+        <div>
             // Fixed Edge Glows for Ambient depth
             <div class="edge-glow-tl opacity-20 md:opacity-30"></div>
             <div class="edge-glow-br opacity-20 md:opacity-30"></div>

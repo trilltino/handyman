@@ -68,11 +68,13 @@ use crate::pages::examples::handyman_app::pages::main::HandymanServices;
 #[component]
 fn MainLayout() -> impl IntoView {
     view! {
-        <crate::components::layout::Navbar />
-         <main class="pt-16">
-            <Outlet/>
-        </main>
-        <crate::components::layout::Footer />
+        <div class="min-h-screen text-white font-sans selection:bg-brand selection:text-white overflow-x-hidden bg-gradient-to-br from-red-950 via-black to-black">
+            <crate::components::layout::Navbar />
+            <main>
+                <Outlet/>
+            </main>
+            <crate::components::layout::Footer />
+        </div>
     }
 }
 
