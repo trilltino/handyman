@@ -4,18 +4,74 @@ use leptos::prelude::*;
 use leptos_router::components::A;
 
 /// Fixed navigation bar with dropdown menus.
+use leptos::ev;
+use wasm_bindgen::prelude::*;
+use wasm_bindgen::JsCast;
+
 #[component]
 pub fn Navbar() -> impl IntoView {
     // State for mobile menu
     let (is_open, set_is_open) = signal(false);
 
+    // State for scroll behavior
+    let (is_visible, set_is_visible) = signal(true);
+    let (is_scrolled, set_is_scrolled) = signal(false);
+    let (last_scroll_y, set_last_scroll_y) = signal(0.0);
+
     // Close menu when a link is clicked
     let close_menu = move |_| set_is_open.set(false);
 
+    // Scroll detection - Client side only to avoid SSR panic
+    Effect::new(move |_| {
+        if let Some(win) = window() {
+            let on_scroll = Closure::wrap(Box::new(move |_e: web_sys::Event| {
+                let current_y = win.scroll_y().unwrap_or(0.0);
+                let last_y = last_scroll_y.get_untracked();
+
+                // Show/Hide logic
+                if current_y > last_y && current_y > 100.0 {
+                    // Scrolling down & past threshold -> Hide
+                    set_is_visible.set(false);
+                } else {
+                    // Scrolling up -> Show
+                    set_is_visible.set(true);
+                }
+
+                // Background opacity logic
+                set_is_scrolled.set(current_y > 20.0);
+
+                set_last_scroll_y.set(current_y);
+            }) as Box<dyn FnMut(web_sys::Event)>);
+
+            let _ =
+                win.add_event_listener_with_callback("scroll", on_scroll.as_ref().unchecked_ref());
+
+            // Keep the closure alive for the duration of the component
+            on_cleanup(move || {
+                let _ = win.remove_event_listener_with_callback(
+                    "scroll",
+                    on_scroll.as_ref().unchecked_ref(),
+                );
+            });
+        }
+    });
+
     view! {
-        <nav class="fixed top-0 left-0 right-0 z-50">
-            // Main Navbar Content - Seamless (Transparent)
-            <div class="w-full px-6 h-24 flex items-center justify-between transition-all duration-300">
+        <nav
+            class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 transform"
+            class:translate-y-0=move || is_visible.get()
+            class:-translate-y-full=move || !is_visible.get()
+        >
+            // Main Navbar Content - Dynamic Background
+            <div
+                class=move || {
+                    let mut c = "w-full px-6 h-24 flex items-center justify-between transition-all duration-300".to_string();
+                    if is_scrolled.get() || is_open.get() {
+                        c.push_str(" bg-black/90 backdrop-blur-md border-b border-white/10");
+                    }
+                    c
+                }
+            >
                 // Left: Brand Logo & Tagline
                 <div class="flex items-center gap-6">
                     <A href="/" attr:class="flex items-center gap-3" on:click=close_menu>
@@ -42,8 +98,7 @@ pub fn Navbar() -> impl IntoView {
                         <A href="/contact" attr:class="text-sm font-black hover:opacity-80 transition-opacity uppercase tracking-widest" attr:style="color: white;">"CONTACT"</A>
                     </div>
 
-                    // Burger Menu (Visible on Desktop too as per design, or predominantly mobile)
-                    // The user's design shows links AND the burger.
+                    // Burger Menu
                     <button
                         class="text-white p-2 focus:outline-none hover:text-brand transition-colors"
                         on:click=move |_| set_is_open.update(|v| *v = !*v)
