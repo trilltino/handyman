@@ -125,6 +125,11 @@ pub fn Navbar() -> impl IntoView {
                 if is_open.get() { "max-h-screen opacity-100 border-t border-white/10" } else { "max-h-0 opacity-0 border-none" }
             )>
                 <div class="flex flex-col px-8 py-12 space-y-8 text-center min-h-[50vh] justify-center">
+                    <A href="/packages" attr:class="text-lg font-bold text-white hover:text-gray-300" on:click=close_menu>"PACKAGES"</A>
+                    <A href="/handyman-coventry" attr:class="text-lg font-bold text-white hover:text-gray-300" on:click=close_menu>"EXAMPLE"</A>
+                    <A href="/contact" attr:class="text-lg font-bold text-white hover:text-gray-300" on:click=close_menu>"CONTACT"</A>
+                    <a href="https://calendly.com/isicheivalentine/30min" target="_blank" class="text-lg font-bold text-white hover:text-gray-300" on:click=close_menu>"QUICK CHAT?"</a>
+                    <div class="border-t border-white/20 my-4"></div>
                     <A href="/faq" attr:class="text-lg font-bold text-white hover:text-gray-300" on:click=close_menu>"FAQ"</A>
                     <A href="/terms" attr:class="text-lg font-bold text-white hover:text-gray-300" on:click=close_menu>"TERMS"</A>
                     <A href="/blog" attr:class="text-lg font-bold text-white hover:text-gray-300" on:click=close_menu>"BLOG"</A>
