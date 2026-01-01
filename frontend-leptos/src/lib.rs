@@ -57,13 +57,18 @@ use crate::pages::examples::handyman_app::pages::content::HandymanAbout;
 use crate::pages::examples::handyman_app::pages::content::HandymanBlog;
 use crate::pages::examples::handyman_app::pages::content::HandymanContact;
 use crate::pages::examples::handyman_app::pages::content::HandymanTestimonials;
-use crate::pages::examples::handyman_app::pages::content::{PrivacyPolicy, TermsOfService};
+use crate::pages::examples::handyman_app::pages::content::{
+    HandymanFaq, PrivacyPolicy, TermsOfService,
+};
 use crate::pages::examples::handyman_app::pages::main::HandymanAreaPage;
 use crate::pages::examples::handyman_app::pages::main::HandymanFeatures;
 use crate::pages::examples::handyman_app::pages::main::HandymanHome;
 use crate::pages::examples::handyman_app::pages::main::HandymanServiceDetail;
 use crate::pages::examples::handyman_app::pages::main::HandymanServiceMap;
 use crate::pages::examples::handyman_app::pages::main::HandymanServices;
+use crate::pages::examples::handyman_app::pages::services::{
+    FurnitureAssembly, MountingInstallation, PlumbingRepairs,
+};
 
 #[component]
 fn MainLayout() -> impl IntoView {
@@ -103,7 +108,7 @@ pub fn App() -> impl IntoView {
                     <Route path=path!("/about") view=About/>
                     <Route path=path!("/contact") view=Contact/>
                     <Route path=path!("/coventry") view=Coventry/>
-                    <Route path=path!("/handyman") view=Handyman/>
+
                     <Route path=path!("/blog") view=BlogIndex/>
                     <Route path=path!("/blog/:slug") view=BlogArticle/>
                     <Route path=path!("/industries") view=Industries/>
@@ -116,7 +121,11 @@ pub fn App() -> impl IntoView {
                 <ParentRoute path=path!("/handyman-coventry") view=HandymanLayout>
                     <Route path=path!("/") view=HandymanHome/>
                     <Route path=path!("/services") view=HandymanServices/>
+                    <Route path=path!("/services/furniture-assembly") view=FurnitureAssembly/>
+                    <Route path=path!("/services/plumbing") view=PlumbingRepairs/>
+                    <Route path=path!("/services/mounting") view=MountingInstallation/>
                     <Route path=path!("/services/:slug") view=HandymanServiceDetail/>
+                    <Route path=path!("/faq") view=HandymanFaq/>
                     <Route path=path!("/features") view=HandymanFeatures/>
                     <Route path=path!("/testimonials") view=HandymanTestimonials/>
                     <Route path=path!("/service-area") view=HandymanServiceMap/>

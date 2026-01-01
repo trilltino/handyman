@@ -1,11 +1,17 @@
+# XFTradesman Robots.txt
+# https://xftradesmen.fly.dev
+
 User-agent: *
 Allow: /
 
+# Block admin and API endpoints
 Disallow: /admin/
 Disallow: /api/admin/
 Disallow: /debug/
 Disallow: /test/
+Disallow: /handyman-coventry/admin/
 
+# Allow static assets
 Allow: *.css
 Allow: *.js
 Allow: *.png
@@ -15,6 +21,8 @@ Allow: *.gif
 Allow: *.svg
 Allow: *.webp
 
-Sitemap: https://xftradesman.com/sitemap.xml
+# Sitemap location
+Sitemap: https://xftradesmen.fly.dev/sitemap.xml
 
+# Crawl rate
 Crawl-delay: 1

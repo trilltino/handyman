@@ -65,9 +65,17 @@ async fn main() {
 async fn robots_handler() -> axum::response::Response {
     use axum::http::header;
 
-    let robots = r#"User-agent: *
+    let robots = r#"# XFTradesman Robots.txt
+User-agent: *
 Allow: /
-Sitemap: https://xftradesman.com/sitemap.xml
+
+# Block admin and API endpoints
+Disallow: /admin/
+Disallow: /api/admin/
+Disallow: /handyman-coventry/admin/
+
+Sitemap: https://xftradesmen.fly.dev/sitemap.xml
+Crawl-delay: 1
 "#;
 
     axum::response::Response::builder()
@@ -81,18 +89,46 @@ Sitemap: https://xftradesman.com/sitemap.xml
 async fn sitemap_handler() -> axum::response::Response {
     use axum::http::header;
 
-    let base_url = "https://xftradesman.com";
+    let base_url = "https://xftradesmen.fly.dev";
 
-    let static_routes = [
-        ("", "1.0"),
-        ("/about", "0.8"),
-        ("/contact", "0.8"),
-        ("/pricing", "0.8"),
-        ("/blog", "0.8"),
-        ("/coventry", "0.9"),
-        ("/packages", "0.8"),
-        ("/handyman", "0.9"),
-        ("/industries", "0.8"),
+    // Main XFTradesman pages
+    let main_routes = [
+        ("", "1.0", "weekly"),
+        ("/pricing", "0.8", "monthly"),
+        ("/packages", "0.8", "monthly"),
+        ("/about", "0.7", "monthly"),
+        ("/contact", "0.7", "monthly"),
+        ("/coventry", "0.6", "monthly"),
+        ("/blog", "0.7", "weekly"),
+        ("/industries", "0.6", "monthly"),
+        ("/terms", "0.3", "yearly"),
+        ("/faq", "0.6", "monthly"),
+        ("/service-agreement", "0.3", "yearly"),
+    ];
+
+    // Handyman Coventry example pages
+    let handyman_routes = [
+        ("/handyman-coventry", "0.9", "weekly"),
+        ("/handyman-coventry/services", "0.8", "weekly"),
+        (
+            "/handyman-coventry/services/furniture-assembly",
+            "0.7",
+            "monthly",
+        ),
+        ("/handyman-coventry/services/plumbing", "0.7", "monthly"),
+        ("/handyman-coventry/services/mounting", "0.7", "monthly"),
+        ("/handyman-coventry/faq", "0.6", "monthly"),
+        ("/handyman-coventry/features", "0.6", "monthly"),
+        ("/handyman-coventry/testimonials", "0.7", "weekly"),
+        ("/handyman-coventry/service-area", "0.6", "monthly"),
+        ("/handyman-coventry/booking", "0.8", "monthly"),
+        ("/handyman-coventry/quote", "0.8", "monthly"),
+        ("/handyman-coventry/about", "0.6", "monthly"),
+        ("/handyman-coventry/contact", "0.7", "monthly"),
+        ("/handyman-coventry/blog", "0.6", "weekly"),
+        ("/handyman-coventry/emergency", "0.7", "monthly"),
+        ("/handyman-coventry/privacy", "0.3", "yearly"),
+        ("/handyman-coventry/terms", "0.3", "yearly"),
     ];
 
     let blog_posts = [
@@ -103,18 +139,33 @@ async fn sitemap_handler() -> axum::response::Response {
 
     let mut url_entries = String::new();
 
-    for (route, priority) in static_routes {
+    // Add main routes
+    for (route, priority, changefreq) in main_routes {
         url_entries.push_str(&format!(
             r#"  <url>
     <loc>{}{}</loc>
-    <changefreq>weekly</changefreq>
+    <changefreq>{}</changefreq>
     <priority>{}</priority>
   </url>
 "#,
-            base_url, route, priority
+            base_url, route, changefreq, priority
         ));
     }
 
+    // Add handyman routes
+    for (route, priority, changefreq) in handyman_routes {
+        url_entries.push_str(&format!(
+            r#"  <url>
+    <loc>{}{}</loc>
+    <changefreq>{}</changefreq>
+    <priority>{}</priority>
+  </url>
+"#,
+            base_url, route, changefreq, priority
+        ));
+    }
+
+    // Add blog posts
     for post in blog_posts {
         url_entries.push_str(&format!(
             r#"  <url>

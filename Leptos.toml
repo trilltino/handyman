@@ -5,7 +5,7 @@
 output-name = "xftradesmen"
 
 # Binary target name - MUST match the [[bin]] name in frontend-leptos/Cargo.toml
-bin-target = "xftradesmen_bin"
+bin-target = "frontend-leptos"
 
 # Workspace package specification
 bin-package = "frontend-leptos"

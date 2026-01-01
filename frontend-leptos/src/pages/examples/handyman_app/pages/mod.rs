@@ -10,6 +10,7 @@ pub mod admin;
 pub mod booking;
 pub mod content;
 pub mod main;
+pub mod services;
 
 // Re-export all components for backward compatibility
 #[allow(unused_imports)]

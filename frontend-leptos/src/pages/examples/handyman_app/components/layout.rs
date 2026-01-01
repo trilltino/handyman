@@ -88,7 +88,6 @@ pub fn HandymanLayout() -> impl IntoView {
                                 </button>
                                 <div class="absolute left-0 top-full w-48 bg-white text-slate-800 shadow-xl rounded-b-lg overflow-hidden invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200 z-50 border-t-2 border-yellow-400">
                                     <A href="/handyman-coventry/features" {..} class="block px-6 py-3 text-sm hover:bg-gray-50 hover:text-blue-900 border-b border-gray-100">"Why Choose Us"</A>
-                                    <A href="/handyman-coventry/testimonials" {..} class="block px-6 py-3 text-sm hover:bg-gray-50 hover:text-blue-900 border-b border-gray-100">"Reviews"</A>
                                     <A href="/handyman-coventry/faq" {..} class="block px-6 py-3 text-sm hover:bg-gray-50 hover:text-blue-900">"FAQ"</A>
                                 </div>
                              </div>
@@ -99,9 +98,11 @@ pub fn HandymanLayout() -> impl IntoView {
                                     "Services"
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                                 </button>
-                                <div class="absolute left-0 top-full w-48 bg-white text-slate-800 shadow-xl rounded-b-lg overflow-hidden invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200 z-50 border-t-2 border-yellow-400">
-                                    <A href="/handyman-coventry/services" {..} class="block px-6 py-3 text-sm hover:bg-gray-50 hover:text-blue-900 border-b border-gray-100">"All Services"</A>
-                                    <A href="/handyman-coventry/service-area" {..} class="block px-6 py-3 text-sm hover:bg-gray-50 hover:text-blue-900">"Service Area"</A>
+                                <div class="absolute left-0 top-full w-64 bg-white text-slate-800 shadow-xl rounded-b-lg overflow-hidden invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200 z-50 border-t-2 border-yellow-400">
+                                    <A href="/handyman-coventry/services/furniture-assembly" {..} class="block px-6 py-3 text-sm hover:bg-gray-50 hover:text-blue-900 border-b border-gray-100">"Furniture Assembly"</A>
+                                    <A href="/handyman-coventry/services/plumbing" {..} class="block px-6 py-3 text-sm hover:bg-gray-50 hover:text-blue-900 border-b border-gray-100">"Plumbing Repairs"</A>
+                                    <A href="/handyman-coventry/services/mounting" {..} class="block px-6 py-3 text-sm hover:bg-gray-50 hover:text-blue-900 border-b border-gray-100">"Mounting & Installation"</A>
+                                    <A href="/handyman-coventry/services" {..} class="block px-6 py-3 text-sm hover:bg-gray-50 hover:text-blue-900 bg-gray-50 font-bold border-t border-gray-100">"View All Services"</A>
                                 </div>
                              </div>
 
@@ -125,58 +126,85 @@ pub fn HandymanLayout() -> impl IntoView {
                 <Outlet/>
             </main>
 
-             // Deep Footer
-            <footer class="bg-slate-900 text-slate-300 pt-20 pb-10 px-6 border-t font-light">
-                <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-12 mb-16">
-                    <div class="col-span-1 md:col-span-2 space-y-6">
-                        <h3 class="text-white text-2xl font-bold mb-4 flex items-center gap-2">
-                             <div class="w-8 h-8 bg-yellow-500 rounded flex items-center justify-center text-blue-900 text-lg">"H"</div>
-                            "Coventry Handyman"
-                        </h3>
-                        <p class="text-lg leading-relaxed max-w-md text-slate-400">
-                            "Raising the standard of home maintenance. We combine traditional craftsmanship with modern reliability. Fully insured, vetted, and trusted by hundreds of local families."
-                        </p>
-                        <div class="flex gap-4">
-                            // Social placeholders
-                            <div class="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center hover:bg-yellow-500 hover:text-blue-900 transition cursor-pointer">"FB"</div>
-                            <div class="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center hover:bg-yellow-500 hover:text-blue-900 transition cursor-pointer">"IG"</div>
-                            <div class="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center hover:bg-yellow-500 hover:text-blue-900 transition cursor-pointer">"LI"</div>
-                        </div>
-                    </div>
-                    <div>
-                        <h4 class="text-white font-bold text-lg mb-6 uppercase tracking-wider">"Explore"</h4>
-                        <ul class="space-y-4">
-                            <li><A href="/handyman-coventry/services" {..} class="hover:text-yellow-400 transition flex items-center gap-2">"All Services"</A></li>
-                            <li><A href="/handyman-coventry/features" {..} class="hover:text-yellow-400 transition flex items-center gap-2">"Our Guarantee"</A></li>
-                            <li><A href="/handyman-coventry/testimonials" {..} class="hover:text-yellow-400 transition flex items-center gap-2">"Customer Stories"</A></li>
-                            <li><A href="/handyman-coventry/service-area" {..} class="hover:text-yellow-400 transition flex items-center gap-2">"Service Area Map"</A></li>
-                            <li><A href="/handyman-coventry/booking" {..} class="hover:text-yellow-400 transition flex items-center gap-2">"Book Online"</A></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="text-white font-bold text-lg mb-6 uppercase tracking-wider">"Contact"</h4>
-                        <ul class="space-y-4">
-                             <li class="flex items-start gap-3">
-                                <svg class="w-6 h-6 text-yellow-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                                <span>"Head Office: Coventry, CV1 1AA, United Kingdom"</span>
-                            </li>
-                            <li class="flex items-center gap-3">
-                                <svg class="w-6 h-6 text-yellow-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-                                <A href="tel:07833263486" {..} class="hover:text-yellow-400 font-bold text-white text-lg">"+44 7833 263486"</A>
-                            </li>
-                             <li class="flex items-center gap-3">
-                                <svg class="w-6 h-6 text-yellow-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                                <A href="mailto:hello@xftradesman.com" {..} class="hover:text-yellow-400">"hello@coventryhandyman.co.uk"</A>
-                            </li>
-                        </ul>
+            // Deep Footer
+            <footer class="bg-[#0a0f1c] text-slate-300 font-sans">
+                // CTA Banner
+                <div class="bg-gradient-to-r from-blue-950 to-[#0a0f1c] text-white py-16 px-6 text-center border-b border-white/5 relative overflow-hidden">
+                     <div class="relative z-10 max-w-4xl mx-auto">
+                        <h2 class="text-3xl md:text-4xl font-bold mb-6 font-heading leading-tight">"Stop Struggling With Home Repairs - Get XFTradesmen's Expert Help Today!"</h2>
+                         <A href="/handyman-coventry/booking" {..} class="inline-block px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-lg transition shadow-lg hover:shadow-blue-900/50 uppercase tracking-wide">
+                            "Get Your Custom Quote"
+                        </A>
                     </div>
                 </div>
-                <div class="text-center text-sm border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center text-slate-500">
-                     <span>"© 2026 Coventry Handyman Services. All rights reserved."</span>
-                     <div class="flex gap-6 mt-4 md:mt-0">
-                        <A href="#" {..} class="hover:text-white transition">"Privacy Policy"</A>
-                        <A href="#" {..} class="hover:text-white transition">"Terms of Service"</A>
-                     </div>
+
+                // Main Footer Content
+                <div class="max-w-7xl mx-auto pt-16 pb-10 px-6">
+                    <div class="grid md:grid-cols-12 gap-12 mb-16">
+                        // Column 1: Brand (4 cols)
+                        <div class="md:col-span-4 space-y-6">
+                             <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded flex items-center justify-center text-blue-900 font-black text-xl">"H"</div>
+                                <div class="flex flex-col">
+                                    <span class="text-xl font-black tracking-tight leading-none text-white">"HANDLE"</span>
+                                    <span class="text-xl font-black tracking-tight leading-none text-blue-500">"MAN"</span>
+                                </div>
+                             </div>
+                            <p class="text-base leading-relaxed text-slate-400">
+                                "XFTradesmen provides patented handles and lock systems that transform sliding doors into safer, easier, and more enjoyable features of your home."
+                            </p>
+                             <div class="flex gap-4 pt-4">
+                                <A href="#" {..} class="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center hover:bg-white/10 transition" aria-label="Facebook">
+                                    <img src="/images/icons/facebook.webp" class="w-5 h-5 object-contain brightness-0 invert opacity-90" alt="Facebook" />
+                                </A>
+                                <A href="#" {..} class="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center hover:bg-white/10 transition" aria-label="Instagram">
+                                     <img src="/images/icons/instagram.png" class="w-5 h-5 object-contain opacity-90" alt="Instagram" />
+                                </A>
+                                <A href="#" {..} class="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center hover:bg-white/10 transition" aria-label="LinkedIn">
+                                    <img src="/images/icons/linkedin.webp" class="w-5 h-5 object-contain brightness-0 invert opacity-90" alt="LinkedIn" />
+                                </A>
+                            </div>
+                        </div>
+
+                        // Column 2: Phone & Hours (4 cols)
+                        <div class="md:col-span-4 pl-0 md:pl-12 space-y-6">
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">"Phone Number"</h4>
+                                <A href="tel:02476123456" {..} class="text-2xl font-bold text-white hover:text-blue-500 transition">"(024) 7612-3456"</A>
+                            </div>
+                             <div>
+                                <h4 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">"Office Hours"</h4>
+                                <p class="text-lg text-white font-bold">"Mon - Sat"</p>
+                                <p class="text-lg text-white">"8:00 am - 6:00 pm"</p>
+                            </div>
+                        </div>
+
+                        // Column 3: Email & Address (4 cols)
+                        <div class="md:col-span-4 space-y-6">
+                             <div>
+                                <h4 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">"Email Address"</h4>
+                                <A href="mailto:info@handyman-coventry.co.uk" {..} class="text-2xl font-bold text-white hover:text-blue-500 transition">"info@handyman-coventry.co.uk"</A>
+                            </div>
+                             <div>
+                                <h4 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">"Office Address"</h4>
+                                <p class="text-lg text-white font-bold">"Coventry, CV1 1AA"</p>
+                                <p class="text-lg text-white">"United Kingdom"</p>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                    // Bottom Links
+                    <div class="border-t border-white/5 pt-8">
+                         <div class="flex flex-wrap justify-center gap-x-8 gap-y-4 text-sm font-medium text-slate-400">
+                            <A href="#" {..} class="hover:text-white transition">"Home"</A>
+                            <A href="#" {..} class="hover:text-white transition">"About"</A>
+                            <A href="#" {..} class="hover:text-white transition">"Reviews"</A>
+                            <A href="/handyman-coventry/faq" {..} class="hover:text-white transition">"FAQ"</A>
+                            <A href="/handyman-coventry/contact" {..} class="hover:text-white transition">"Contact"</A>
+                        </div>
+                    </div>
                 </div>
             </footer>
         </div>

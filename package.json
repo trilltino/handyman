@@ -3,8 +3,8 @@
     "version": "1.0.0",
     "description": "XF Tradesmen - Professional Website Platform for UK Tradespeople",
     "scripts": {
-        "build:css": "npx @tailwindcss/cli -i ./frontend-leptos/input.css -o ./frontend-leptos/public/xftradesmen.css --minify",
-        "watch:css": "npx @tailwindcss/cli -i ./frontend-leptos/input.css -o ./frontend-leptos/public/xftradesmen.css --watch"
+        "build:css": "npx @tailwindcss/cli -i ./frontend-leptos/input.css -o ./frontend-leptos/public/xftradesmen.css --content './frontend-leptos/src/**/*.rs' --minify",
+        "watch:css": "npx @tailwindcss/cli -i ./frontend-leptos/input.css -o ./frontend-leptos/public/xftradesmen.css --content './frontend-leptos/src/**/*.rs' --watch"
     },
     "devDependencies": {
         "@tailwindcss/cli": "^4.0.0",

@@ -1,8 +1,8 @@
 //! Handyman Home Page.
 
 use crate::components::seo::{LocalBusinessSchema, SeoHead};
-use crate::pages::examples::handyman_app::components::{CtaButton, GlassCard};
 use leptos::prelude::*;
+use leptos_router::components::A;
 use shared::PageMetadata;
 
 #[component]
@@ -10,115 +10,139 @@ pub fn HandymanHome() -> impl IntoView {
     view! {
         <SeoHead metadata=PageMetadata {
             title: "Coventry Handyman Services | Reliable & Local Examples".to_string(),
-            description: "Example site for a local handyman business. Shows how XFTradesmen builds high-converting websites.".to_string(),
+            description: "Meet Rick, the renowned local handyman making home repairs simple again. 10 years experience, affordable rates, attentive workmanship.".to_string(),
             canonical_url: Some("https://xftradesman.com/handyman-coventry".to_string()),
-            og_image: None,
+            og_image: Some("/images/hero_assets/hero_bg.png".to_string()),
         }/>
         <LocalBusinessSchema />
 
-         // Deep Hero
-            <section class="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
-                // Background Gradient/Mesh - Red & Black
-                <div class="absolute inset-0 bg-gradient-to-br from-red-900 via-red-950 to-black z-0"></div>
-                <div class="absolute -top-40 -right-40 w-[600px] h-[600px] bg-red-500/20 rounded-full blur-[100px] animate-pulse"></div>
-                <div class="absolute bottom-0 left-0 w-[800px] h-[800px] bg-orange-500/10 rounded-full blur-[120px]"></div>
+        <div class="font-sans antialiased text-slate-900 bg-white">
+            // Hero Section
+            <section class="relative min-h-[85vh] flex items-center overflow-hidden">
+                // Background Image
+                <div class="absolute inset-0 z-0">
+                    <img
+                        src="/images/hero_assets/hero_bg.png"
+                        alt="Rick the Handyman"
+                        class="w-full h-full object-cover object-center"
+                    />
+                    // Strong Blue Overlay (Handleman style)
+                    <div class="absolute inset-0 bg-blue-900/80 mix-blend-multiply"></div>
+                    <div class="absolute inset-0 bg-black/30"></div>
+                </div>
 
                 // Content
-                <div class="relative z-10 max-w-6xl mx-auto text-center px-6 animate-fade-in-up">
-                    <div class="flex justify-center gap-4 mb-8">
-                        <span class="text-xl md:text-2xl font-light text-white tracking-widest uppercase">"Easy. Secure. Smooth."</span>
+                <div class="relative z-10 max-w-7xl mx-auto px-6 w-full pt-20">
+                    <div class="max-w-4xl">
+                        <h1 class="text-5xl md:text-7xl font-black !text-white leading-[1.1] mb-8 drop-shadow-xl font-heading">
+                            "Meet the renown local handyman everyone is Talking about!"
+                        </h1>
+                        <p class="text-xl md:text-3xl !text-white font-medium leading-relaxed mb-12 max-w-3xl drop-shadow-md">
+                            "Rick makes fixing things around your home simple again with 10 years of experience in the local area enjoy repairs at affordable rates with attentive workmanship"
+                        </p>
+
+                        <div class="flex flex-col sm:flex-row gap-6">
+                            <A href="/handyman-coventry/booking" attr:class="inline-block px-10 py-5 bg-yellow-400 text-blue-900 text-lg font-black uppercase tracking-wide rounded hover:bg-yellow-300 transition shadow-xl hover:scale-105 transform duration-200">
+                                "Get Your Free Quote"
+                            </A>
+
+                        </div>
                     </div>
+                </div>
+            </section>
 
-                    <h1 class="text-4xl md:text-5xl font-black text-white leading-tight mb-8 drop-shadow-2xl" style="color: white !important;">
-                        "Meet the renown local handyman everyone is Talking about!"
-                    </h1>
+            // 3. What Sets Us Apart (Deep Blue Section)
+            <section class="bg-blue-900 py-20 px-6 text-white border-t border-blue-800">
+                <div class="max-w-7xl mx-auto">
+                    <div class="grid md:grid-cols-4 gap-12 text-center md:text-left">
+                        // Feature 1
+                        <div class="space-y-4">
+                            <div class="w-16 h-16 bg-yellow-400 rounded-lg flex items-center justify-center text-blue-900 text-3xl mb-4 mx-auto md:mx-0 shadow-lg">
+                                <span class="font-black">"10"</span>
+                            </div>
+                            <h3 class="text-2xl font-bold">"Years Experience"</h3>
+                            <p class="text-blue-200 leading-relaxed">"Decades of hands-on problem solving in homes just like yours."</p>
+                        </div>
+                        // Feature 2
+                         <div class="space-y-4">
+                            <div class="w-16 h-16 bg-yellow-400 rounded-lg flex items-center justify-center text-blue-900 text-3xl mb-4 mx-auto md:mx-0 shadow-lg">
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            </div>
+                            <h3 class="text-2xl font-bold">"Fully Insured"</h3>
+                            <p class="text-blue-200 leading-relaxed">"Total peace of mind with comprehensive liability coverage."</p>
+                        </div>
+                        // Feature 3
+                         <div class="space-y-4">
+                            <div class="w-16 h-16 bg-yellow-400 rounded-lg flex items-center justify-center text-blue-900 text-3xl mb-4 mx-auto md:mx-0 shadow-lg">
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            </div>
+                            <h3 class="text-2xl font-bold">"Punctual"</h3>
+                            <p class="text-blue-200 leading-relaxed">"We respect your time. We turn up when we say we will."</p>
+                        </div>
+                        // Feature 4
+                         <div class="space-y-4">
+                            <div class="w-16 h-16 bg-yellow-400 rounded-lg flex items-center justify-center text-blue-900 text-3xl mb-4 mx-auto md:mx-0 shadow-lg">
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            </div>
+                            <h3 class="text-2xl font-bold">"Friendly Service"</h3>
+                            <p class="text-blue-200 leading-relaxed">"Professionalism with a smile. No jargon, just results."</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-                    <p class="text-xl md:text-2xl text-white max-w-4xl mx-auto mb-12 font-light leading-relaxed" style="color: white !important;">
-                        "Rick makes fixing things around your home simple again with 10 years of experience in the local area enjoy repairs at affordable rates with attentive workmanship"
+            // 4. Problem / Solution Split
+            <section class="py-24 bg-white overflow-hidden">
+                <div class="max-w-7xl mx-auto px-6">
+                    <div class="flex flex-col md:flex-row items-center gap-16">
+                        // Image Side
+                        <div class="w-full md:w-1/2 relative group">
+                            <div class="absolute -inset-4 bg-yellow-400 rounded-2xl transform rotate-2 group-hover:rotate-1 transition duration-300"></div>
+                            <img
+                                src="/images/hero_assets/problem.png"
+                                alt="Broken Hinge"
+                                class="relative rounded-xl shadow-2xl w-full object-cover transform -rotate-1 group-hover:rotate-0 transition duration-300 border-4 border-white"
+                            />
+                        </div>
+
+                        // Text Side
+                        <div class="w-full md:w-1/2 space-y-8">
+                            <div>
+                                <h3 class="text-blue-600 font-bold uppercase tracking-widest mb-2">"Is your home falling apart?"</h3>
+                                <h2 class="text-5xl font-black text-slate-900 leading-tight">"Small Repairs shouldn't be a Big Headache."</h2>
+                            </div>
+                            <p class="text-slate-600 text-lg leading-relaxed">
+                                "We know the feeling. That wobbly cabinet door, the dripping tap, or the flat-pack boxes piling up in the corner. You're too busy, or maybe you just don't have the right tools."
+                            </p>
+                            <p class="text-slate-900 text-xl font-medium">
+                                "That's where Rick comes in. We tackle the jobs you hate, so you can love your home again."
+                            </p>
+                            <div class="pt-4">
+                                <A href="/handyman-coventry/booking" attr:class="inline-flex items-center gap-2 text-blue-700 font-bold text-lg hover:gap-4 transition-all">
+                                    "See What We Fix" <span class="bg-blue-100 p-1 rounded-full"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></span>
+                                </A>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            // 5. Meet Rick Section
+             <section class="py-24 bg-slate-50">
+                <div class="max-w-5xl mx-auto px-6 text-center">
+                    <div class="w-48 h-48 mx-auto mb-8 relative">
+                         <div class="absolute inset-0 bg-blue-600 rounded-full animate-pulse opacity-20"></div>
+                         <img src="/images/hero_assets/rick.png" alt="Rick" class="w-full h-full object-cover rounded-full border-4 border-white shadow-xl relative z-10" />
+                         <div class="absolute bottom-2 right-2 bg-yellow-400 text-blue-900 font-bold px-3 py-1 rounded-full text-sm z-20 shadow-sm">"Owner"</div>
+                    </div>
+                    <h2 class="text-4xl font-black text-slate-900 mb-6">"Hi, I'm Rick."</h2>
+                    <p class="text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed mb-10">
+                        "I started this business with a simple mission directly from my garage in Coventry: to provide honest, high-quality work without the 'tradesman markup'. When you call, you speak to me. When I work, I treat your home like my own."
                     </p>
-
-                    <div class="flex flex-col sm:flex-row gap-6 justify-center">
-                        <CtaButton text="Get a Free Quote" href="/handyman-coventry/booking" />
-
-                    </div>
-                </div>
-
-                // Scroll Indicator
-                <div class="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/30 animate-bounce">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
                 </div>
             </section>
 
 
-
-             // Services Preview - Seamless continuation of gradient
-            <section class="py-24 px-6 md:px-12 bg-gradient-to-b from-black via-red-950/50 to-black">
-                <div class="max-w-6xl mx-auto">
-                    <div class="text-center mb-16">
-                        <span class="text-red-400 font-bold tracking-widest uppercase text-sm">"What We Do"</span>
-                        <h2 class="text-4xl font-black text-white mt-2">"Expertise You Can Trust"</h2>
-                    </div>
-
-                    <div class="grid md:grid-cols-3 gap-8">
-                        <ServiceCard
-                            title="Home Repairs"
-                            desc="Drywall patching, door handle replacements, and general wear-and-tear."
-                            icon="Repair"
-                            delay="0"
-                        />
-                        <ServiceCard
-                            title="Assembly & Install"
-                            desc="Flat pack furniture assembly, TV mounting, and shelf installation."
-                            icon="Build"
-                            delay="100"
-                        />
-                        <ServiceCard
-                            title="Plumbing Basics"
-                            desc="Leaky taps, toilet repairs, drain unclogging, and shower heads."
-                            icon="Water"
-                            delay="200"
-                        />
-                    </div>
-
-                    <div class="text-center mt-12">
-                        <a href="/handyman-coventry/services" class="text-red-400 font-bold hover:text-red-300 flex items-center justify-center gap-2 group">
-                            "View Full Service and Areas Map"
-                            <svg class="w-4 h-4 group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-                        </a>
-                    </div>
-                </div>
-            </section>
-    }
-}
-
-#[component]
-fn StatItem(value: &'static str, label: &'static str) -> impl IntoView {
-    view! {
-        <div class="space-y-2">
-            <div class="text-4xl font-black text-yellow-400">{value}</div>
-            <div class="text-sm font-bold uppercase tracking-wider text-blue-200">{label}</div>
         </div>
-    }
-}
-
-#[component]
-fn ServiceCard(
-    title: &'static str,
-    desc: &'static str,
-    icon: &'static str,
-    delay: &'static str,
-) -> impl IntoView {
-    let _ = delay;
-    view! {
-        <GlassCard class={format!("h-full flex flex-col items-start")}>
-            <div class="w-16 h-16 bg-gradient-to-br from-red-500/30 to-red-900/50 rounded-2xl flex items-center justify-center text-3xl shadow-sm mb-6 text-white">
-                {icon}
-            </div>
-            <h3 class="text-2xl font-bold text-white mb-3">{title}</h3>
-            <p class="text-gray-300 leading-relaxed mb-6 flex-grow">{desc}</p>
-            <span class="text-red-400 font-bold text-sm uppercase tracking-wide group-hover:translate-x-2 transition-transform inline-flex items-center gap-2">
-                "Learn More" <span class="text-lg">"→"</span>
-            </span>
-        </GlassCard>
     }
 }
