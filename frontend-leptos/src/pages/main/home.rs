@@ -217,39 +217,78 @@ pub fn Home() -> impl IntoView {
                         </a>
                     </div>
 
-                    // Website Examples Grid
-                    <div class="grid md:grid-cols-3 gap-8 mt-12">
-                        // Example 1
-                        <div class="group relative bg-gradient-to-br from-white/5 to-transparent p-6 rounded-2xl border border-white/10 hover:border-brand/50 transition-all duration-500 overflow-hidden">
-                            <div class="relative overflow-hidden rounded-lg mb-6 aspect-video">
-                                <img src="/images/mockups/plumber.png" alt="Professional Trade Website" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"/>
-                            </div>
-                            <h3 class="text-xl font-black text-white mb-4">"Professional Online Presence"</h3>
-                            <p class="text-gray-400 text-sm leading-relaxed">
-                                "Modern, mobile-friendly websites designed specifically for tradesmen. Look professional, build trust with customers, and make it easy for them to contact you anytime, day or night."
-                            </p>
-                        </div>
+                    // Pricing Card
+                    <div class="max-w-4xl mx-auto mt-12">
+                        <div class="group relative bg-gradient-to-br from-white/10 to-transparent p-8 md:p-12 rounded-3xl border border-white/10 hover:border-brand/50 transition-all duration-500 shadow-2xl overflow-hidden">
+                            // Glowing background effect
+                            <div class="absolute top-0 right-0 w-96 h-96 bg-brand/10 blur-[100px] rounded-full -translate-y-1/2 translate-x-1/2"></div>
 
-                        // Example 2
-                        <div class="group relative bg-gradient-to-br from-white/5 to-transparent p-6 rounded-2xl border border-white/10 hover:border-brand/50 transition-all duration-500 overflow-hidden">
-                            <div class="relative overflow-hidden rounded-lg mb-6 aspect-video">
-                                <img src="/images/mockups/gas_engineer.png" alt="SEO Optimized Trade Website" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"/>
-                            </div>
-                            <h3 class="text-xl font-black text-white mb-4">"Search Engine Optimization (SEO)"</h3>
-                            <p class="text-gray-400 text-sm leading-relaxed">
-                                "SEO means your website appears when people search 'plumber near me' or 'electrician in Coventry'. We optimize page titles, meta descriptions, local keywords, and Google Business integration so customers find YOU instead of your competitors."
-                            </p>
-                        </div>
+                            <div class="relative z-10 flex flex-col md:flex-row gap-12 items-center">
+                                // Price Side
+                                <div class="w-full md:w-1/3 text-center md:text-left border-b md:border-b-0 md:border-r border-white/10 pb-8 md:pb-0 md:pr-8">
+                                    <h3 class="text-brand font-black text-lg tracking-widest uppercase mb-2">"Zero Down Plan"</h3>
+                                    <div class="flex items-baseline justify-center md:justify-start gap-1 mb-4">
+                                        <span class="text-4xl font-bold text-white">"£"</span>
+                                        <span class="text-7xl font-black text-white tracking-tighter">"120"</span>
+                                        <span class="text-gray-400 font-medium">"/mo"</span>
+                                    </div>
+                                    <div class="inline-block bg-brand/20 text-brand font-bold px-4 py-2 rounded-full text-sm mb-6">
+                                        "£0 Upfront Cost"
+                                    </div>
+                                    <p class="text-gray-400 text-sm italic">"1-month free trial included"</p>
+                                </div>
 
-                        // Example 3
-                        <div class="group relative bg-gradient-to-br from-white/5 to-transparent p-6 rounded-2xl border border-white/10 hover:border-brand/50 transition-all duration-500 overflow-hidden">
-                            <div class="relative overflow-hidden rounded-lg mb-6 aspect-video">
-                                <img src="/images/mockups/carpenter.png" alt="Complete Trade Business Website" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"/>
+                                // Features Side
+                                <div class="w-full md:w-2/3">
+                                    <h4 class="text-2xl font-bold text-white mb-6">"Everything You Need To Grow"</h4>
+
+                                    <div class="grid sm:grid-cols-2 gap-x-8 gap-y-4 mb-8">
+                                        <div class="space-y-4">
+                                            <div class="flex items-start gap-3">
+                                                <svg class="w-5 h-5 text-brand shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                                <span class="text-gray-300 text-sm">"Custom Coding & Development"</span>
+                                            </div>
+                                            <div class="flex items-start gap-3">
+                                                <svg class="w-5 h-5 text-brand shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                                <span class="text-gray-300 text-sm">"Mobile & SEO Optimization"</span>
+                                            </div>
+                                            <div class="flex items-start gap-3">
+                                                <svg class="w-5 h-5 text-brand shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                                <span class="text-gray-300 text-sm">"High-Speed Hosting"</span>
+                                            </div>
+                                            <div class="flex items-start gap-3">
+                                                <svg class="w-5 h-5 text-brand shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                                <span class="text-gray-300 text-sm">"Domain Management (12 Mo)"</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="space-y-4">
+                                            <div class="flex items-start gap-3">
+                                                <svg class="w-5 h-5 text-brand shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                                <span class="text-gray-300 text-sm">"Daily Backups & Security"</span>
+                                            </div>
+                                            <div class="flex items-start gap-3">
+                                                <svg class="w-5 h-5 text-brand shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                                <span class="text-gray-300 text-sm">"SSL Certificate Renewal"</span>
+                                            </div>
+                                            <div class="flex items-start gap-3">
+                                                <svg class="w-5 h-5 text-brand shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                                <span class="text-gray-300 text-sm">"24/7 Uptime Monitoring"</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="bg-white/5 rounded-xl p-4 border border-white/5">
+                                        <div class="flex items-center gap-3 mb-2">
+                                            <svg class="w-5 h-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                            <span class="text-white font-bold text-sm">"Included Support"</span>
+                                        </div>
+                                        <p class="text-gray-400 text-xs leading-relaxed">
+                                            "Includes up to 2 hours/month of expert development time for content updates, text changes, or image swaps."
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
-                            <h3 class="text-xl font-black text-white mb-4">"Complete Business Branding"</h3>
-                            <p class="text-gray-400 text-sm leading-relaxed">
-                                "Full branding, portfolio showcases, customer reviews, and ongoing support. Everything you need to grow your reputation and expand your business into new areas."
-                            </p>
                         </div>
                     </div>
                 </div>

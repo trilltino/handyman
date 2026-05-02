@@ -68,17 +68,17 @@ pub fn Packages() -> impl IntoView {
                 </div>
             </section>
 
-            // Pricing Card Section - Two Cards Layout
+            // Pricing Card Section - Three Cards Layout
             <section class="py-20 px-4 bg-void relative">
-                <div class="max-w-6xl mx-auto">
-                    <div class="grid md:grid-cols-2 gap-8">
-                        // Card 1: Pricing & CTA
+                <div class="max-w-[1400px] mx-auto">
+                    <div class="grid lg:grid-cols-3 gap-8">
+                        // Card 1: Standard Pricing
                         <div class="relative group">
                             // Glow Effect
                             <div class="absolute -inset-1 bg-gradient-to-r from-brand to-brand-dark rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
 
                             <div class="relative bg-void border border-void-highlight rounded-2xl p-8 shadow-2xl h-full flex flex-col">
-                                <h2 class="text-3xl font-bold text-white mb-2 font-heading">"Website"</h2>
+                                <h2 class="text-3xl font-bold text-white mb-2 font-heading">"Standard"</h2>
                                 <p class="text-gray-400 mb-8 border-b border-void-highlight pb-8">"Complete tradesman website with SEO, hosting, and support"</p>
 
                                 // Pricing Display
@@ -106,6 +106,66 @@ pub fn Packages() -> impl IntoView {
                                 >
                                     <span class="flex items-center justify-center gap-2">
                                         "START YOUR BUILD"
+                                        <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                                    </span>
+                                </a>
+
+                                <p class="text-center text-gray-500 text-xs mt-4">"Secure payment via Stripe. Cancel anytime."</p>
+                            </div>
+                        </div>
+
+                        // Card 2: Zero Down Subscription (New)
+                        <div class="relative group">
+                            // Glow Effect
+                            <div class="absolute -inset-1 bg-gradient-to-r from-purple-600 to-blue-600 rounded-2xl blur opacity-40 group-hover:opacity-75 transition duration-1000 group-hover:duration-200"></div>
+
+                            // Badge
+                            <div class="absolute top-0 right-0 -mt-4 mr-4 z-20">
+                                <span class="bg-gradient-to-r from-purple-600 to-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-lg">"Most Popular"</span>
+                            </div>
+
+                            <div class="relative bg-void border border-void-highlight rounded-2xl p-8 shadow-2xl h-full flex flex-col">
+                                <h2 class="text-3xl font-bold text-white mb-2 font-heading">"Zero Down"</h2>
+                                <p class="text-gray-400 mb-8 border-b border-void-highlight pb-8">"Start immediately with zero upfront cost. All-inclusive monthly package."</p>
+
+                                // Pricing Display
+                                <div class="mb-8 flex-grow">
+                                    // One-time setup fee
+                                    <div class="flex items-baseline gap-2 mb-4">
+                                        <span class="text-5xl font-black text-white tracking-tighter">"£0"</span>
+                                        <span class="text-lg text-gray-400">"down payment"</span>
+                                    </div>
+
+                                    // Monthly subscription
+                                    <div class="flex items-baseline gap-2 p-4 bg-void-surface/50 rounded-lg border border-void-highlight relative overflow-hidden">
+                                        <div class="absolute inset-0 bg-gradient-to-r from-purple-600/10 to-blue-600/10 pointer-events-none"></div>
+                                        <span class="text-purple-400 text-sm font-mono">"ONLY"</span>
+                                        <span class="text-3xl font-bold text-white">"£120"</span>
+                                        <span class="text-gray-400">"/ month"</span>
+                                    </div>
+
+                                    // Extra benefits
+                                    <div class="mt-6 space-y-3">
+                                        <div class="flex items-center gap-2 text-sm text-gray-300">
+                                            <svg class="w-5 h-5 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                            <span class="font-bold text-white">"Lifetime Support"</span>
+                                        </div>
+                                        <div class="flex items-center gap-2 text-sm text-gray-300">
+                                            <svg class="w-5 h-5 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                            <span class="font-bold text-white">"Unlimited Edits"</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                // Direct Stripe checkout link
+                                <a
+                                    href="https://buy.stripe.com/bJe00c0CUc1Bcsf76I83C04"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="w-full btn bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white font-bold py-4 px-6 rounded-lg transition-all duration-300 shadow-lg hover:shadow-purple-500/25 group"
+                                >
+                                    <span class="flex items-center justify-center gap-2">
+                                        "START FOR £0"
                                         <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                                     </span>
                                 </a>

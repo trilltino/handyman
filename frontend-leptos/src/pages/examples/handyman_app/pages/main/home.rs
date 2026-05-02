@@ -2,17 +2,19 @@
 
 use crate::components::seo::{LocalBusinessSchema, SeoHead};
 use leptos::prelude::*;
+use leptos_meta::*;
 use leptos_router::components::A;
 use shared::PageMetadata;
 
 #[component]
 pub fn HandymanHome() -> impl IntoView {
     view! {
+        <leptos_meta::Link rel="preload" as_="image" href="/images/hero_assets/hero_bg.webp" />
         <SeoHead metadata=PageMetadata {
             title: "Coventry Handyman Services | Reliable & Local Examples".to_string(),
             description: "Meet Rick, the renowned local handyman making home repairs simple again. 10 years experience, affordable rates, attentive workmanship.".to_string(),
             canonical_url: Some("https://xftradesman.com/handyman-coventry".to_string()),
-            og_image: Some("/images/hero_assets/hero_bg.png".to_string()),
+            og_image: Some("/images/hero_assets/hero_bg.webp".to_string()),
         }/>
         <LocalBusinessSchema />
 
@@ -22,7 +24,7 @@ pub fn HandymanHome() -> impl IntoView {
                 // Background Image
                 <div class="absolute inset-0 z-0">
                     <img
-                        src="/images/hero_assets/hero_bg.png"
+                        src="/images/hero_assets/hero_bg.webp"
                         alt="Rick the Handyman"
                         class="w-full h-full object-cover object-center"
                     />
@@ -99,7 +101,7 @@ pub fn HandymanHome() -> impl IntoView {
                         <div class="w-full md:w-1/2 relative group">
                             <div class="absolute -inset-4 bg-yellow-400 rounded-2xl transform rotate-2 group-hover:rotate-1 transition duration-300"></div>
                             <img
-                                src="/images/hero_assets/problem.png"
+                                src="/images/hero_assets/problem.webp"
                                 alt="Broken Hinge"
                                 class="relative rounded-xl shadow-2xl w-full object-cover transform -rotate-1 group-hover:rotate-0 transition duration-300 border-4 border-white"
                             />
@@ -132,7 +134,7 @@ pub fn HandymanHome() -> impl IntoView {
                 <div class="max-w-5xl mx-auto px-6 text-center">
                     <div class="w-48 h-48 mx-auto mb-8 relative">
                          <div class="absolute inset-0 bg-blue-600 rounded-full animate-pulse opacity-20"></div>
-                         <img src="/images/hero_assets/rick.png" alt="Rick" class="w-full h-full object-cover rounded-full border-4 border-white shadow-xl relative z-10" />
+                         <img src="/images/hero_assets/rick.webp" alt="Rick" class="w-full h-full object-cover rounded-full border-4 border-white shadow-xl relative z-10" />
                          <div class="absolute bottom-2 right-2 bg-yellow-400 text-blue-900 font-bold px-3 py-1 rounded-full text-sm z-20 shadow-sm">"Owner"</div>
                     </div>
                     <h2 class="text-4xl font-black text-slate-900 mb-6">"Hi, I'm Rick."</h2>

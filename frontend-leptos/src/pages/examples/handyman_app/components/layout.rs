@@ -198,9 +198,9 @@ pub fn HandymanLayout() -> impl IntoView {
                     // Bottom Links
                     <div class="border-t border-white/5 pt-8">
                          <div class="flex flex-wrap justify-center gap-x-8 gap-y-4 text-sm font-medium text-slate-400">
-                            <A href="#" {..} class="hover:text-white transition">"Home"</A>
-                            <A href="#" {..} class="hover:text-white transition">"About"</A>
-                            <A href="#" {..} class="hover:text-white transition">"Reviews"</A>
+                            <A href="/handyman-coventry" {..} class="hover:text-white transition">"Home"</A>
+                            <A href="/handyman-coventry/about" {..} class="hover:text-white transition">"About"</A>
+                            <A href="/handyman-coventry/testimonials" {..} class="hover:text-white transition">"Reviews"</A>
                             <A href="/handyman-coventry/faq" {..} class="hover:text-white transition">"FAQ"</A>
                             <A href="/handyman-coventry/contact" {..} class="hover:text-white transition">"Contact"</A>
                         </div>
@@ -219,7 +219,7 @@ fn MobileMenuButton() -> impl IntoView {
     view! {
         // Hamburger Button (visible on mobile only)
         <button
-            class="md:hidden flex flex-col gap-1.5 p-2 z-50"
+            class="flex flex-col gap-1.5 p-1 z-50"
             on:click=move |_| set_is_open.update(|v| *v = !*v)
             aria-label="Toggle menu"
         >

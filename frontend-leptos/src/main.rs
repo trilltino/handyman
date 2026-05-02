@@ -74,7 +74,7 @@ Disallow: /admin/
 Disallow: /api/admin/
 Disallow: /handyman-coventry/admin/
 
-Sitemap: https://xftradesmen.fly.dev/sitemap.xml
+Sitemap: https://xftradesman.com/sitemap.xml
 Crawl-delay: 1
 "#;
 
@@ -89,7 +89,7 @@ Crawl-delay: 1
 async fn sitemap_handler() -> axum::response::Response {
     use axum::http::header;
 
-    let base_url = "https://xftradesmen.fly.dev";
+    let base_url = "https://xftradesman.com";
 
     // Main XFTradesman pages
     let main_routes = [
